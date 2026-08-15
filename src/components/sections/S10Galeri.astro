@@ -9,18 +9,18 @@
  * Selama tim KKN belum menyetorkan foto berikut status izinnya, daftar ini
  * kosong dan seksi menampilkan keterangan apa adanya — bukan foto stok.
  */
-import { Image } from 'astro:assets';
-import Seksi from '../ui/Seksi.astro';
-import GlassPanel from '../glass/GlassPanel.astro';
-import VideoFacade from '../ui/VideoFacade.astro';
-import { beranda, galeriTersaring, profil } from '../../data';
+import { Image } from "astro:assets";
+import Seksi from "../ui/Seksi.astro";
+import GlassPanel from "../glass/GlassPanel.astro";
+import VideoFacade from "../ui/VideoFacade.astro";
+import { beranda, galeriTersaring, profil } from "../../data";
 
 const { s10 } = beranda;
 const kategori = galeriTersaring();
 
 // Foto galeri disimpan di src/assets/images/ dan dioptimasi astro:assets.
 const berkas = import.meta.glob<{ default: ImageMetadata }>(
-	'../../assets/images/*.{jpg,jpeg,png,avif,webp}',
+	"../../assets/images/*.{jpg,jpeg,png,avif,webp}",
 );
 ---
 
@@ -40,7 +40,9 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 						<li class="sel">
 							<figure class="bingkai glass">
 								<Image
-									src={berkas[`../../assets/images/${f.file}`]!()}
+									src={berkas[
+										`../../assets/images/${f.file}`
+									]!()}
 									alt={f.alt}
 									widths={[320, 640, 960]}
 									sizes="(min-width: 1000px) 320px, 50vw"

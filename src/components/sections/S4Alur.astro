@@ -4,10 +4,11 @@
  *
  * Desain Hybrid: Absolute Positioning HTML Cards 
  * + SVG Background menyesuaikan layout gambar referensi (U-Shape).
+ * Bebas dari wrapper <Seksi> agar lebar konsisten dengan 1140px.
  */
-import Seksi from '../ui/Seksi.astro';
-
+import { Picture } from 'astro:assets';
 import { alur, beranda } from '../../data';
+import bgAlur from '../../assets/images/latarbelakang/IMG_8920.JPG';
 
 const { s4 } = beranda;
 
@@ -23,9 +24,6 @@ const icons: string[] = [
  * Layout Absolute Position (Desktop)
  * S-Curve 5 Langkah: Kiri Atas -> Tengah Atas -> Kanan Atas -> Kanan Bawah -> Tengah Bawah
  * ViewBox SVG: 1000 x 750 
- * Baris 1: top: 16% (Y=120)
- * Baris 2: top: 70% (Y=525)
- * Kolom: 15% (X=150), 50% (X=500), 85% (X=850)
  */
 const positions = [
 	{ left: '15%', top: '16%' }, // 01 (Kiri Atas)
@@ -39,93 +37,181 @@ const positions = [
 const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 ---
 
-<Seksi
-	id="cara-jadi-nasabah"
-	eyebrow={s4.eyebrow}
-	judul={s4.judul}
-	latar="foto"
-	scrim="lembut"
-	labelPlaceholder="Peta alur penyetoran sampah"
->
-	<p slot="pengantar" class="pengantar">{s4.pengantar}</p>
+<section id="cara-jadi-nasabah" class="seksi-alur" aria-label="Alur Penyetoran Sampah">
+	<!-- Elemen Background Gambar Latar (Sesuai panduan PRD: astro:assets <img> bukan background CSS) -->
+	<div class="latar-belakang-gambar" aria-hidden="true">
+		<Picture
+			src={bgAlur}
+			alt=""
+			formats={['avif', 'webp']}
+			fallbackFormat="jpg"
+			class="gambar-latar"
+			widths={[400, 800, 1280]}
+			sizes="100vw"
+		/>
+		<div class="overlay-latar"></div>
+	</div>
 
-	<!-- DESKTOP HYBRID LAYOUT -->
-	<div class="roadmap-desktop" id="roadmap-hybrid" aria-label="Infografis langkah penyetoran sampah">
+	<div class="kontainer-seksi">
 		
-		<!-- 1. Layer Background: SVG Road -->
-		<div class="road-svg-container" aria-hidden="true">
-			<svg viewBox="0 0 1000 750" preserveAspectRatio="xMidYMid meet" class="road-svg">
-				<!-- Bayangan jalan -->
-				<path d={roadPath} fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
-				<!-- Badan jalan utama -->
-				<path d={roadPath} fill="none" stroke="var(--neutral-700)" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
-				<!-- Marka putus-putus -->
-				<path d={roadPath} fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="3" stroke-dasharray="20 14" stroke-linecap="round" stroke-linejoin="round" class="road-dashes" />
-				
-				<!-- Arah panah rute (Visual cues) -->
-				<g fill="rgba(255,255,255,0.5)">
-					<!-- Panah Kanan (1->2) -->
-					<polygon points="315,115 332,125 315,135" />
-					<!-- Panah Kanan (2->3) -->
-					<polygon points="655,115 672,125 655,135" />
-					<!-- Panah Turun (3->4) -->
-					<polygon points="840,315 850,332 860,315" />
-					<!-- Panah Kiri (4->5) -->
-					<polygon points="685,515 668,525 685,535" />
-				</g>
-			</svg>
+		<!-- Kepala Seksi -->
+		<header class="kepala">
+			<p class="eyebrow">{s4.eyebrow}</p>
+			<h2 class="judul">{s4.judul}</h2>
+			<p class="pengantar">{s4.pengantar}</p>
+		</header>
+
+		<!-- DESKTOP HYBRID LAYOUT -->
+		<div class="roadmap-desktop" id="roadmap-hybrid" aria-label="Infografis langkah penyetoran sampah">
+			
+			<!-- 1. Layer Background: SVG Road -->
+			<div class="road-svg-container" aria-hidden="true">
+				<svg viewBox="0 0 1000 750" preserveAspectRatio="xMidYMid meet" class="road-svg">
+					<!-- Bayangan jalan -->
+					<path d={roadPath} fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
+					<!-- Badan jalan utama -->
+					<path d={roadPath} fill="none" stroke="#e5e7eb" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
+					<!-- Marka putus-putus -->
+					<path d={roadPath} fill="none" stroke="#9ca3af" stroke-width="3" stroke-dasharray="20 14" stroke-linecap="round" stroke-linejoin="round" class="road-dashes" />
+					
+					<!-- Arah panah rute (Visual cues) -->
+					<g fill="#9ca3af">
+						<!-- Panah Kanan (1->2) -->
+						<polygon points="315,115 332,125 315,135" />
+						<!-- Panah Kanan (2->3) -->
+						<polygon points="655,115 672,125 655,135" />
+						<!-- Panah Turun (3->4) -->
+						<polygon points="840,315 850,332 860,315" />
+						<!-- Panah Kiri (4->5) -->
+						<polygon points="685,515 668,525 685,535" />
+					</g>
+				</svg>
+			</div>
+
+			<!-- 2. Layer Atas: HTML Cards -->
+			{alur.langkah.map((l, i) => (
+				<div class="station-wrapper" style={`left: ${positions[i].left}; top: ${positions[i].top}; --st-delay: ${i * 0.15}s;`} data-step={i}>
+					<div class="station-card hover-lift">
+						<!-- Lingkaran Ikon (Tepat sejajar dengan jalan) -->
+						<div class="station-marker">
+							<div class="station-icon" set:html={icons[i]}></div>
+							<span class="station-badge">{l.nomor}</span>
+						</div>
+						<!-- Konten Teks -->
+						<h3 class="station-title">{l.judul}</h3>
+						<p class="station-desc">{l.keterangan}</p>
+					</div>
+				</div>
+			))}
 		</div>
 
-		<!-- 2. Layer Atas: HTML Cards -->
-		{alur.langkah.map((l, i) => (
-			<div class="station-wrapper" style={`left: ${positions[i].left}; top: ${positions[i].top}; --st-delay: ${i * 0.15}s;`} data-step={i}>
-				<div class="station-card glass hover-lift">
-					<!-- Lingkaran Ikon (Tepat sejajar dengan jalan) -->
-					<div class="station-marker">
-						<div class="station-icon" set:html={icons[i]}></div>
-						<span class="station-badge">{l.nomor}</span>
+		<!-- MOBILE FALLBACK: Vertical Timeline -->
+		<div class="roadmap-mobile" id="roadmap-mobile-view">
+			<div class="mobile-timeline-line" aria-hidden="true"></div>
+			{alur.langkah.map((l, i) => (
+				<div class="mobile-card-row" style={`--mob-delay: ${i * 0.12}s;`} data-step={i}>
+					<div class="mob-marker">
+						<div class="mob-icon" set:html={icons[i]}></div>
+						<span class="mob-badge">{l.nomor}</span>
 					</div>
-					<!-- Konten Teks -->
-					<h3 class="station-title">{l.judul}</h3>
-					<p class="station-desc">{l.keterangan}</p>
+					<div class="mob-content">
+						<h3 class="mob-title">{l.judul}</h3>
+						<p class="mob-desc">{l.keterangan}</p>
+					</div>
 				</div>
-			</div>
-		))}
+			))}
+		</div>
+
 	</div>
-
-	<!-- MOBILE FALLBACK: Vertical Timeline -->
-	<div class="roadmap-mobile" id="roadmap-mobile-view">
-		<div class="mobile-timeline-line" aria-hidden="true"></div>
-		{alur.langkah.map((l, i) => (
-			<div class="mobile-card-row" style={`--mob-delay: ${i * 0.12}s;`} data-step={i}>
-				<div class="mob-marker">
-					<div class="mob-icon" set:html={icons[i]}></div>
-					<span class="mob-badge">{l.nomor}</span>
-				</div>
-				<div class="mob-content glass">
-					<h3 class="mob-title">{l.judul}</h3>
-					<p class="mob-desc">{l.keterangan}</p>
-				</div>
-			</div>
-		))}
-	</div>
-
-
-</Seksi>
+</section>
 
 <style>
+	.seksi-alur {
+		width: 100%;
+		position: relative;
+		overflow: hidden;
+		/* Tambahan padding atas ekstra (24 unit = 192px) agar teks judul tidak tertimpa video yang overlap */
+		padding: calc(var(--space-unit) * 24) calc(var(--space-unit) * 3) calc(var(--space-unit) * 8);
+		box-sizing: border-box;
+	}
+
+	.latar-belakang-gambar {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.gambar-latar {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	.overlay-latar {
+		position: absolute;
+		inset: 0;
+		/* Opacity diturunkan menjadi 0.65 agar gambar latar belakang lebih jelas terlihat */
+		background: rgba(249, 250, 251, 0.65);
+	}
+
+	/* Kontainer 1140px presisi seperti S3Latar */
+	.kontainer-seksi {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+		max-width: 1140px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 6);
+	}
+
+	.kepala {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: calc(var(--space-unit) * 1.5);
+	}
+
+	.eyebrow {
+		margin: 0;
+		font-family: var(--font-mono), monospace;
+		font-weight: 700;
+		color: var(--accent-earth); /* Aksen emas/amber */
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-size: 0.875rem;
+	}
+
+	.judul {
+		margin: 0;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: clamp(2rem, 4vw, 3rem);
+		font-weight: 700;
+		line-height: 1.2;
+		color: var(--neutral-900);
+	}
+
 	.pengantar {
 		margin: 0;
 		max-width: 60ch;
-		font-size: var(--text-besar);
-		color: var(--neutral-100);
-		margin-bottom: calc(var(--space-unit) * 6);
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 1rem;
+		line-height: 1.6;
+		color: #4b5563;
 	}
 
 	@media (min-width: 900px) {
-		.pengantar {
-			text-align: center;
-			margin: 0 auto calc(var(--space-unit) * 4);
+		.seksi-alur {
+			/* Padding atas ekstra (32 unit = 256px) untuk overlap desktop (160px) + gap (96px) */
+			padding: calc(var(--space-unit) * 32) calc(var(--space-unit) * 4) calc(var(--space-unit) * 12);
+		}
+		.kontainer-seksi {
+			gap: calc(var(--space-unit) * 10);
 		}
 	}
 
@@ -136,7 +222,7 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 		display: none;
 		position: relative;
 		width: 100%;
-		max-width: 1000px;
+		max-width: 1000px; /* Terjaga proporsi SVG-nya di dalam 1140px */
 		margin: 0 auto;
 		aspect-ratio: 1000 / 750;
 	}
@@ -171,8 +257,8 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 	/* Wrapper untuk Positioning Absolute */
 	.station-wrapper {
 		position: absolute;
-		width: 28%; /* Max lebar kartu proporsional dengan container */
-		transform: translateX(-50%); /* Menengahkan sumbu X saja */
+		width: 28%;
+		transform: translateX(-50%);
 		z-index: 2;
 		
 		/* Animasi reveal awal */
@@ -196,21 +282,19 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 		text-align: center;
 		padding: calc(var(--space-unit) * 4.5) calc(var(--space-unit) * 2.5) calc(var(--space-unit) * 3);
 		border-radius: var(--radius-lg);
-		background: var(--glass-dark);
-		border: 1px solid var(--glass-border-dark);
-		box-shadow: var(--glass-shadow);
-		transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+		background: #ffffff; /* Kartu Terang */
+		border: 1px solid #e5e7eb; /* Border halus */
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+		transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 	}
 
 	.station-card:hover {
-		background: var(--glass-green);
-		border-color: var(--glass-border);
-		box-shadow: 0 16px 40px rgba(10, 15, 10, 0.4);
-		transform: translateY(-8px) scale(1.02);
+		border-color: var(--brand-green);
+		box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+		transform: translateY(-8px);
 	}
 
-	/* Marker Lingkaran: Tengah di atas kartu. 
-	   Karena top: -32px dan tinggi 64px, pusat ikon tepat di koordinat `top` pembungkus. */
+	/* Marker Lingkaran */
 	.station-marker {
 		position: absolute;
 		top: -32px;
@@ -222,15 +306,14 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+		box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 		transition: transform 0.3s ease, background 0.3s ease;
 		color: var(--white);
 	}
 
 	.station-card:hover .station-marker {
 		transform: scale(1.1) rotate(-5deg);
-		background: var(--brand-green-light);
-		color: var(--brand-green-dark);
+		background: var(--brand-green-dark);
 		border-color: var(--accent-earth);
 	}
 
@@ -259,23 +342,22 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 		align-items: center;
 		justify-content: center;
 		border: 2px solid var(--white);
-		box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+		box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 	}
 
-	/* Teks disesuaikan agar tidak 'kegedean' */
 	.station-title {
 		margin: 0 0 calc(var(--space-unit) * 1) 0;
-		font-size: var(--text-besar); /* Lebih ringkas dari text-judul */
-		font-family: var(--font-display), Georgia, serif;
-		color: var(--white);
-		line-height: 1.25;
+		font-size: 1.125rem;
+		font-weight: 700;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		color: var(--neutral-900);
+		line-height: 1.3;
 	}
 
 	.station-desc {
 		margin: 0;
-		font-size: var(--text-isi);
-		color: var(--neutral-100);
-		opacity: 0.85;
+		font-size: 0.875rem;
+		color: #4b5563;
 		line-height: 1.5;
 	}
 
@@ -294,7 +376,7 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 		position: absolute;
 		top: 0; bottom: 0; left: 32px;
 		width: 4px;
-		background: var(--glass-border-dark);
+		background: #e5e7eb;
 		border-radius: 4px;
 		z-index: 0;
 		transform-origin: top;
@@ -328,14 +410,15 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 		border-radius: 50%;
 		background: var(--brand-green);
 		border: 3px solid var(--white);
-		box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+		box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 		display: flex; align-items: center; justify-content: center;
 		color: var(--white);
 		transition: transform 0.3s ease;
 	}
 	.mobile-card-row:hover .mob-marker {
 		transform: scale(1.1);
-		background: var(--white); color: var(--brand-green);
+		background: var(--brand-green-dark);
+		border-color: var(--accent-earth);
 	}
 	.mob-icon { width: 32px; height: 32px; }
 	.mob-icon :global(svg) { width: 100%; height: 100%; }
@@ -357,34 +440,22 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 		flex: 1;
 		padding: calc(var(--space-unit) * 2.5);
 		border-radius: var(--radius-md);
-		background: var(--glass-dark);
-		border: 1px solid var(--glass-border-dark);
-		box-shadow: var(--glass-shadow);
+		background: #ffffff;
+		border: 1px solid #e5e7eb;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 	}
 	.mob-title {
 		margin: 0 0 calc(var(--space-unit) * 1) 0;
-		font-size: var(--text-besar);
-		font-family: var(--font-display), Georgia, serif;
-		color: var(--white);
+		font-size: 1.125rem;
+		font-weight: 700;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		color: var(--neutral-900);
 	}
 	.mob-desc {
 		margin: 0;
-		font-size: var(--text-isi);
-		color: var(--neutral-100);
-		opacity: 0.9;
+		font-size: 0.875rem;
+		color: #4b5563;
 		line-height: 1.5;
-	}
-
-	/* ── CTA Tutup ── */
-	.tutup {
-		display: flex; justify-content: flex-start;
-		margin-top: calc(var(--space-unit) * 6);
-	}
-	@media (min-width: 900px) {
-		.tutup {
-			justify-content: center;
-			margin-top: calc(var(--space-unit) * 10);
-		}
 	}
 
 	/* ── Preferensi Gerak Berkurang ── */

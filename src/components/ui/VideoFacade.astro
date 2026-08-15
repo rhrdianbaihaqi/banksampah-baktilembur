@@ -2,13 +2,9 @@
 /**
  * Facade YouTube — iframe baru dimuat setelah diklik (PRD §S10, §5.2).
  *
- * Menyematkan iframe YouTube sejak awal menarik ratusan KB skrip pihak ketiga
- * sebelum pengunjung tentu ingin menonton. Di kuota terbatas milik Persona 1,
- * itu biaya yang dibayar tanpa manfaat.
- *
- * Gambar sampul diambil dari YouTube saat build tidak mungkin (situs statis
- * tanpa jaringan saat runtime), jadi sampulnya blok token — konsisten dengan
- * pendekatan placeholder di seluruh situs.
+ * Mengambil sampul asli YouTube (maxresdefault) dengan overlay gradien,
+ * tombol play merah raksasa, dan teks label tebal di pojok kiri bawah
+ * untuk meniru referensi visual (Image 2).
  */
 import Ikon from './Ikon.astro';
 
@@ -19,12 +15,24 @@ interface Props {
 }
 
 const { idYoutube, judul, label } = Astro.props;
+// Resolusi maxresdefault.jpg adalah thumbnail resolusi tinggi standar YouTube
+const urlSampul = `https://img.youtube.com/vi/${idYoutube}/maxresdefault.jpg`;
 ---
 
 <div class="facade" data-video={idYoutube} data-judul={judul}>
-	<button type="button" class="tombol" data-ga4="putar_video">
-		<Ikon nama="play" ukuran={32} />
-		<span>{label}</span>
+	<button type="button" class="tombol" data-ga4="putar_video" aria-label={`Putar video: ${judul}`}>
+		<img src={urlSampul} alt={`Sampul video: ${judul}`} loading="lazy" class="sampul-youtube" />
+		<div class="overlay-gradien"></div>
+		
+		<div class="ikon-play">
+			<!-- SVG Logo YouTube Play Button -->
+			<svg viewBox="0 0 68 48" class="logo-yt">
+				<path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.1 34 .1 34 .1s-21.79 0-27.1.15C3.97 2.33 2.26 4.81 1.48 7.74.01 13.05 0 24 0 24s.01 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.9 34 47.9 34 47.9s21.79 0 27.1-.15c2.93-.78 4.64-3.26 5.42-6.19C67.99 34.95 68 24 68 24s-.01-10.95-1.48-16.26z" fill="#FF0000"/>
+				<path d="M45 24 27 14v20z" fill="#FFF"/>
+			</svg>
+		</div>
+
+		<span class="label-besar">{label}</span>
 	</button>
 </div>
 
@@ -59,31 +67,91 @@ const { idYoutube, judul, label } = Astro.props;
 <style>
 	.facade {
 		position: relative;
-		aspect-ratio: 16 / 9;
-		border-radius: var(--radius-md);
+		aspect-ratio: 21 / 9; /* Diubah menjadi sinematik ultra-wide untuk mengurangi tinggi */
+		border-radius: var(--radius-lg);
 		overflow: hidden;
-		background: var(--brand-green-dark);
+		background: var(--neutral-800);
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
 	}
 
 	.tombol {
 		position: absolute;
 		inset: 0;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: var(--space-unit);
 		width: 100%;
+		height: 100%;
 		border: 0;
 		background: transparent;
+		cursor: pointer;
+		padding: 0;
+		text-align: left;
+		display: block; /* Agar overlay berfungsi murni sebagai anak */
+	}
+
+	.sampul-youtube {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	.tombol:hover .sampul-youtube {
+		transform: scale(1.05);
+	}
+
+	.overlay-gradien {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.05) 100%);
+		pointer-events: none;
+	}
+
+	.ikon-play {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 68px;
+		height: 48px;
+		transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	}
+
+	.tombol:hover .ikon-play {
+		transform: translate(-50%, -50%) scale(1.15);
+	}
+
+	.logo-yt {
+		width: 100%;
+		height: 100%;
+		filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+	}
+
+	.label-besar {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: calc(var(--space-unit) * 2) calc(var(--space-unit) * 3);
 		color: var(--white);
 		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: var(--text-isi);
-		font-weight: 600;
-		cursor: pointer;
+		font-size: clamp(1rem, 1.5vw, 1.25rem); /* Dikecilkan drastis agar tidak bentrok dengan teks bawaan thumbnail */
+		font-weight: 500;
+		line-height: 1.4;
+		letter-spacing: 0;
+		text-wrap: balance;
+		pointer-events: none;
+		text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+	}
+
+	@media (min-width: 768px) {
+		.label-besar {
+			padding: calc(var(--space-unit) * 3) calc(var(--space-unit) * 4);
+		}
 	}
 
 	.facade :global(.sematan) {
+		position: absolute;
+		inset: 0;
 		width: 100%;
 		height: 100%;
 		border: 0;

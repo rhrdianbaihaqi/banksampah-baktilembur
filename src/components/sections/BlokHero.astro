@@ -12,6 +12,7 @@ import { beranda, ctaWhatsapp, profil } from "../../data";
 import Ikon from "../ui/Ikon.astro";
 
 import heroBg from "../../assets/images/background/imagebg.jpg";
+import heroBg2 from "../../assets/images/latarbelakang/IMG_8919.JPG";
 
 const { s1 } = beranda;
 const ctaNasabah = ctaWhatsapp("nasabah");
@@ -25,8 +26,9 @@ const youtubeJudul = profil.video.judul;
 	data-videoid={youtubeId}
 	data-videojudul={youtubeJudul}
 >
-	<!-- ════ FOTO LATAR BERSAMA (UNTUK KEDUA SLIDE) ════ -->
+	<!-- ════ FOTO LATAR BERSAMA (UNTUK KEDUA SLIDE) DENGAN ANIMASI CROSSFADE ════ -->
 	<div class="hero-latar" aria-hidden="true">
+		<!-- Latar 1 (Utama) -->
 		<Image
 			src={heroBg}
 			alt="Kegiatan tim KKN dan warga di Bank Sampah Bakti Lembur"
@@ -36,6 +38,17 @@ const youtubeJudul = profil.video.judul;
 			fetchpriority="high"
 			decoding="sync"
 			class="hero-foto"
+		/>
+		<!-- Latar 2 (Baru) dengan animasi fade -->
+		<Image
+			src={heroBg2}
+			alt="Kegiatan warga menyetorkan sampah"
+			widths={[640, 960, 1280, 1920]}
+			sizes="100vw"
+			loading="eager"
+			fetchpriority="high"
+			decoding="sync"
+			class="hero-foto foto-fade"
 		/>
 		<div class="hero-scrim"></div>
 	</div>
@@ -191,17 +204,7 @@ const youtubeJudul = profil.video.judul;
 		// Mulai timer awal
 		startTimer();
 
-		// Jeda timer saat user mengarahkan kursor ke area hero
-		sliderBlok.addEventListener("mouseenter", () => {
-			if (isAutoSlideDisabled) return;
-			if (slideTimer) clearTimeout(slideTimer);
-			progressFill.style.transition = "none";
-		});
-
-		sliderBlok.addEventListener("mouseleave", () => {
-			if (isAutoSlideDisabled) return;
-			resetTimer();
-		});
+		// (Dihapus: Jeda timer saat user mengarahkan kursor, karena hero full-screen membuat timer terhenti terus-menerus)
 
 		// ─── AKSI TOMBOL CLOSE: KEMBALI KE FOTO & KUNCI (TIDAK OTOMATIS LAGI) ───
 		if (btnClose) {
@@ -249,6 +252,18 @@ const youtubeJudul = profil.video.judul;
 		height: 100%;
 		object-fit: cover;
 		object-position: center top;
+	}
+
+	/* Animasi Crossfade Background tanpa JS */
+	.foto-fade {
+		opacity: 0;
+		animation: crossfadeBg 16s infinite;
+	}
+
+	@keyframes crossfadeBg {
+		0%, 45% { opacity: 0; }     /* Foto 1 Tampil */
+		50%, 95% { opacity: 1; }    /* Foto 2 Tampil (IMG_8919) */
+		100% { opacity: 0; }
 	}
 
 	.hero-scrim {

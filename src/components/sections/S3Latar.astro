@@ -5,7 +5,8 @@
  */
 import PemilihFoto from '../ui/PemilihFoto.astro';
 import Ikon from '../ui/Ikon.astro';
-import { beranda } from '../../data';
+import VideoFacade from '../ui/VideoFacade.astro';
+import { beranda, profil } from '../../data';
 
 const { s3 } = beranda;
 ---
@@ -40,6 +41,16 @@ const { s3 } = beranda;
 				}
 			</ul>
 		</div>
+
+	</div>
+
+	<!-- Video Youtube Overlap -->
+	<div class="kontainer-video-overlap">
+		<VideoFacade
+			idYoutube={profil.video.idYoutube}
+			judul={profil.video.judul}
+			label={profil.video.judul}
+		/>
 	</div>
 </section>
 
@@ -47,7 +58,7 @@ const { s3 } = beranda;
 	.seksi-latar {
 		width: 100%;
 		background: #ffffff;
-		padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
+		padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3) 0; /* Padding bawah 0 agar video menempel */
 		box-sizing: border-box;
 	}
 
@@ -139,26 +150,50 @@ const { s3 } = beranda;
 		color: #374151;
 	}
 
+	/* Kontainer khusus video agar overlap dengan seksi di bawahnya */
+	.kontainer-video-overlap {
+		width: 100%;
+		max-width: 1140px;
+		margin: calc(var(--space-unit) * 10) auto 0;
+		position: relative;
+		z-index: 10;
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+		border-radius: var(--radius-lg);
+		background: #111;
+		/* Gunakan margin-bottom negatif murni untuk menarik seksi S4Alur ke atas, membelah video */
+		margin-bottom: -60px;
+	}
+
 	/* Tablet & Desktop */
 	@media (min-width: 900px) {
 		.seksi-latar {
-			padding: calc(var(--space-unit) * 10) calc(var(--space-unit) * 4);
+			padding: calc(var(--space-unit) * 10) calc(var(--space-unit) * 4) 0;
 		}
 
 		.kontainer-seksi {
-			grid-template-columns: 1fr 1fr; /* Proporsi 50:50 seimbang persis referensi */
+			grid-template-columns: 1fr 1fr;
 			gap: calc(var(--space-unit) * 8);
+		}
+
+		.kontainer-video-overlap {
+			margin-top: calc(var(--space-unit) * 14);
+			margin-bottom: -120px;
 		}
 	}
 
 	/* Desktop Luas (Full Layout 1140px) */
 	@media (min-width: 1200px) {
 		.seksi-latar {
-			padding: calc(var(--space-unit) * 12) calc(var(--space-unit) * 4);
+			padding: calc(var(--space-unit) * 12) calc(var(--space-unit) * 4) 0;
 		}
 		
 		.kontainer-seksi {
-			gap: 80px; /* Jarak persis 80px antara foto dan teks seperti di referensi */
+			gap: 80px;
+		}
+
+		.kontainer-video-overlap {
+			margin-top: calc(var(--space-unit) * 16);
+			margin-bottom: -160px;
 		}
 	}
 </style>
