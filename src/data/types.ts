@@ -158,7 +158,18 @@ export interface Beranda {
 		ctaVideo?: { label: string };
 	};
 	s2: { eyebrow: string; judulLayar: string };
-	s3: { eyebrow: string; judul: string; paragraf: string[]; labelFoto: string };
+	s3: {
+		eyebrow: string;
+		/** Dipecah tiga bagian; `tebal` yang mendapat warna hijau tua. */
+		judul: { awal: string; tebal: string; akhir: string };
+		pengantar: string | string[];
+		/** `sumber` tidak dirender — ia jejak asal data supaya klaim bisa dilacak. */
+		keunggulan: Array<{ teks: string; judul?: string; sumber?: string }>;
+		/** Naskah panjang, disimpan untuk halaman /tentang. Tidak dirender di beranda. */
+		paragraf: string[];
+		labelFoto: string;
+		labelStrip: string;
+	};
 	s4: { eyebrow: string; judul: string; pengantar: string; labelLangkah: string };
 	s5: { eyebrow: string; judul: string; tautanSelengkapnya: Tautan };
 	s6: {

@@ -1,109 +1,164 @@
 ---
 /**
- * S3 — Kenapa Bakti Lembur Ada. Latar: netral (PRD §S3).
- *
- * Latar netral di sini bukan kekosongan: ia memberi jeda setelah dua seksi
- * berfoto berturut-turut. Foto di mana-mana sama saja dengan foto di mana pun
- * tidak menonjol (§6.5 aturan 8).
+ * S3 — Kenapa Bakti Lembur Ada (Latar Belakang)
+ * Layout dan tata letak persis mengikuti referensi (2 kolom seimbang, foto persegi + strip, checklist dengan centang emas).
  */
-import Seksi from '../ui/Seksi.astro';
-import ImageSlider from '../ui/ImageSlider.astro';
+import PemilihFoto from '../ui/PemilihFoto.astro';
+import Ikon from '../ui/Ikon.astro';
 import { beranda } from '../../data';
 
 const { s3 } = beranda;
 ---
 
-<Seksi eyebrow={s3.eyebrow} judul={s3.judul} latar="netral" id="latar-belakang" class="s3-khusus">
-	<div class="susunan">
-		<div class="kolom-kiri">
-			<!-- Header lokal untuk diletakkan di dalam kolom kiri -->
-			<header class="kepala-lokal">
-				<p class="eyebrow">{s3.eyebrow}</p>
-				<h2 class="judul">{s3.judul}</h2>
-			</header>
-			
-			<div class="naskah">
-				{s3.paragraf.map((p) => <p>{p}</p>)}
-			</div>
+<section id="latar-belakang" class="seksi-latar" aria-label="Latar Belakang">
+	<div class="kontainer-seksi">
+		<!-- Kolom Kiri: Foto Utama + Strip Thumbnail -->
+		<div class="kolom-foto">
+			<PemilihFoto alt={s3.labelFoto} labelStrip={s3.labelStrip} />
 		</div>
 
-		<div class="bingkai glass">
-			<div class="foto">
-				<ImageSlider />
-			</div>
+		<!-- Kolom Kanan: Judul, Paragraf Pengantar, & Daftar Keunggulan -->
+		<div class="kolom-teks">
+			<header class="kepala">
+				<h2 id="latar-belakang-judul" class="judul">
+					{s3.judul.awal} <strong>{s3.judul.tebal}</strong> {s3.judul.akhir}
+				</h2>
+			</header>
+
+			<p class="pengantar">{s3.pengantar}</p>
+
+			<ul class="daftar" role="list">
+				{
+					s3.keunggulan.map((k) => (
+						<li class="butir">
+							<span class="tanda">
+								<Ikon nama="check-circle-2" ukuran={18} />
+							</span>
+							<p class="teks">{k.teks}</p>
+						</li>
+					))
+				}
+			</ul>
 		</div>
 	</div>
-</Seksi>
+</section>
 
 <style>
-	/* Sembunyikan header bawaan Seksi secara total agar tidak double */
-	:global(.s3-khusus > .wadah > .kepala) {
-		display: none !important;
-	}
-
-	.susunan {
-		display: grid;
-		gap: calc(var(--space-unit) * 4);
-	}
-
-	.kolom-kiri {
-		display: flex;
-		flex-direction: column;
-		gap: calc(var(--space-unit) * 4); /* Jarak antara header dan paragraf */
-	}
-
-	.kepala-lokal {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-unit);
-	}
-
-	.kepala-lokal .eyebrow {
-		margin: 0;
-		color: var(--neutral-600);
-	}
-
-	.kepala-lokal .judul {
-		margin: 0;
-		font-size: var(--text-seksi);
-	}
-
-	.naskah {
-		display: flex;
-		flex-direction: column;
-		gap: calc(var(--space-unit) * 2);
-		max-width: 68ch;
-	}
-
-	.naskah p {
-		margin: 0;
-		font-size: var(--text-besar);
-		color: var(--neutral-700);
-	}
-
-	/* Kaca membingkai foto, bukan menutupinya (§6.7). */
-	.bingkai {
-		padding: var(--space-unit);
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	.seksi-latar {
 		width: 100%;
+		background: #ffffff;
+		padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
+		box-sizing: border-box;
+	}
+
+	/* Kontainer presisi persis seperti referensi (Boxed, bukan edge-to-edge) */
+	.kontainer-seksi {
+		width: 100%;
+		max-width: 1140px;
 		margin: 0 auto;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: calc(var(--space-unit) * 6);
+		align-items: center; /* Perataan vertikal tengah persis referensi */
+		box-sizing: border-box;
 	}
 
-	.foto {
-		position: relative;
+	.kolom-foto {
 		width: 100%;
-		aspect-ratio: 4 / 3;
-		border-radius: var(--radius-sm);
-		overflow: hidden;
+		display: flex;
+		justify-content: center;
 	}
 
+	.kolom-teks {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 3);
+	}
+
+	.kepala {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 2); /* Jarak judul ke pengantar */
+	}
+
+	.judul {
+		margin: 0;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: clamp(1.6rem, 2.5vw, 2rem); /* Ukuran sedang, tidak raksasa */
+		font-weight: 600;
+		line-height: 1.35;
+		letter-spacing: -0.01em;
+		color: var(--neutral-900);
+		text-wrap: balance;
+	}
+
+	/* Penekanan memakai hijau tua */
+	.judul strong {
+		color: var(--brand-green-dark);
+		font-weight: 800;
+	}
+
+	.pengantar {
+		margin: 0;
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 0.9375rem; /* 15px */
+		line-height: 1.6;
+		color: #4b5563;
+	}
+
+	.daftar {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.butir {
+		display: flex;
+		align-items: flex-start;
+		gap: calc(var(--space-unit) * 2);
+		padding: calc(var(--space-unit) * 1.75) 0;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	/* Ikon centang bundar berwarna emas/amber seperti pada referensi */
+	.tanda {
+		display: flex;
+		flex-shrink: 0;
+		padding-top: 2px;
+		color: var(--accent-earth);
+	}
+
+	.teks {
+		margin: 0;
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 0.875rem; /* 14px */
+		line-height: 1.55;
+		color: #374151;
+	}
+
+	/* Tablet & Desktop */
 	@media (min-width: 900px) {
-		.susunan {
-			grid-template-columns: 1.15fr 1fr;
-			align-items: center; /* Menyejajarkan titik tengah gambar dengan keseluruhan kolom teks di kiri */
-			gap: calc(var(--space-unit) * 6);
+		.seksi-latar {
+			padding: calc(var(--space-unit) * 10) calc(var(--space-unit) * 4);
+		}
+
+		.kontainer-seksi {
+			grid-template-columns: 1fr 1fr; /* Proporsi 50:50 seimbang persis referensi */
+			gap: calc(var(--space-unit) * 8);
+		}
+	}
+
+	/* Desktop Luas (Full Layout 1140px) */
+	@media (min-width: 1200px) {
+		.seksi-latar {
+			padding: calc(var(--space-unit) * 12) calc(var(--space-unit) * 4);
+		}
+		
+		.kontainer-seksi {
+			gap: 80px; /* Jarak persis 80px antara foto dan teks seperti di referensi */
 		}
 	}
 </style>

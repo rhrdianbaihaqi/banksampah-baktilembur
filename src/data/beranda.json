@@ -17,13 +17,38 @@
     "judulLayar": "Angka dampak Bank Sampah Bakti Lembur"
   },
   "s3": {
+    "_catatan": "judul dipecah tiga bagian supaya frasa yang diberi warna ditentukan di data, bukan lewat markup di dalam JSON. Bagian 'tebal' tampil dengan warna hijau tua. || 'paragraf' TIDAK ditampilkan di beranda — naskah lengkap ini disimpan untuk halaman /tentang. || Tiap butir 'keunggulan' punya field 'sumber' berisi asal datanya; semuanya dari data terverifikasi, tidak ada klaim karangan. Bila sebuah butir diubah, perbarui juga sumbernya.",
     "eyebrow": "LATAR BELAKANG",
-    "judul": "Kenapa Bakti Lembur Ada",
+    "judul": {
+      "awal": "Kerja bakti yang tidak lagi cukup,",
+      "tebal": "kini jadi lembaga pengelolaan sampah",
+      "akhir": "milik warga."
+    },
+    "pengantar": "Warga RW 04 bersepakat bersama Patriot Desa dan Pendamping PKH memulai Gerakan Pilah Sampah dari rumah tangga, yang resmi berdiri sebagai Bank Sampah Bakti Lembur pada 24 April 2024 dengan sistem kerja terpadu berikut:",
+    "keunggulan": [
+      {
+        "teks": "Sampah ditimbang langsung di hadapan warga dan hasilnya dicatat rapi di buku tabungan.",
+        "sumber": "alur.json langkah 3-4 · PRD §S4"
+      },
+      {
+        "teks": "Melayani 4 RT setempat, ditambah armada jemput untuk UMKM, sekolah, dan pertokoan.",
+        "sumber": "statistik.json · profil.json areaJemput"
+      },
+      {
+        "teks": "Sampah organik diolah tuntas menjadi kompos berkualitas, eco enzyme, dan pakan maggot BSF.",
+        "sumber": "PRD Lampiran A, Jenis sampah yang dikelola"
+      },
+      {
+        "teks": "Berdiri dengan SK Desa resmi dan bermitra aktif bersama DLH Garut serta Patriot Desa.",
+        "sumber": "profil.json sk · mitra.json mitraLembaga"
+      }
+    ],
     "paragraf": [
       "Di lembur, kerja bakti sudah lama jadi kebiasaan warga. Tetapi sampah rumah tangga yang dibuang sembarangan membuat saluran air tersumbat, dan kebiasaan baik itu tidak cukup lagi untuk mengatasinya.",
       "Warga RW 04 lalu bersepakat bersama Patriot Desa dan Pendamping PKH untuk memulai Gerakan Pilah Sampah dari rumah. Kesepakatan itu berkembang menjadi lembaga pengelolaan sampah terpadu, yang diresmikan pada 24 April 2024."
     ],
-    "labelFoto": "Kegiatan warga di lokasi bank sampah"
+    "labelFoto": "Kegiatan warga di lokasi bank sampah",
+    "labelStrip": "Pilih foto kegiatan"
   },
   "s4": {
     "eyebrow": "Enam Langkah",

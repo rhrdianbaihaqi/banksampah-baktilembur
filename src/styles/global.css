@@ -126,6 +126,7 @@
 	--radius-md: var(--radius-md);
 	--radius-lg: var(--radius-lg);
 
+	--font-hero: var(--font-hero), system-ui, sans-serif;
 	--font-display: var(--font-display), Georgia, serif;
 	--font-isi: var(--font-isi), system-ui, sans-serif;
 	--font-mono: var(--font-mono), ui-monospace, monospace;

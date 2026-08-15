@@ -1,0 +1,229 @@
+---
+/**
+ * Pemilih foto — satu foto besar dengan strip thumbnail di bawahnya,
+ * dilengkapi fitur auto-slide otomatis tanpa border radius.
+ */
+import { Image } from 'astro:assets';
+
+interface Props {
+	/** Deskripsi isi foto untuk pembaca layar. Wajib — foto ini bermakna. */
+	alt: string;
+	labelStrip: string;
+}
+
+const { alt, labelStrip } = Astro.props;
+
+const berkas = import.meta.glob<{ default: ImageMetadata }>(
+	'/src/assets/images/latarbelakang/*.{jpeg,jpg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}',
+	{ eager: true },
+);
+const foto = Object.values(berkas).map((m) => m.default);
+---
+
+<div class="pemilih" data-pemilih>
+	<div class="panggung">
+		{
+			foto.map((f, i) => (
+				<Image
+					src={f}
+					alt={i === 0 ? alt : ''}
+					widths={[640, 960, 1280]}
+					sizes="(min-width: 900px) 50vw, 100vw"
+					loading={i === 0 ? 'eager' : 'lazy'}
+					decoding={i === 0 ? 'sync' : 'async'}
+					class={`utama ${i === 0 ? 'aktif' : ''}`}
+					data-utama={i}
+				/>
+			))
+		}
+	</div>
+
+	{
+		foto.length > 1 && (
+			<ul class="strip" aria-label={labelStrip} role="list">
+				{foto.map((f, i) => (
+					<li>
+						<button
+							type="button"
+							class="thumb"
+							data-pilih={i}
+							aria-current={i === 0 ? 'true' : 'false'}
+						>
+							<Image
+								src={f}
+								alt=""
+								widths={[160]}
+								sizes="160px"
+								loading="lazy"
+								decoding="async"
+								class="thumb-gambar"
+							/>
+							<span class="sr-only">{`${labelStrip} ${i + 1}`}</span>
+						</button>
+					</li>
+				))}
+			</ul>
+		)
+	}
+</div>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-pemilih]').forEach((pemilih) => {
+		const utama = pemilih.querySelectorAll<HTMLElement>('[data-utama]');
+		const tombol = pemilih.querySelectorAll<HTMLButtonElement>('[data-pilih]');
+		if (tombol.length === 0 || utama.length === 0) return;
+
+		let currentIndex = 0;
+		let intervalId: any = null;
+		const total = utama.length;
+		const DURATION = 4000;
+
+		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		const setSlide = (index: number) => {
+			currentIndex = (index + total) % total;
+			utama.forEach((u) => {
+				const isCurrent = Number(u.dataset.utama) === currentIndex;
+				u.classList.toggle('aktif', isCurrent);
+			});
+			tombol.forEach((b) => {
+				const isCurrent = Number(b.dataset.pilih) === currentIndex;
+				b.setAttribute('aria-current', isCurrent ? 'true' : 'false');
+			});
+		};
+
+		const startAutoSlide = () => {
+			if (prefersReducedMotion || total <= 1) return;
+			stopAutoSlide();
+			intervalId = setInterval(() => {
+				setSlide(currentIndex + 1);
+			}, DURATION);
+		};
+
+		const stopAutoSlide = () => {
+			if (intervalId) {
+				clearInterval(intervalId);
+				intervalId = null;
+			}
+		};
+
+		tombol.forEach((t) => {
+			t.addEventListener('click', () => {
+				const pilih = Number(t.dataset.pilih);
+				setSlide(pilih);
+				startAutoSlide();
+			});
+		});
+
+		pemilih.addEventListener('mouseenter', stopAutoSlide);
+		pemilih.addEventListener('mouseleave', startAutoSlide);
+
+		startAutoSlide();
+	});
+</script>
+
+<style>
+	.pemilih {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 1);
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.panggung {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		border-radius: 0;
+		overflow: hidden;
+		/* Warna dasar supaya tidak ada kedipan putih sebelum foto termuat. */
+		background: var(--brand-green-dark);
+	}
+
+	.utama {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.6s ease, visibility 0.6s ease;
+		z-index: 1;
+		border-radius: 0;
+	}
+
+	.utama.aktif {
+		opacity: 1;
+		visibility: visible;
+		z-index: 2;
+	}
+
+	/* Strip rapat dengan jarak tipis 4px antar thumbnail, tanpa rounded */
+	.strip {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
+		gap: 4px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		border-radius: 0;
+		overflow: hidden;
+	}
+
+	.thumb {
+		display: block;
+		width: 100%;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: none;
+		cursor: pointer;
+		min-height: 0;
+		min-width: 0;
+	}
+
+	.thumb-gambar {
+		display: block;
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		object-fit: cover;
+		border-radius: 0;
+		/* Yang tidak aktif diredupkan; yang aktif tampil penuh. */
+		opacity: 0.55;
+		transition: opacity 0.2s ease;
+	}
+
+	.thumb[aria-current='true'] .thumb-gambar,
+	.thumb:hover .thumb-gambar {
+		opacity: 1;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	/* Fokus keyboard harus terlihat di atas foto berwarna apa pun (§11.6). */
+	.thumb:focus-visible {
+		outline: 3px solid var(--brand-blue);
+		outline-offset: -3px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.utama {
+			transition: none;
+		}
+		.thumb-gambar {
+			transition: none;
+		}
+	}
+</style>
