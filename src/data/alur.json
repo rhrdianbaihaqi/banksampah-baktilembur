@@ -3,33 +3,28 @@
   "langkah": [
     {
       "nomor": 1,
-      "judul": "Pilah dari rumah",
-      "keterangan": "Pisahkan sampah anorganik dan organik di rumah."
+      "judul": "Pilah & Kumpulkan",
+      "keterangan": "Pisahkan sampah anorganik dan organik mulai dari rumah Anda atau titik mitra."
     },
     {
       "nomor": 2,
-      "judul": "Setor atau minta dijemput",
-      "keterangan": "Setorkan ke Bank Sampah Bakti Lembur, atau minta dijemput petugas."
+      "judul": "Setor ke Bank Sampah",
+      "keterangan": "Bawa sampah ke Bank Sampah Bakti Lembur untuk ditimbang secara transparan oleh petugas."
     },
     {
       "nomor": 3,
-      "judul": "Ditimbang petugas",
-      "keterangan": "Sampah ditimbang di hadapan Anda."
+      "judul": "Dicatat di Tabungan",
+      "keterangan": "Hasil penimbangan langsung dicatat ke dalam buku tabungan nasabah."
     },
     {
       "nomor": 4,
-      "judul": "Dicatat di buku tabungan",
-      "keterangan": "Hasil penimbangan dicatat di buku tabungan nasabah."
+      "judul": "Diproses & Didaur Ulang",
+      "keterangan": "Sampah dipilah lebih lanjut di gudang dan disalurkan ke pabrik daur ulang."
     },
     {
       "nomor": 5,
-      "judul": "Dipilah dan dijual",
-      "keterangan": "Sampah dipilah, dikemas, lalu dijual ke offtaker."
-    },
-    {
-      "nomor": 6,
-      "judul": "Tabungan diambil",
-      "keterangan": "Tabungan diambil tiap 6 bulan, atau ditukar sembako di koperasi."
+      "judul": "Manfaat Tabungan",
+      "keterangan": "Tabungan dapat diambil saat dibutuhkan, ditukar sembako, atau dimanfaatkan untuk kegiatan kriya."
     }
   ]
 }

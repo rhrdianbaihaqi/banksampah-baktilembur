@@ -7,30 +7,65 @@
  * tidak menonjol (§6.5 aturan 8).
  */
 import Seksi from '../ui/Seksi.astro';
-import PhotoBackdrop from '../ui/PhotoBackdrop.astro';
+import ImageSlider from '../ui/ImageSlider.astro';
 import { beranda } from '../../data';
 
 const { s3 } = beranda;
 ---
 
-<Seksi eyebrow={s3.eyebrow} judul={s3.judul} latar="netral" id="latar-belakang">
+<Seksi eyebrow={s3.eyebrow} judul={s3.judul} latar="netral" id="latar-belakang" class="s3-khusus">
 	<div class="susunan">
-		<div class="naskah">
-			{s3.paragraf.map((p) => <p>{p}</p>)}
+		<div class="kolom-kiri">
+			<!-- Header lokal untuk diletakkan di dalam kolom kiri -->
+			<header class="kepala-lokal">
+				<p class="eyebrow">{s3.eyebrow}</p>
+				<h2 class="judul">{s3.judul}</h2>
+			</header>
+			
+			<div class="naskah">
+				{s3.paragraf.map((p) => <p>{p}</p>)}
+			</div>
 		</div>
 
 		<div class="bingkai glass">
 			<div class="foto">
-				<PhotoBackdrop scrim="lembut" labelPlaceholder={s3.labelFoto} />
+				<ImageSlider />
 			</div>
 		</div>
 	</div>
 </Seksi>
 
 <style>
+	/* Sembunyikan header bawaan Seksi secara total agar tidak double */
+	:global(.s3-khusus > .wadah > .kepala) {
+		display: none !important;
+	}
+
 	.susunan {
 		display: grid;
 		gap: calc(var(--space-unit) * 4);
+	}
+
+	.kolom-kiri {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 4); /* Jarak antara header dan paragraf */
+	}
+
+	.kepala-lokal {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-unit);
+	}
+
+	.kepala-lokal .eyebrow {
+		margin: 0;
+		color: var(--neutral-600);
+	}
+
+	.kepala-lokal .judul {
+		margin: 0;
+		font-size: var(--text-seksi);
 	}
 
 	.naskah {
@@ -49,10 +84,16 @@ const { s3 } = beranda;
 	/* Kaca membingkai foto, bukan menutupinya (§6.7). */
 	.bingkai {
 		padding: var(--space-unit);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		margin: 0 auto;
 	}
 
 	.foto {
 		position: relative;
+		width: 100%;
 		aspect-ratio: 4 / 3;
 		border-radius: var(--radius-sm);
 		overflow: hidden;
@@ -61,7 +102,7 @@ const { s3 } = beranda;
 	@media (min-width: 900px) {
 		.susunan {
 			grid-template-columns: 1.15fr 1fr;
-			align-items: start;
+			align-items: center; /* Menyejajarkan titik tengah gambar dengan keseluruhan kolom teks di kiri */
 			gap: calc(var(--space-unit) * 6);
 		}
 	}

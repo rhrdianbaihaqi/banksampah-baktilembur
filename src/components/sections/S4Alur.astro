@@ -1,18 +1,42 @@
 ---
 /**
- * S4 — Cara Menjadi Nasabah. Latar: foto penuh + scrim lembut (PRD §S4).
+ * S4 — Alur Penyetoran Sampah Terpadu.
  *
- * Seksi paling penting untuk konversi. PRD menyatakan tegas: tidak boleh
- * dipangkas dalam kondisi apa pun.
- *
- * Penomoran dipertahankan karena isinya memang urutan proses, bukan hiasan.
+ * Desain Hybrid: Absolute Positioning HTML Cards 
+ * + SVG Background menyesuaikan layout gambar referensi (U-Shape).
  */
 import Seksi from '../ui/Seksi.astro';
-import GlassPanel from '../glass/GlassPanel.astro';
-import CtaWhatsapp from '../ui/CtaWhatsapp.astro';
+
 import { alur, beranda } from '../../data';
 
 const { s4 } = beranda;
+
+const icons: string[] = [
+	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>`,
+	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 5.828 9.318a1.828 1.828 0 0 1-.001-1.789 1.785 1.785 0 0 1 1.545-.898h8.47l-1.929 3.34"/><path d="m9 9 3-3-3-3"/></svg>`,
+	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>`,
+	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/></svg>`,
+	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>`
+];
+
+/* 
+ * Layout Absolute Position (Desktop)
+ * S-Curve 5 Langkah: Kiri Atas -> Tengah Atas -> Kanan Atas -> Kanan Bawah -> Tengah Bawah
+ * ViewBox SVG: 1000 x 750 
+ * Baris 1: top: 16% (Y=120)
+ * Baris 2: top: 70% (Y=525)
+ * Kolom: 15% (X=150), 50% (X=500), 85% (X=850)
+ */
+const positions = [
+	{ left: '15%', top: '16%' }, // 01 (Kiri Atas)
+	{ left: '50%', top: '16%' }, // 02 (Tengah Atas)
+	{ left: '85%', top: '16%' }, // 03 (Kanan Atas)
+	{ left: '85%', top: '70%' }, // 04 (Kanan Bawah)
+	{ left: '50%', top: '70%' }, // 05 (Tengah Bawah)
+];
+
+// Path SVG road berbentuk S-curve untuk 5 kartu
+const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 ---
 
 <Seksi
@@ -21,28 +45,72 @@ const { s4 } = beranda;
 	judul={s4.judul}
 	latar="foto"
 	scrim="lembut"
-	labelPlaceholder="Proses penimbangan bersama warga"
+	labelPlaceholder="Peta alur penyetoran sampah"
 >
 	<p slot="pengantar" class="pengantar">{s4.pengantar}</p>
 
-	<ol class="langkah">
-		{
-			alur.langkah.map((l) => (
-				<GlassPanel
-					as="li"
-					diAtasFoto
-					eyebrow={`${s4.labelLangkah} ${String(l.nomor).padStart(2, '0')}`}
-				>
-					<h3 class="judul-langkah">{l.judul}</h3>
-					<p class="ket">{l.keterangan}</p>
-				</GlassPanel>
-			))
-		}
-	</ol>
+	<!-- DESKTOP HYBRID LAYOUT -->
+	<div class="roadmap-desktop" id="roadmap-hybrid" aria-label="Infografis langkah penyetoran sampah">
+		
+		<!-- 1. Layer Background: SVG Road -->
+		<div class="road-svg-container" aria-hidden="true">
+			<svg viewBox="0 0 1000 750" preserveAspectRatio="xMidYMid meet" class="road-svg">
+				<!-- Bayangan jalan -->
+				<path d={roadPath} fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
+				<!-- Badan jalan utama -->
+				<path d={roadPath} fill="none" stroke="var(--neutral-700)" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
+				<!-- Marka putus-putus -->
+				<path d={roadPath} fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="3" stroke-dasharray="20 14" stroke-linecap="round" stroke-linejoin="round" class="road-dashes" />
+				
+				<!-- Arah panah rute (Visual cues) -->
+				<g fill="rgba(255,255,255,0.5)">
+					<!-- Panah Kanan (1->2) -->
+					<polygon points="315,115 332,125 315,135" />
+					<!-- Panah Kanan (2->3) -->
+					<polygon points="655,115 672,125 655,135" />
+					<!-- Panah Turun (3->4) -->
+					<polygon points="840,315 850,332 860,315" />
+					<!-- Panah Kiri (4->5) -->
+					<polygon points="685,515 668,525 685,535" />
+				</g>
+			</svg>
+		</div>
 
-	<div class="tutup">
-		<CtaWhatsapp kunci="nasabah" />
+		<!-- 2. Layer Atas: HTML Cards -->
+		{alur.langkah.map((l, i) => (
+			<div class="station-wrapper" style={`left: ${positions[i].left}; top: ${positions[i].top}; --st-delay: ${i * 0.15}s;`} data-step={i}>
+				<div class="station-card glass hover-lift">
+					<!-- Lingkaran Ikon (Tepat sejajar dengan jalan) -->
+					<div class="station-marker">
+						<div class="station-icon" set:html={icons[i]}></div>
+						<span class="station-badge">{l.nomor}</span>
+					</div>
+					<!-- Konten Teks -->
+					<h3 class="station-title">{l.judul}</h3>
+					<p class="station-desc">{l.keterangan}</p>
+				</div>
+			</div>
+		))}
 	</div>
+
+	<!-- MOBILE FALLBACK: Vertical Timeline -->
+	<div class="roadmap-mobile" id="roadmap-mobile-view">
+		<div class="mobile-timeline-line" aria-hidden="true"></div>
+		{alur.langkah.map((l, i) => (
+			<div class="mobile-card-row" style={`--mob-delay: ${i * 0.12}s;`} data-step={i}>
+				<div class="mob-marker">
+					<div class="mob-icon" set:html={icons[i]}></div>
+					<span class="mob-badge">{l.nomor}</span>
+				</div>
+				<div class="mob-content glass">
+					<h3 class="mob-title">{l.judul}</h3>
+					<p class="mob-desc">{l.keterangan}</p>
+				</div>
+			</div>
+		))}
+	</div>
+
+
 </Seksi>
 
 <style>
@@ -51,41 +119,313 @@ const { s4 } = beranda;
 		max-width: 60ch;
 		font-size: var(--text-besar);
 		color: var(--neutral-100);
+		margin-bottom: calc(var(--space-unit) * 6);
 	}
 
-	.langkah {
-		display: grid;
-		gap: calc(var(--space-unit) * 2);
-		margin: 0;
-		padding: 0;
-		list-style: none;
+	@media (min-width: 900px) {
+		.pengantar {
+			text-align: center;
+			margin: 0 auto calc(var(--space-unit) * 4);
+		}
 	}
 
-	.judul-langkah {
-		margin: 0;
-		font-size: var(--text-subjudul);
+	/* ════════════════════════════════════════════════════════
+	   DESKTOP HYBRID LAYOUT
+	   ════════════════════════════════════════════════════════ */
+	.roadmap-desktop {
+		display: none;
+		position: relative;
+		width: 100%;
+		max-width: 1000px;
+		margin: 0 auto;
+		aspect-ratio: 1000 / 750;
 	}
 
-	.ket {
-		margin: 0;
-		color: var(--neutral-100);
+	@media (min-width: 900px) {
+		.roadmap-desktop { display: block; }
+		.roadmap-mobile { display: none !important; }
 	}
 
-	.tutup {
+	.road-svg-container {
+		position: absolute;
+		top: 0; left: 0;
+		width: 100%; height: 100%;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.road-svg {
+		width: 100%;
+		height: 100%;
+		overflow: visible;
+	}
+
+	.road-dashes {
+		animation: dashScroll 1.5s linear infinite;
+	}
+
+	@keyframes dashScroll {
+		to { stroke-dashoffset: -68; }
+	}
+
+	/* Wrapper untuk Positioning Absolute */
+	.station-wrapper {
+		position: absolute;
+		width: 28%; /* Max lebar kartu proporsional dengan container */
+		transform: translateX(-50%); /* Menengahkan sumbu X saja */
+		z-index: 2;
+		
+		/* Animasi reveal awal */
+		opacity: 0;
+		margin-top: 30px;
+		transition: margin-top 0.5s ease, opacity 0.6s ease;
+	}
+	
+	.roadmap-desktop.is-visible .station-wrapper {
+		opacity: 1;
+		margin-top: 0;
+		transition-delay: var(--st-delay);
+	}
+
+	/* Kartu HTML */
+	.station-card {
+		position: relative;
 		display: flex;
-		justify-content: flex-start;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding: calc(var(--space-unit) * 4.5) calc(var(--space-unit) * 2.5) calc(var(--space-unit) * 3);
+		border-radius: var(--radius-lg);
+		background: var(--glass-dark);
+		border: 1px solid var(--glass-border-dark);
+		box-shadow: var(--glass-shadow);
+		transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 	}
 
-	@media (min-width: 700px) {
-		.langkah {
-			grid-template-columns: repeat(2, 1fr);
+	.station-card:hover {
+		background: var(--glass-green);
+		border-color: var(--glass-border);
+		box-shadow: 0 16px 40px rgba(10, 15, 10, 0.4);
+		transform: translateY(-8px) scale(1.02);
+	}
+
+	/* Marker Lingkaran: Tengah di atas kartu. 
+	   Karena top: -32px dan tinggi 64px, pusat ikon tepat di koordinat `top` pembungkus. */
+	.station-marker {
+		position: absolute;
+		top: -32px;
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		background: var(--brand-green);
+		border: 4px solid var(--white);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+		transition: transform 0.3s ease, background 0.3s ease;
+		color: var(--white);
+	}
+
+	.station-card:hover .station-marker {
+		transform: scale(1.1) rotate(-5deg);
+		background: var(--brand-green-light);
+		color: var(--brand-green-dark);
+		border-color: var(--accent-earth);
+	}
+
+	.station-icon {
+		width: 28px;
+		height: 28px;
+	}
+	.station-icon :global(svg) {
+		width: 100%;
+		height: 100%;
+	}
+
+	.station-badge {
+		position: absolute;
+		top: -4px;
+		right: -8px;
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		background: var(--accent-earth);
+		color: var(--white);
+		font-family: var(--font-mono), monospace;
+		font-weight: 800;
+		font-size: 0.8rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: 2px solid var(--white);
+		box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+	}
+
+	/* Teks disesuaikan agar tidak 'kegedean' */
+	.station-title {
+		margin: 0 0 calc(var(--space-unit) * 1) 0;
+		font-size: var(--text-besar); /* Lebih ringkas dari text-judul */
+		font-family: var(--font-display), Georgia, serif;
+		color: var(--white);
+		line-height: 1.25;
+	}
+
+	.station-desc {
+		margin: 0;
+		font-size: var(--text-isi);
+		color: var(--neutral-100);
+		opacity: 0.85;
+		line-height: 1.5;
+	}
+
+	/* ════════════════════════════════════════════════════════
+	   MOBILE FALLBACK
+	   ════════════════════════════════════════════════════════ */
+	.roadmap-mobile {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 4);
+		padding: calc(var(--space-unit) * 2) 0;
+	}
+
+	.mobile-timeline-line {
+		position: absolute;
+		top: 0; bottom: 0; left: 32px;
+		width: 4px;
+		background: var(--glass-border-dark);
+		border-radius: 4px;
+		z-index: 0;
+		transform-origin: top;
+		transform: scaleY(0);
+		transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.roadmap-mobile.is-visible .mobile-timeline-line { transform: scaleY(1); }
+
+	.mobile-card-row {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		align-items: flex-start;
+		gap: calc(var(--space-unit) * 2.5);
+		opacity: 0;
+		transform: translateX(-20px);
+		transition: opacity 0.5s ease, transform 0.5s ease;
+	}
+
+	.roadmap-mobile.is-visible .mobile-card-row {
+		opacity: 1;
+		transform: translateX(0);
+		transition-delay: var(--mob-delay);
+	}
+
+	.mob-marker {
+		flex-shrink: 0;
+		position: relative;
+		width: 64px; height: 64px;
+		border-radius: 50%;
+		background: var(--brand-green);
+		border: 3px solid var(--white);
+		box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+		display: flex; align-items: center; justify-content: center;
+		color: var(--white);
+		transition: transform 0.3s ease;
+	}
+	.mobile-card-row:hover .mob-marker {
+		transform: scale(1.1);
+		background: var(--white); color: var(--brand-green);
+	}
+	.mob-icon { width: 32px; height: 32px; }
+	.mob-icon :global(svg) { width: 100%; height: 100%; }
+
+	.mob-badge {
+		position: absolute;
+		top: -6px; right: -6px;
+		width: 24px; height: 24px;
+		border-radius: 50%;
+		background: var(--accent-earth);
+		color: var(--white);
+		font-family: var(--font-mono), monospace;
+		font-weight: 700; font-size: 0.75rem;
+		display: flex; align-items: center; justify-content: center;
+		border: 2px solid var(--white);
+	}
+
+	.mob-content {
+		flex: 1;
+		padding: calc(var(--space-unit) * 2.5);
+		border-radius: var(--radius-md);
+		background: var(--glass-dark);
+		border: 1px solid var(--glass-border-dark);
+		box-shadow: var(--glass-shadow);
+	}
+	.mob-title {
+		margin: 0 0 calc(var(--space-unit) * 1) 0;
+		font-size: var(--text-besar);
+		font-family: var(--font-display), Georgia, serif;
+		color: var(--white);
+	}
+	.mob-desc {
+		margin: 0;
+		font-size: var(--text-isi);
+		color: var(--neutral-100);
+		opacity: 0.9;
+		line-height: 1.5;
+	}
+
+	/* ── CTA Tutup ── */
+	.tutup {
+		display: flex; justify-content: flex-start;
+		margin-top: calc(var(--space-unit) * 6);
+	}
+	@media (min-width: 900px) {
+		.tutup {
+			justify-content: center;
+			margin-top: calc(var(--space-unit) * 10);
 		}
 	}
 
-	@media (min-width: 1000px) {
-		.langkah {
-			grid-template-columns: repeat(3, 1fr);
-			gap: calc(var(--space-unit) * 3);
+	/* ── Preferensi Gerak Berkurang ── */
+	@media (prefers-reduced-motion: reduce) {
+		.road-dashes { animation: none; }
+		.station-wrapper, .station-card, .mobile-card-row, .mobile-timeline-line, .station-marker {
+			transition: none !important;
+			opacity: 1 !important; transform: none !important; margin-top: 0 !important;
 		}
+		.mobile-timeline-line { transform: scaleY(1) !important; }
 	}
 </style>
+
+<script>
+	const observerOptions = {
+		root: null,
+		rootMargin: '0px 0px -100px 0px',
+		threshold: 0.15
+	};
+
+	const setupReveal = () => {
+		const desktop = document.getElementById('roadmap-hybrid');
+		const mobile = document.getElementById('roadmap-mobile-view');
+
+		const obs = new IntersectionObserver((entries, observer) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('is-visible');
+					observer.unobserve(entry.target);
+				}
+			});
+		}, observerOptions);
+
+		if (desktop) obs.observe(desktop);
+		if (mobile) obs.observe(mobile);
+	};
+
+	document.addEventListener('astro:page-load', setupReveal);
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', setupReveal);
+	} else {
+		setupReveal();
+	}
+</script>
