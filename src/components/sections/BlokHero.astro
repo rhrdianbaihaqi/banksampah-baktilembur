@@ -53,12 +53,18 @@ const youtubeJudul = profil.video.judul;
 		<div class="hero-scrim"></div>
 	</div>
 
-	<!-- ════ SLIDE 1: TEKS HEADLINE & 2 TOMBOL CTA ════ -->
+	<!-- ════ SLIDE 1: FOTO UTAMA & TEKS ════ -->
 	<div class="hero-slide slide-1 is-active" id="hero-slide-1">
 		<div class="hero-konten">
-			<h1 class="hero-judul">{s1.judul}</h1>
+			<h1 class="hero-judul">
+				{s1.judul.awal}
+				<span class="stabilo-hijau">{s1.judul.sorot}</span>
+			</h1>
 
-			<p class="hero-subjudul">{s1.subjudul}</p>
+			<p class="hero-subjudul">
+				{s1.subjudul.awal}
+				<span class="stabilo-emas">{s1.subjudul.sorot}</span>
+			</p>
 
 			<div class="hero-tombol">
 				<!-- CTA Utama: WhatsApp -->
@@ -328,6 +334,59 @@ const youtubeJudul = profil.video.judul;
 		color: var(--white);
 		text-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
 		text-wrap: balance;
+	}
+
+	/* Efek Stabilo Hijau Muda pada Judul */
+	.stabilo-hijau {
+		position: relative;
+		display: inline-block;
+		white-space: nowrap;
+		z-index: 1;
+	}
+
+	.stabilo-hijau::before {
+		content: '';
+		position: absolute;
+		left: -4px;
+		right: -4px;
+		bottom: 10%;
+		height: 36%;
+		background: rgba(144, 238, 144, 0.7); /* Light green / hijau muda stabilo */
+		z-index: -1;
+		border-radius: 4px;
+		transform: rotate(-1.5deg);
+		/* Hapus shadow pada ::before agar stabilo terlihat seperti arsiran marker murni */
+	}
+
+	/* Efek Stabilo Emas pada Subjudul */
+	.stabilo-emas {
+		position: relative;
+		display: inline-block;
+		white-space: nowrap;
+		z-index: 1;
+	}
+
+	.stabilo-emas::before {
+		content: '';
+		position: absolute;
+		left: -2px;
+		right: -6px;
+		bottom: 12%;
+		height: 40%;
+		background: rgba(245, 158, 11, 0.55); /* Amber / Emas stabilo */
+		z-index: -1;
+		border-radius: 4px;
+		transform: rotate(1deg);
+	}
+
+	@media (max-width: 640px) {
+		.stabilo-hijau, .stabilo-emas {
+			white-space: normal;
+		}
+		.stabilo-hijau::before, .stabilo-emas::before {
+			height: 40%;
+			bottom: 5%;
+		}
 	}
 
 	/* ─── Subjudul ───────────────────────────────────────────────────── */

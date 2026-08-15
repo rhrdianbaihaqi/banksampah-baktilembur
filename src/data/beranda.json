@@ -2,8 +2,14 @@
   "_catatan": "Naskah seluruh seksi beranda. PRD §11.2: tidak boleh ada teks konten ditulis langsung di komponen — termasuk judul seksi dan label tombol. Semua kalimat yang dibaca pengunjung ada di sini.",
   "s1": {
     "eyebrow": "DESA SARIMUKTI PASIRWANGI GARUT",
-    "judul": "Ubah sampah rumah tangga menjadi tabungan dan nilai ekonomi.",
-    "subjudul": "Bersama kita wujudkan lingkungan yang lebih bersih sekaligus meningkatkan kesejahteraan warga sejak April 2024.",
+    "judul": {
+      "awal": "Ubah sampah rumah tangga menjadi ",
+      "sorot": "tabungan dan nilai ekonomi."
+    },
+    "subjudul": {
+      "awal": "Bersama kita wujudkan lingkungan yang lebih bersih sekaligus meningkatkan kesejahteraan warga ",
+      "sorot": "sejak April 2024."
+    },
     "ctaSekunder": {
       "label": "Lihat Cara Kerjanya",
       "anchor": "#cara-jadi-nasabah"
