@@ -1,0 +1,40 @@
+{
+  "_catatan": "Nomor diambil dari profil.json → kontak.whatsapp. Pesan pre-fill dari PRD Lampiran B. Jangan menulis nomor atau pesan langsung di komponen.",
+  "cta": {
+    "nasabah": {
+      "label": "Daftar Jadi Nasabah",
+      "pesan": "Halo Bank Sampah Bakti Lembur, saya ingin mendaftar menjadi nasabah. Boleh info cara daftarnya?",
+      "eventGa4": "klik_wa_nasabah"
+    },
+    "jemput": {
+      "label": "Minta Dijemput",
+      "pesan": "Halo, saya ingin menggunakan layanan penjemputan sampah. Lokasi saya di [alamat].",
+      "eventGa4": "klik_wa_nasabah"
+    },
+    "sekolah": {
+      "label": "Undang ke Sekolah Kami",
+      "pesan": "Halo, saya dari [nama sekolah]. Kami ingin mengundang program Bakti Lembur Goes to School.",
+      "eventGa4": "klik_wa_sekolah"
+    },
+    "mitra": {
+      "label": "Jalin Kerja Sama",
+      "pesan": "Halo, saya dari [nama instansi/perusahaan]. Kami tertarik menjalin kerja sama dengan Bank Sampah Bakti Lembur.",
+      "eventGa4": "klik_wa_mitra"
+    },
+    "kkn": {
+      "label": "Ajukan Lokasi KKN",
+      "pesan": "Halo, saya dari kelompok KKN [nama kampus]. Kami tertarik menjadikan Bank Sampah Bakti Lembur sebagai lokasi/mitra program.",
+      "eventGa4": "klik_wa_kkn"
+    },
+    "replikasi": {
+      "label": "Belajar Mendirikan Bank Sampah",
+      "pesan": "Halo, saya dari [nama desa]. Kami ingin belajar mendirikan bank sampah seperti Bakti Lembur.",
+      "eventGa4": "klik_wa_replikasi"
+    },
+    "jenisSampah": {
+      "label": "Tanya Jenis Sampah yang Diterima",
+      "pesan": "Halo, saya ingin tahu jenis sampah apa saja yang diterima dan harganya.",
+      "eventGa4": "klik_wa_nasabah"
+    }
+  }
+}

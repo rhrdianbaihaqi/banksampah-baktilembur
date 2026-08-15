@@ -1,0 +1,68 @@
+---
+/**
+ * S3 — Kenapa Bakti Lembur Ada. Latar: netral (PRD §S3).
+ *
+ * Latar netral di sini bukan kekosongan: ia memberi jeda setelah dua seksi
+ * berfoto berturut-turut. Foto di mana-mana sama saja dengan foto di mana pun
+ * tidak menonjol (§6.5 aturan 8).
+ */
+import Seksi from '../ui/Seksi.astro';
+import PhotoBackdrop from '../ui/PhotoBackdrop.astro';
+import { beranda } from '../../data';
+
+const { s3 } = beranda;
+---
+
+<Seksi eyebrow={s3.eyebrow} judul={s3.judul} latar="netral" id="latar-belakang">
+	<div class="susunan">
+		<div class="naskah">
+			{s3.paragraf.map((p) => <p>{p}</p>)}
+		</div>
+
+		<div class="bingkai glass">
+			<div class="foto">
+				<PhotoBackdrop scrim="lembut" labelPlaceholder={s3.labelFoto} />
+			</div>
+		</div>
+	</div>
+</Seksi>
+
+<style>
+	.susunan {
+		display: grid;
+		gap: calc(var(--space-unit) * 4);
+	}
+
+	.naskah {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 2);
+		max-width: 68ch;
+	}
+
+	.naskah p {
+		margin: 0;
+		font-size: var(--text-besar);
+		color: var(--neutral-700);
+	}
+
+	/* Kaca membingkai foto, bukan menutupinya (§6.7). */
+	.bingkai {
+		padding: var(--space-unit);
+	}
+
+	.foto {
+		position: relative;
+		aspect-ratio: 4 / 3;
+		border-radius: var(--radius-sm);
+		overflow: hidden;
+	}
+
+	@media (min-width: 900px) {
+		.susunan {
+			grid-template-columns: 1.15fr 1fr;
+			align-items: start;
+			gap: calc(var(--space-unit) * 6);
+		}
+	}
+</style>

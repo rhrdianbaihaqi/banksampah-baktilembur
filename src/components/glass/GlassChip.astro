@@ -1,0 +1,26 @@
+---
+/**
+ * Chip kaca kecil — daftar area layanan jemput dan hari penimbangan (§S6).
+ * Berbeda dari GlassBadge: chip memuat teks isi biasa, bukan label mono.
+ */
+interface Props {
+	class?: string;
+}
+
+const { class: kelas = '' } = Astro.props;
+---
+
+<span class:list={['chip', 'glass', kelas]}>
+	<slot />
+</span>
+
+<style>
+	.chip {
+		display: inline-block;
+		padding: var(--space-unit) calc(var(--space-unit) * 1.5);
+		border-radius: var(--radius-sm);
+		font-size: var(--text-isi);
+		line-height: 1.4;
+		color: var(--neutral-700);
+	}
+</style>

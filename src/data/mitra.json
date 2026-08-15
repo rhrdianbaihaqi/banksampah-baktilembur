@@ -1,0 +1,51 @@
+{
+  "_catatan": "PRD §S9 — setiap klaim harus punya bukti foto pendukung. Field 'bukti' diisi nama berkas di galeri setelah foto tersedia; selama null, lencana tetap tayang tanpa tautan bukti.",
+  "pengakuan": [
+    {
+      "jenis": "legalitas",
+      "judul": "SK Desa Sarimukti",
+      "keterangan": "No. 100.3.3/KEP-03/DS-2011/2024",
+      "bukti": null
+    },
+    {
+      "jenis": "bantuan",
+      "judul": "Bantuan sarana DLH Kabupaten Garut",
+      "keterangan": "Bangunan TPS 8×8 m, 2 motor sampah, 10 gerobak, 2.000 ember, 1 mesin pencacah",
+      "bukti": null
+    },
+    {
+      "jenis": "sertifikat",
+      "judul": "Sertifikat kompetensi pengolahan sampah organik",
+      "keterangan": "BPVP, Kementerian Ketenagakerjaan RI",
+      "bukti": null
+    },
+    {
+      "jenis": "kunjungan",
+      "judul": "Kunjungan Finalis Duta Lingkungan Jawa Barat 2024",
+      "keterangan": null,
+      "bukti": null
+    }
+  ],
+  "mitraLembaga": [
+    { "nama": "Patriot Desa", "kategori": "Program desa" },
+    { "nama": "Garut Zero Waste", "kategori": "Komunitas" },
+    { "nama": "DLH Garut", "kategori": "Dinas" },
+    { "nama": "Pendamping PKH", "kategori": "Program sosial" },
+    { "nama": "PAC Fatayat NU Pasirwangi", "kategori": "Organisasi" }
+  ],
+  "sekolahMitra": [
+    { "nama": "MI Panundaan" },
+    { "nama": "SDN 1 Sarimukti" }
+  ],
+  "mitraAkademik": [
+    { "nama": "KKN 10 Sarimukti UIN SGD Bandung" }
+  ],
+  "hasilNyata": [
+    { "ikon": "droplets", "judul": "Lingkungan lebih bersih", "keterangan": "Saluran air kembali lancar." },
+    { "ikon": "trash-2", "judul": "Sampah ke TPA berkurang", "keterangan": "Terpilah sejak dari rumah." },
+    { "ikon": "coins", "judul": "Sampah bernilai ekonomi", "keterangan": "Dijual terpilah ke offtaker." },
+    { "ikon": "sprout", "judul": "Kompos dimanfaatkan warga", "keterangan": "Dipakai untuk pertanian." },
+    { "ikon": "piggy-bank", "judul": "Tabungan tambahan", "keterangan": "Diambil tiap 6 bulan atau ditukar sembako." },
+    { "ikon": "users", "judul": "Budaya sadar lingkungan", "keterangan": "Terbentuk dan menular antarwarga." }
+  ]
+}

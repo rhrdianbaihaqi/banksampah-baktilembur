@@ -1,0 +1,53 @@
+---
+/**
+ * Kartu kaca — varian Panel Kaca Setoran untuk grid (program, hasil nyata,
+ * langkah alur). Anatominya sama; yang berbeda hanya perilakunya di grid.
+ *
+ * Ini membungkus GlassPanel, bukan menyalinnya, supaya anatomi tanda tangan
+ * hanya didefinisikan di satu tempat.
+ */
+import GlassPanel from './GlassPanel.astro';
+
+interface Props {
+	eyebrow?: string;
+	judul: string;
+	diAtasFoto?: boolean;
+	class?: string;
+}
+
+const { eyebrow, judul, diAtasFoto = false, class: kelas = '' } = Astro.props;
+---
+
+<GlassPanel
+	as="article"
+	eyebrow={eyebrow}
+	diAtasFoto={diAtasFoto}
+	class:list={['kartu', kelas]}
+>
+	<h3 class="kartu-judul">{judul}</h3>
+	<slot />
+
+	{
+		Astro.slots.has('kaki') && (
+			<Fragment slot="kaki">
+				<slot name="kaki" />
+			</Fragment>
+		)
+	}
+</GlassPanel>
+
+<style>
+	.kartu-judul {
+		margin: 0;
+		font-size: var(--text-judul);
+	}
+
+	.kartu :global(p) {
+		margin: 0;
+		color: var(--neutral-700);
+	}
+
+	.kartu.di-atas-foto :global(p) {
+		color: var(--neutral-100);
+	}
+</style>

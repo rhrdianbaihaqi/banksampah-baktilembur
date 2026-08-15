@@ -1,0 +1,34 @@
+{
+  "_catatan": "Data navigasi utama. PRD §11.2: tidak ada teks konten di komponen.",
+  "tautan": [
+    { "label": "Beranda",     "href": "/" },
+    { "label": "Tentang",     "href": "#latar-belakang" },
+    { "label": "Alur",        "href": "#cara-jadi-nasabah" },
+    { "label": "Program",     "href": "#program" },
+    { "label": "Jadwal",      "href": "#jadwal" },
+    { "label": "Galeri",      "href": "#galeri" },
+    { "label": "Kontak",      "href": "#hubungi" }
+  ],
+  "logo": [
+    {
+      "file": "logobanksampah.png",
+      "alt": "Logo Bank Sampah Bakti Lembur",
+      "lebar": 40,
+      "tinggi": 40
+    },
+    {
+      "file": "logokkn.png",
+      "alt": "Logo KKN 10 Sarimukti",
+      "lebar": 36,
+      "tinggi": 36
+    },
+    {
+      "file": "logouin.webp",
+      "alt": "Logo UIN Sunan Gunung Djati Bandung",
+      "lebar": 36,
+      "tinggi": 36
+    }
+  ],
+  "labelBuka": "Buka menu navigasi",
+  "labelTutup": "Tutup menu navigasi"
+}

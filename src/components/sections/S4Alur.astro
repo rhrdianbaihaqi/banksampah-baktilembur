@@ -1,0 +1,91 @@
+---
+/**
+ * S4 — Cara Menjadi Nasabah. Latar: foto penuh + scrim lembut (PRD §S4).
+ *
+ * Seksi paling penting untuk konversi. PRD menyatakan tegas: tidak boleh
+ * dipangkas dalam kondisi apa pun.
+ *
+ * Penomoran dipertahankan karena isinya memang urutan proses, bukan hiasan.
+ */
+import Seksi from '../ui/Seksi.astro';
+import GlassPanel from '../glass/GlassPanel.astro';
+import CtaWhatsapp from '../ui/CtaWhatsapp.astro';
+import { alur, beranda } from '../../data';
+
+const { s4 } = beranda;
+---
+
+<Seksi
+	id="cara-jadi-nasabah"
+	eyebrow={s4.eyebrow}
+	judul={s4.judul}
+	latar="foto"
+	scrim="lembut"
+	labelPlaceholder="Proses penimbangan bersama warga"
+>
+	<p slot="pengantar" class="pengantar">{s4.pengantar}</p>
+
+	<ol class="langkah">
+		{
+			alur.langkah.map((l) => (
+				<GlassPanel
+					as="li"
+					diAtasFoto
+					eyebrow={`${s4.labelLangkah} ${String(l.nomor).padStart(2, '0')}`}
+				>
+					<h3 class="judul-langkah">{l.judul}</h3>
+					<p class="ket">{l.keterangan}</p>
+				</GlassPanel>
+			))
+		}
+	</ol>
+
+	<div class="tutup">
+		<CtaWhatsapp kunci="nasabah" />
+	</div>
+</Seksi>
+
+<style>
+	.pengantar {
+		margin: 0;
+		max-width: 60ch;
+		font-size: var(--text-besar);
+		color: var(--neutral-100);
+	}
+
+	.langkah {
+		display: grid;
+		gap: calc(var(--space-unit) * 2);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.judul-langkah {
+		margin: 0;
+		font-size: var(--text-subjudul);
+	}
+
+	.ket {
+		margin: 0;
+		color: var(--neutral-100);
+	}
+
+	.tutup {
+		display: flex;
+		justify-content: flex-start;
+	}
+
+	@media (min-width: 700px) {
+		.langkah {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1000px) {
+		.langkah {
+			grid-template-columns: repeat(3, 1fr);
+			gap: calc(var(--space-unit) * 3);
+		}
+	}
+</style>

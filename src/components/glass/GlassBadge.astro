@@ -1,0 +1,54 @@
+---
+/**
+ * Lencana kaca — untuk nomor SK, status produk, dan pengakuan (§S1, §S8, §S9).
+ * Selalu huruf mono: ini keturunan label slip timbangan, bukan pil dekoratif.
+ */
+interface Props {
+	diAtasFoto?: boolean;
+	nada?: 'netral' | 'proses';
+	class?: string;
+}
+
+const { diAtasFoto = false, nada = 'netral', class: kelas = '' } = Astro.props;
+---
+
+<span
+	class:list={[
+		'lencana',
+		'eyebrow',
+		'glass',
+		diAtasFoto && 'di-atas-foto',
+		nada === 'proses' && 'proses',
+		kelas,
+	]}
+>
+	<slot />
+</span>
+
+<style>
+	.lencana {
+		display: inline-block;
+		padding: calc(var(--space-unit) * 0.75) calc(var(--space-unit) * 1.5);
+		border-radius: var(--radius-sm);
+		color: var(--neutral-700);
+		line-height: 1.4;
+	}
+
+	.di-atas-foto {
+		background: var(--glass-dark);
+		border-color: var(--glass-border-dark);
+		color: var(--white);
+	}
+
+	/* Produk yang belum berjalan wajib berlabel status jujur (§S8). */
+	.proses {
+		color: var(--accent-earth);
+		border-color: var(--accent-earth);
+	}
+
+	@media (prefers-reduced-transparency: reduce) {
+		.di-atas-foto {
+			background: var(--neutral-900);
+		}
+	}
+</style>

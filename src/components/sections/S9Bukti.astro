@@ -1,0 +1,104 @@
+---
+/**
+ * S9 — Bukti & Pengakuan. Latar: --brand-green-light (PRD §S9).
+ *
+ * Seksi ini yang melayani Persona 2 (CSR/dinas) dan Persona 6 (penilai
+ * penghargaan): mereka datang untuk memverifikasi klaim, bukan membaca cerita.
+ */
+import Seksi from '../ui/Seksi.astro';
+import GlassPanel from '../glass/GlassPanel.astro';
+import GlassChip from '../glass/GlassChip.astro';
+import { beranda, mitra } from '../../data';
+
+const { s9 } = beranda;
+
+const daftarMitra = [
+	{ label: s9.labelMitra, isi: mitra.mitraLembaga.map((m) => m.nama) },
+	{ label: s9.labelSekolah, isi: mitra.sekolahMitra.map((m) => m.nama) },
+	{ label: s9.labelAkademik, isi: mitra.mitraAkademik.map((m) => m.nama) },
+];
+---
+
+<Seksi id="bukti" eyebrow={s9.eyebrow} judul={s9.judul} latar="hijau">
+	<ul class="grid">
+		{
+			mitra.pengakuan.map((p) => (
+				<GlassPanel as="li" eyebrow={p.jenis}>
+					<h3 class="judul-kartu">{p.judul}</h3>
+					{p.keterangan && <p class="ket">{p.keterangan}</p>}
+				</GlassPanel>
+			))
+		}
+	</ul>
+
+	<div class="mitra">
+		{
+			daftarMitra.map((d) => (
+				<div class="baris">
+					<h3 class="eyebrow">{d.label}</h3>
+					<div class="chip-baris">
+						{d.isi.map((nama) => (
+							<GlassChip>{nama}</GlassChip>
+						))}
+					</div>
+				</div>
+			))
+		}
+	</div>
+</Seksi>
+
+<style>
+	.grid {
+		display: grid;
+		gap: calc(var(--space-unit) * 2);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.judul-kartu {
+		margin: 0;
+		font-size: var(--text-subjudul);
+	}
+
+	.ket {
+		margin: 0;
+		color: var(--neutral-700);
+	}
+
+	.mitra {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 3);
+	}
+
+	.baris {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 1.5);
+	}
+
+	.baris h3 {
+		margin: 0;
+		color: var(--neutral-600);
+	}
+
+	.chip-baris {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-unit);
+	}
+
+	@media (min-width: 700px) {
+		.grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1000px) {
+		.grid {
+			grid-template-columns: repeat(4, 1fr);
+			gap: calc(var(--space-unit) * 3);
+		}
+	}
+</style>

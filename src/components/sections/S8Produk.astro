@@ -1,0 +1,61 @@
+---
+/**
+ * S8 — Produk & Ekonomi Sirkular. Latar: netral (PRD §S8).
+ *
+ * Produk yang belum berjalan WAJIB berlabel status jujur. Insinerator
+ * berstatus "dalam proses" — jangan pernah diklaim sudah tersedia.
+ */
+import Seksi from '../ui/Seksi.astro';
+import GlassCard from '../glass/GlassCard.astro';
+import GlassBadge from '../glass/GlassBadge.astro';
+import { beranda, program } from '../../data';
+
+const { s8 } = beranda;
+---
+
+<Seksi id="produk" eyebrow={s8.eyebrow} judul={s8.judul} latar="netral">
+	<p slot="pengantar" class="pengantar">{s8.pengantar}</p>
+
+	<div class="grid">
+		{
+			program.produk.map((p) => (
+				<GlassCard judul={p.nama}>
+					<p>{p.deskripsi}</p>
+
+					<Fragment slot="kaki">
+						<GlassBadge nada={p.status === 'dalam-proses' ? 'proses' : 'netral'}>
+							{program.labelStatus[p.status]}
+						</GlassBadge>
+					</Fragment>
+				</GlassCard>
+			))
+		}
+	</div>
+</Seksi>
+
+<style>
+	.pengantar {
+		margin: 0;
+		max-width: 60ch;
+		font-size: var(--text-besar);
+		color: var(--neutral-700);
+	}
+
+	.grid {
+		display: grid;
+		gap: calc(var(--space-unit) * 2);
+	}
+
+	@media (min-width: 700px) {
+		.grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1000px) {
+		.grid {
+			grid-template-columns: repeat(4, 1fr);
+			gap: calc(var(--space-unit) * 3);
+		}
+	}
+</style>

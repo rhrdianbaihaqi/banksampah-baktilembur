@@ -1,0 +1,18 @@
+{
+  "_catatan": "PRD §13 butir 3 — foto wajah pengurus TIDAK ditampilkan pada rilis pertama. Berkas ini sengaja tidak punya field foto. Jangan tambahkan. Ejaan nama nomor 11 sudah dikoreksi jadi 'Rolah Juariah' sesuai keputusan PRD; jangan dikembalikan ke ejaan lama.",
+  "jumlah": 11,
+  "orang": [
+    { "id": "deni", "nama": "Deni, S.P", "jabatan": "Penasihat", "atasan": null },
+    { "id": "hamid", "nama": "Hamid", "jabatan": "Pembina", "atasan": "deni" },
+    { "id": "muhusin", "nama": "Muhusin", "jabatan": "Direktur", "atasan": "deni" },
+    { "id": "nurman", "nama": "Nurman Mulyana", "jabatan": "General Manager", "atasan": "muhusin" },
+    { "id": "herman", "nama": "Herman Taupik", "jabatan": "Sekretaris", "atasan": "nurman" },
+    { "id": "dede", "nama": "Dede Ulfatul Q", "jabatan": "Bidang Keuangan", "atasan": "nurman" },
+    { "id": "siti", "nama": "Siti Halimah", "jabatan": "Bidang Marketing dan Pengembangan Usaha", "atasan": "dede" },
+    { "id": "nisa", "nama": "Nisa Rahmawati", "jabatan": "Bidang Administrasi", "atasan": "nurman" },
+    { "id": "sahidin", "nama": "Sahidin", "jabatan": "Bidang Operasional dan Produksi", "atasan": "nisa" },
+    { "id": "imas", "nama": "Imas Idah", "jabatan": "Bidang Pemberdayaan", "atasan": "nurman" },
+    { "id": "rolah", "nama": "Rolah Juariah", "jabatan": "Bidang Penimbangan, Pemilahan dan Pengepakan", "atasan": "imas" }
+  ],
+  "keterangan": "Garis komando menunjukkan hubungan struktural; koordinasi antarbagian berjalan dalam pelaksanaan kegiatan."
+}

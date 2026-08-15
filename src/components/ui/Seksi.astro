@@ -1,0 +1,130 @@
+---
+/**
+ * Kerangka seksi beranda: kepala seksi (eyebrow mono + judul) dan perlakuan
+ * latarnya.
+ *
+ * Perlakuan latar tiap seksi ditetapkan tabel PRD §9 dan dipusatkan di sini,
+ * bukan diulang di sebelas berkas. Batas keras 6 seksi berlatar foto
+ * (§6.5 aturan 8) jadi mudah dihitung: cari `latar="foto"` di seluruh proyek.
+ */
+import PhotoBackdrop from './PhotoBackdrop.astro';
+
+interface Props {
+	id?: string;
+	eyebrow: string;
+	judul: string;
+	latar: 'netral' | 'hijau' | 'foto';
+	scrim?: 'kuat' | 'lembut';
+	labelPlaceholder?: string;
+	/** Seksi bawah lipatan dapat content-visibility (PRD §11.4). */
+	bawahLipatan?: boolean;
+	class?: string;
+}
+
+const {
+	id,
+	eyebrow,
+	judul,
+	latar,
+	scrim = 'kuat',
+	labelPlaceholder,
+	bawahLipatan = true,
+	class: kelas = '',
+} = Astro.props;
+
+const judulId = id ? `${id}-judul` : undefined;
+---
+
+<section
+	id={id}
+	aria-labelledby={judulId}
+	class:list={[
+		'seksi',
+		`latar-${latar}`,
+		latar === 'foto' && 'di-atas-foto',
+		bawahLipatan && 'tunda',
+		kelas,
+	]}
+>
+	{
+		latar === 'foto' && (
+			<PhotoBackdrop scrim={scrim} labelPlaceholder={labelPlaceholder} />
+		)
+	}
+
+	<div class="wadah">
+		<header class="kepala">
+			<p class="eyebrow">{eyebrow}</p>
+			<h2 id={judulId} class="judul">{judul}</h2>
+			<slot name="pengantar" />
+		</header>
+
+		<slot />
+	</div>
+</section>
+
+<style>
+	.seksi {
+		position: relative;
+		isolation: isolate;
+		padding: calc(var(--space-unit) * 7) calc(var(--space-unit) * 3);
+	}
+
+	/* PRD §11.4 — seksi bawah lipatan dilewati saat render awal. */
+	.tunda {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 600px;
+	}
+
+	.latar-netral {
+		background: var(--neutral-50);
+	}
+
+	.latar-hijau {
+		background: var(--brand-green-light);
+	}
+
+	.latar-foto {
+		color: var(--white);
+	}
+
+	.wadah {
+		position: relative;
+		z-index: 1;
+		max-width: 1120px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 4);
+	}
+
+	.kepala {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-unit);
+	}
+
+	.kepala .eyebrow {
+		margin: 0;
+		color: var(--neutral-600);
+	}
+
+	.latar-foto .kepala .eyebrow {
+		color: var(--neutral-100);
+	}
+
+	.judul {
+		margin: 0;
+		font-size: var(--text-seksi);
+	}
+
+	@media (min-width: 768px) {
+		.seksi {
+			padding: calc(var(--space-unit) * 12) calc(var(--space-unit) * 8);
+		}
+
+		.wadah {
+			gap: calc(var(--space-unit) * 6);
+		}
+	}
+</style>

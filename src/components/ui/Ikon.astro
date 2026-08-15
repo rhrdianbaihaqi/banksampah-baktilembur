@@ -1,0 +1,83 @@
+---
+/**
+ * Ikon garis, ketebalan konsisten — satu-satunya bentuk ikon yang diizinkan
+ * (PRD §6.7). Emoji sebagai ikon dilarang.
+ *
+ * Path diambil dari Lucide (lisensi ISC) dan ditulis inline, bukan lewat paket
+ * `@lucide/astro`. Alasannya konkret: paket itu membawa skrip `build` monorepo
+ * yang ikut terpanggil oleh `npm run build` dan menghapus berkas ikonnya
+ * sendiri, sehingga build proyek gagal. Tujuh ikon inline juga tidak menambah
+ * apa pun ke anggaran JavaScript.
+ *
+ * Menambah ikon: salin `d` dari https://lucide.dev/icons/<nama> ke peta ini.
+ */
+const peta: Record<string, string[]> = {
+	droplets: [
+		'M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z',
+		'M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97',
+	],
+	'trash-2': [
+		'M10 11v6',
+		'M14 11v6',
+		'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6',
+		'M3 6h18',
+		'M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2',
+	],
+	coins: [
+		'M13.744 17.736a6 6 0 1 1-7.48-7.48',
+		'M15 6h1v4',
+		'm6.134 14.768.866-.5 2 3.464',
+		'M22 8a6 6 0 1 1-12 0 6 6 0 0 1 12 0z',
+	],
+	sprout: [
+		'M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3',
+		'M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4',
+		'M5 21h14',
+	],
+	'piggy-bank': [
+		'M11 17h3v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a3.16 3.16 0 0 0 2-2h1a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a5 5 0 0 0-2-4V3a4 4 0 0 0-3.2 1.6l-.3.4H11a6 6 0 0 0-6 6v1a5 5 0 0 0 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1z',
+		'M16 10h.01',
+		'M2 8v1a2 2 0 0 0 2 2h1',
+	],
+	users: [
+		'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2',
+		'M16 3.128a4 4 0 0 1 0 7.744',
+		'M22 21v-2a4 4 0 0 0-3-3.87',
+		'M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z',
+	],
+	play: [
+		'M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z',
+	],
+	x: ['M18 6 6 18', 'M6 6l12 12'],
+};
+
+interface Props {
+	nama: string;
+	ukuran?: number;
+}
+
+const { nama, ukuran = 28 } = Astro.props;
+const jalur = peta[nama];
+---
+
+{
+	jalur && (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width={ukuran}
+			height={ukuran}
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+			focusable="false"
+		>
+			{jalur.map((d) => (
+				<path d={d} />
+			))}
+		</svg>
+	)
+}

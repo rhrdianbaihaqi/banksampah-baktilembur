@@ -1,0 +1,97 @@
+---
+/**
+ * S5 — Program. Latar: --brand-green-light (PRD §S5).
+ *
+ * Dikelompokkan per frekuensi dengan pemisah eyebrow mono. Kartu
+ * "Goes to School" punya CTA sendiri supaya tidak tenggelam di daftar —
+ * Persona 3 (kepala sekolah) datang khusus untuk ini.
+ */
+import Seksi from '../ui/Seksi.astro';
+import GlassCard from '../glass/GlassCard.astro';
+import CtaWhatsapp from '../ui/CtaWhatsapp.astro';
+import { beranda, program } from '../../data';
+
+const { s5 } = beranda;
+---
+
+<Seksi id="program" eyebrow={s5.eyebrow} judul={s5.judul} latar="hijau">
+	<div class="kelompok">
+		{
+			program.kelompok.map((k) => (
+				<div class="frekuensi">
+					<h3 class="eyebrow label-frekuensi">{k.frekuensi}</h3>
+
+					<div class="grid">
+						{k.program.map((p) => (
+							<GlassCard eyebrow={p.kepanjangan ?? undefined} judul={p.nama}>
+								<p>{p.deskripsi}</p>
+
+								{p.ctaWhatsapp && (
+									<Fragment slot="kaki">
+										<CtaWhatsapp kunci={p.ctaWhatsapp} varian="sekunder" />
+									</Fragment>
+								)}
+							</GlassCard>
+						))}
+					</div>
+				</div>
+			))
+		}
+	</div>
+
+	<a href={s5.tautanSelengkapnya.href} class="selengkapnya">
+		{s5.tautanSelengkapnya.label}
+	</a>
+</Seksi>
+
+<style>
+	.kelompok {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 5);
+	}
+
+	.frekuensi {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 2);
+	}
+
+	.label-frekuensi {
+		margin: 0;
+		padding-bottom: var(--space-unit);
+		border-bottom: 1px solid var(--border);
+		color: var(--neutral-600);
+		font-family: var(--font-mono), ui-monospace, monospace;
+		font-weight: 500;
+	}
+
+	.grid {
+		display: grid;
+		gap: calc(var(--space-unit) * 2);
+	}
+
+	.selengkapnya {
+		align-self: flex-start;
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		color: var(--brand-blue);
+		font-weight: 600;
+		text-decoration: none;
+		border-bottom: 2px solid var(--brand-blue);
+	}
+
+	@media (min-width: 700px) {
+		.grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1000px) {
+		.grid {
+			grid-template-columns: repeat(3, 1fr);
+			gap: calc(var(--space-unit) * 3);
+		}
+	}
+</style>

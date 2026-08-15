@@ -1,0 +1,118 @@
+{
+  "_catatan": "Naskah seluruh seksi beranda. PRD §11.2: tidak boleh ada teks konten ditulis langsung di komponen — termasuk judul seksi dan label tombol. Semua kalimat yang dibaca pengunjung ada di sini.",
+  "s1": {
+    "eyebrow": "DESA SARIMUKTI PASIRWANGI GARUT",
+    "judul": "Ubah sampah rumah tangga menjadi tabungan dan nilai ekonomi.",
+    "subjudul": "Bersama kita wujudkan lingkungan yang lebih bersih sekaligus meningkatkan kesejahteraan warga sejak April 2024.",
+    "ctaSekunder": {
+      "label": "Lihat Cara Kerjanya",
+      "anchor": "#cara-jadi-nasabah"
+    },
+    "ctaVideo": {
+      "label": "Tonton Video"
+    }
+  },
+  "s2": {
+    "eyebrow": "ANGKA DAMPAK",
+    "judulLayar": "Angka dampak Bank Sampah Bakti Lembur"
+  },
+  "s3": {
+    "eyebrow": "LATAR BELAKANG",
+    "judul": "Kenapa Bakti Lembur Ada",
+    "paragraf": [
+      "Di lembur, kerja bakti sudah lama jadi kebiasaan warga. Tetapi sampah rumah tangga yang dibuang sembarangan membuat saluran air tersumbat, dan kebiasaan baik itu tidak cukup lagi untuk mengatasinya.",
+      "Warga RW 04 lalu bersepakat bersama Patriot Desa dan Pendamping PKH untuk memulai Gerakan Pilah Sampah dari rumah. Kesepakatan itu berkembang menjadi lembaga pengelolaan sampah terpadu, yang diresmikan pada 24 April 2024."
+    ],
+    "labelFoto": "Kegiatan warga di lokasi bank sampah"
+  },
+  "s4": {
+    "eyebrow": "ENAM LANGKAH",
+    "judul": "Cara Menjadi Nasabah",
+    "pengantar": "Tidak ada biaya pendaftaran. Cukup pilah dari rumah, sisanya kami bantu.",
+    "labelLangkah": "Langkah"
+  },
+  "s5": {
+    "eyebrow": "PROGRAM",
+    "judul": "Delapan Program yang Berjalan",
+    "tautanSelengkapnya": {
+      "label": "Lihat semua program",
+      "href": "/program"
+    }
+  },
+  "s6": {
+    "eyebrow": "JADWAL & LOKASI",
+    "judul": "Kapan dan Di Mana Penimbangannya",
+    "labelJadwal": "Jadwal penimbangan",
+    "labelLokasi": "Lokasi utama",
+    "labelJemput": "Area layanan jemput",
+    "tombolMaps": "Buka di Google Maps"
+  },
+  "s7": {
+    "eyebrow": "HASIL NYATA",
+    "judul": "Yang Berubah Sejak 2024"
+  },
+  "s8": {
+    "eyebrow": "PRODUK",
+    "judul": "Produk & Ekonomi Sirkular",
+    "pengantar": "Sampah organik warga tidak berhenti jadi sampah. Ini yang dihasilkan darinya."
+  },
+  "s9": {
+    "eyebrow": "BUKTI & PENGAKUAN",
+    "judul": "Yang Bisa Diverifikasi",
+    "labelMitra": "Mitra lembaga",
+    "labelSekolah": "Sekolah mitra",
+    "labelAkademik": "Mitra akademik"
+  },
+  "s10": {
+    "eyebrow": "DOKUMENTASI",
+    "judul": "Galeri Kegiatan",
+    "tautanSelengkapnya": {
+      "label": "Lihat Semua Dokumentasi",
+      "href": "/galeri"
+    },
+    "labelVideo": "Putar video profil",
+    "kosong": "Dokumentasi foto sedang disiapkan tim KKN."
+  },
+  "s11": {
+    "eyebrow": "HUBUNGI KAMI",
+    "judul": "Dukung & Hubungi Kami",
+    "jalur": [
+      {
+        "eyebrow": "WARGA",
+        "judul": "Jadi nasabah",
+        "keterangan": "Pilah dari rumah, setor, dan menabung. Terbuka untuk warga, UMKM, dan instansi.",
+        "cta": "nasabah",
+        "tautan": null
+      },
+      {
+        "eyebrow": "CSR & DONATUR",
+        "judul": "Jadi mitra atau donatur",
+        "keterangan": "Kami terbuka untuk kerja sama perusahaan, dinas, dan lembaga.",
+        "cta": "mitra",
+        "tautan": {
+          "label": "Selengkapnya di halaman kemitraan",
+          "href": "/kemitraan"
+        }
+      },
+      {
+        "eyebrow": "KAMPUS",
+        "judul": "Ajukan lokasi KKN atau pengabdian",
+        "keterangan": "Bakti Lembur menerima kelompok KKN dan program pengabdian masyarakat.",
+        "cta": "kkn",
+        "tautan": {
+          "label": "Bentuk kolaborasi yang tersedia",
+          "href": "/kemitraan"
+        }
+      },
+      {
+        "eyebrow": "DESA LAIN",
+        "judul": "Replikasi di desa Anda",
+        "keterangan": "Kami mendampingi desa yang ingin mendirikan bank sampah serupa.",
+        "cta": "replikasi",
+        "tautan": null
+      }
+    ],
+    "labelKebutuhan": "Yang sedang kami butuhkan",
+    "labelKontak": "Kontak"
+  }
+}

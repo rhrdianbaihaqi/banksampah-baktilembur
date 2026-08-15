@@ -1,0 +1,147 @@
+---
+/**
+ * S1 — Hero Section (Layout Centered Sesuai Referensi Gambar)
+ *
+ * Tampilan:
+ * - Headline Serif Tebal di tengah: "Ubah sampah rumah tangga menjadi tabungan dan nilai ekonomi."
+ * - Subjudul di tengah: "Bersama kita wujudkan lingkungan yang lebih bersih sekaligus meningkatkan kesejahteraan warga sejak April 2024."
+ * - Dua tombol pill berdampingan: "Daftar Jadi Nasabah" (Hijau) & "Lihat Cara Kerjanya" (Outlined Glass)
+ */
+import CtaWhatsapp from '../ui/CtaWhatsapp.astro';
+import { beranda } from '../../data';
+
+const { s1 } = beranda;
+---
+
+<section class="hero" aria-labelledby="hero-judul">
+	<div class="hero-konten">
+		<h1 id="hero-judul" class="judul">{s1.judul}</h1>
+
+		<p class="subjudul">{s1.subjudul}</p>
+
+		<div class="tombol-group">
+			<CtaWhatsapp kunci="nasabah" class="btn-primer" />
+			<a href={s1.ctaSekunder.anchor} class="btn-sekunder">
+				{s1.ctaSekunder.label}
+			</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		min-height: 100svh;
+		padding: calc(var(--space-unit) * 16) calc(var(--space-unit) * 3) calc(var(--space-unit) * 10);
+		color: var(--white);
+		box-sizing: border-box;
+		text-align: center;
+	}
+
+	.hero-konten {
+		max-width: 880px;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: calc(var(--space-unit) * 3);
+		margin: 0 auto;
+	}
+
+	.judul {
+		margin: 0;
+		font-family: var(--font-display), Georgia, serif;
+		font-size: clamp(2.25rem, 5.5vw, 3.85rem);
+		font-weight: 700;
+		line-height: 1.15;
+		color: var(--white);
+		text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+		text-wrap: balance;
+		letter-spacing: -0.01em;
+	}
+
+	.subjudul {
+		margin: 0;
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: clamp(1.05rem, 2vw, 1.25rem);
+		line-height: 1.65;
+		color: rgba(255, 255, 255, 0.95);
+		max-width: 660px;
+		text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+		text-wrap: pretty;
+	}
+
+	.tombol-group {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: calc(var(--space-unit) * 2);
+		flex-wrap: wrap;
+		margin-top: calc(var(--space-unit) * 2);
+	}
+
+	:global(.btn-primer) {
+		display: inline-flex !important;
+		align-items: center;
+		justify-content: center;
+		min-height: 48px;
+		padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 3.5) !important;
+		background: var(--brand-green) !important;
+		color: var(--white) !important;
+		border: 1px solid var(--brand-green) !important;
+		border-radius: 999px !important;
+		font-family: var(--font-isi), system-ui, sans-serif !important;
+		font-size: var(--text-isi) !important;
+		font-weight: 600 !important;
+		text-decoration: none !important;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+		transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+	}
+
+	:global(.btn-primer:hover) {
+		background: var(--brand-green-dark) !important;
+		transform: translateY(-1px);
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+	}
+
+	.btn-sekunder {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 48px;
+		padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 3.5);
+		background: rgba(18, 24, 18, 0.4);
+		color: var(--white);
+		border: 1.5px solid rgba(255, 255, 255, 0.85);
+		border-radius: 999px;
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: var(--text-isi);
+		font-weight: 600;
+		text-decoration: none;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+		transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+	}
+
+	@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+		.btn-sekunder {
+			-webkit-backdrop-filter: blur(10px);
+			backdrop-filter: blur(10px);
+		}
+	}
+
+	.btn-sekunder:hover {
+		background: rgba(255, 255, 255, 0.2);
+		border-color: var(--white);
+		transform: translateY(-1px);
+	}
+
+	@media (min-width: 768px) {
+		.hero {
+			padding: calc(var(--space-unit) * 20) calc(var(--space-unit) * 6) calc(var(--space-unit) * 12);
+		}
+	}
+</style>

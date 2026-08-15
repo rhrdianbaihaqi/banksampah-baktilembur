@@ -1,0 +1,96 @@
+---
+/**
+ * Foto latar seksi, berikut scrim wajibnya.
+ *
+ * Aturan PRD §6.5 yang ditegakkan komponen ini:
+ *  - aturan 6: foto dipasang sebagai elemen `<img>` lewat `astro:assets`,
+ *    bukan `background-image` CSS — hanya `<img>` yang dapat srcset,
+ *    AVIF/WebP, dan lazy-loading.
+ *  - aturan 2: setiap foto latar punya lapisan scrim. Tidak ada jalur
+ *    memakai komponen ini tanpa scrim.
+ *  - aturan 5: tanpa `background-attachment: fixed`.
+ *
+ * Selama foto asli dari tim KKN belum tersedia, komponen ini merender
+ * placeholder yang jelas terlihat sebagai placeholder — blok warna token
+ * berlabel, bukan stok foto. Stok foto dilarang PRD §6.7, dan yang menyaru
+ * asli punya kebiasaan bertahan sampai rilis.
+ */
+import { Image } from 'astro:assets';
+
+interface Props {
+	src?: ImageMetadata;
+	/** Wajib bila ada foto. Deskriptif, bukan "foto kegiatan". */
+	alt?: string;
+	scrim?: 'kuat' | 'lembut';
+	/** Setel true hanya untuk foto hero — elemen LCP (§S1). */
+	prioritas?: boolean;
+	/** Teks yang tampil di placeholder, menjelaskan foto apa yang dibutuhkan. */
+	labelPlaceholder?: string;
+}
+
+const {
+	src,
+	alt = '',
+	scrim = 'kuat',
+	prioritas = false,
+	labelPlaceholder = 'Foto belum tersedia',
+} = Astro.props;
+---
+
+<div class="latar" aria-hidden={src ? undefined : 'true'}>
+	{
+		src ? (
+			<Image
+				src={src}
+				alt={alt}
+				widths={[640, 960, 1280, 1920]}
+				sizes="100vw"
+				loading={prioritas ? 'eager' : 'lazy'}
+				fetchpriority={prioritas ? 'high' : 'auto'}
+				decoding={prioritas ? 'sync' : 'async'}
+				class="foto"
+			/>
+		) : (
+			<div class="placeholder">
+				<span class="eyebrow">Placeholder · {labelPlaceholder}</span>
+			</div>
+		)
+	}
+
+	<div class:list={['scrim', scrim === 'kuat' ? 'scrim-kuat' : 'scrim-lembut']}></div>
+</div>
+
+<style>
+	.latar {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+	}
+
+	.foto {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	/* Sengaja tidak menyerupai foto: bidang datar warna merek dengan label.
+	   Kalau ini lolos ke rilis, kelihatan seketika. */
+	.placeholder {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-end;
+		padding: calc(var(--space-unit) * 2);
+		background: var(--brand-green-dark);
+		color: var(--neutral-100);
+		text-align: right;
+	}
+
+	.scrim {
+		position: absolute;
+		inset: 0;
+	}
+</style>

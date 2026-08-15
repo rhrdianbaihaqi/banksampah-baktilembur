@@ -1,0 +1,70 @@
+---
+/**
+ * S2 — Angka Dampak (Diresmikan)
+ *
+ * Menampilkan status peresmian lembaga secara elegan di bawah hero.
+ */
+import GlassPanel from '../glass/GlassPanel.astro';
+import { beranda, statistik } from '../../data';
+
+const { s2 } = beranda;
+---
+
+<section class="angka" aria-labelledby="angka-judul">
+	<h2 id="angka-judul" class="sr-only">{s2.judulLayar}</h2>
+
+	<div class="wadah-stat">
+		{
+			statistik.angka.map((a) => (
+				<GlassPanel diAtasFoto class="stat-card">
+					<p class="nilai">{a.nilai}</p>
+					<Fragment slot="kaki">{a.label}</Fragment>
+				</GlassPanel>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	.angka {
+		padding: 0 calc(var(--space-unit) * 3) calc(var(--space-unit) * 8);
+	}
+
+	.wadah-stat {
+		display: flex;
+		justify-content: flex-start;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.stat-card {
+		min-width: 220px;
+		padding: calc(var(--space-unit) * 2.5);
+	}
+
+	.nilai {
+		margin: 0;
+		font-family: var(--font-mono), ui-monospace, monospace;
+		font-weight: 600;
+		font-size: var(--text-judul);
+		line-height: 1.15;
+		color: var(--white);
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	@media (min-width: 768px) {
+		.angka {
+			padding: 0 calc(var(--space-unit) * 8) calc(var(--space-unit) * 12);
+		}
+	}
+</style>

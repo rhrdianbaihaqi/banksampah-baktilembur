@@ -1,0 +1,126 @@
+---
+/**
+ * Panel Kaca Setoran — elemen tanda tangan situs ini (PRD §6.3).
+ *
+ * Anatominya diambil dari slip penimbangan bank sampah:
+ *
+ *   eyebrow kecil huruf mono
+ *   ANGKA ATAU JUDUL BESAR
+ *   ──────────── garis tipis
+ *   keterangan di bawah
+ *
+ * Semua kebolehan visual situs dibelanjakan di sini. Sisanya tenang.
+ * Sebelum membuat komponen permukaan baru, tanyakan dulu: kenapa ini
+ * bukan varian dari panel ini?
+ */
+interface Props {
+	/** Label mono di kepala panel. Tanpa ini, panel kehilangan anatominya. */
+	eyebrow?: string;
+	/** Varian pekat untuk paragraf panjang di atas foto terang. */
+	kuat?: boolean;
+	/** Panel di atas foto memakai teks terang. */
+	diAtasFoto?: boolean;
+	as?: 'div' | 'article' | 'li' | 'section';
+	class?: string;
+}
+
+const {
+	eyebrow,
+	kuat = false,
+	diAtasFoto = false,
+	as: Tag = 'div',
+	class: kelas = '',
+} = Astro.props;
+---
+
+<Tag
+	class:list={[
+		'panel glass',
+		kuat && 'glass-kuat',
+		diAtasFoto && 'di-atas-foto',
+		kelas,
+	]}
+>
+	{eyebrow && <p class="eyebrow panel-eyebrow">{eyebrow}</p>}
+
+	<div class="panel-isi">
+		<slot />
+	</div>
+
+	{
+		Astro.slots.has('kaki') && (
+			<>
+				<hr class="panel-garis" />
+				<div class="panel-kaki">
+					<slot name="kaki" />
+				</div>
+			</>
+		)
+	}
+</Tag>
+
+<style>
+	.panel {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-unit);
+		padding: calc(var(--space-unit) * 3);
+		color: var(--neutral-900);
+	}
+
+	.panel-eyebrow {
+		margin: 0;
+		color: var(--neutral-600);
+	}
+
+	.panel-isi {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-unit);
+	}
+
+	.panel-garis {
+		width: 100%;
+		height: 1px;
+		margin: var(--space-unit) 0 0;
+		border: 0;
+		background: var(--border);
+	}
+
+	.panel-kaki {
+		color: var(--neutral-700);
+		font-size: var(--text-kecil);
+	}
+
+	/* Di atas foto, teks panel dan pemisahnya dibalik agar tetap kontras
+	   terhadap scrim (PRD §6.5 aturan 2). */
+	.di-atas-foto {
+		color: var(--white);
+		border-color: var(--glass-border-dark);
+		background: var(--glass-dark);
+	}
+
+	.di-atas-foto .panel-eyebrow,
+	.di-atas-foto .panel-kaki {
+		color: var(--neutral-100);
+	}
+
+	.di-atas-foto .panel-garis {
+		background: var(--glass-border-dark);
+	}
+
+	/* Bila transparansi dikurangi, panel gelap tetap gelap pekat — bukan
+	   dibalik jadi putih, karena teksnya terang (PRD §6.5 aturan 9). */
+	@media (prefers-reduced-transparency: reduce) {
+		.di-atas-foto {
+			background: var(--neutral-900);
+		}
+	}
+
+	@media (min-width: 768px) {
+		.panel {
+			padding: calc(var(--space-unit) * 4);
+		}
+	}
+</style>

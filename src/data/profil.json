@@ -1,0 +1,99 @@
+{
+  "nama": "Bank Sampah Bakti Lembur",
+  "namaPendek": "Bakti Lembur",
+  "tagline": "Pengelolaan sampah terpadu berbasis warga",
+  "diresmikan": "2024-04-24",
+  "diresmikanTeks": "24 April 2024",
+  "sk": {
+    "nomor": "100.3.3/KEP-03/DS-2011/2024",
+    "penerbit": "Desa Sarimukti",
+    "label": "SK Desa No. 100.3.3/KEP-03/DS-2011/2024"
+  },
+  "alamat": {
+    "jalan": "Kp. Nagrog RT 001 RW 004",
+    "desa": "Desa Sarimukti",
+    "kecamatan": "Kec. Pasirwangi",
+    "kabupaten": "Kab. Garut",
+    "provinsi": "Jawa Barat",
+    "negara": "ID",
+    "kodePos": "44161",
+    "lengkap": "Kp. Nagrog RT 001 RW 004, Desa Sarimukti, Kec. Pasirwangi, Kab. Garut, Jawa Barat"
+  },
+  "koordinat": {
+    "_catatan": "PRD §17 item 2 — BELUM TERISI. Buka share.google/PHDzMDgsWJA71mkXP, ambil lat/long, isi di sini. Structured data dan peta memakai nilai ini.",
+    "terisi": false,
+    "lat": null,
+    "long": null,
+    "tautanMaps": "https://share.google/PHDzMDgsWJA71mkXP"
+  },
+  "kontak": {
+    "whatsapp": {
+      "_catatan": "PRD §17 item 1 — nomor sementara. Nomor khusus lembaga sudah diputuskan akan dibuat tapi belum ada. WAJIB diganti sebelum rilis.",
+      "sementara": true,
+      "nomorTampil": "0852 2420 8050",
+      "nomorInternasional": "6285224208050"
+    },
+    "email": "banksampahbaktilembur@gmail.com"
+  },
+  "sosmed": [
+    {
+      "nama": "Instagram",
+      "handle": "@bank_sampah_bakti_lembur",
+      "url": "https://www.instagram.com/bank_sampah_bakti_lembur"
+    },
+    {
+      "nama": "TikTok",
+      "handle": "@banksampahbaktilembur",
+      "url": "https://tiktok.com/@banksampahbaktilembur"
+    }
+  ],
+  "video": {
+    "judul": "Profil Bank Sampah Bakti Lembur",
+    "idYoutube": "RyqIu_17jFI",
+    "url": "https://youtu.be/RyqIu_17jFI"
+  },
+  "visi": "Mewujudkan generasi yang berkontribusi bagi terciptanya lingkungan yang bersih, sehat dan dapat meningkatkan ekonomi masyarakat.",
+  "misi": [
+    "Memberikan edukasi kepada masyarakat tentang cara hidup ramah lingkungan: literasi memilah sampah, mengelola sampah organik dan anorganik, merawat penghijauan.",
+    "Pemberdayaan ekonomi melalui penimbangan terpilah, perluasan usaha ekonomi sirkular, pengembangan produk melalui kreativitas dan inovasi, serta pelatihan dan pembinaan bagi desa-desa dampingan."
+  ],
+  "dasarHukum": [
+    { "label": "UU No. 18 Tahun 2008", "tentang": "Pengelolaan Sampah" },
+    { "label": "PP No. 81 Tahun 2012", "tentang": "Pengelolaan Sampah Rumah Tangga" },
+    { "label": "PP No. 97 Tahun 2012", "tentang": "Retribusi Pengendalian Lingkungan" },
+    { "label": "Permen No. 14 Tahun 2021", "tentang": "Pengelolaan Sampah pada Bank Sampah" },
+    { "label": "Perda No. 4 Tahun 2014", "tentang": "Pengelolaan Sampah Kabupaten Garut" },
+    { "label": "Perbup No. 26 Tahun 2019", "tentang": "Kebijakan dan Strategi Daerah" }
+  ],
+  "jadwalPenimbangan": {
+    "_catatan": "Lembaga tidak punya jam layanan tetap. Jangan tampilkan jam buka, dan jangan tulis openingHours di structured data (PRD §11.5).",
+    "frekuensi": "Dua minggu sekali",
+    "hari": ["Rabu", "Kamis", "Jumat"],
+    "lokasiUtama": "RT 01/04 Kp. Nagrog, rumah Bu RW"
+  },
+  "areaJemput": [
+    "RT 02/04 Kp. Legok",
+    "RT 03/04 Kp. Joglo",
+    "RT 03/05 Kp. Sukasari",
+    "Home industri / UMKM",
+    "Pertokoan",
+    "Instansi / lembaga",
+    "Sekolah",
+    "Pondok pesantren",
+    "Desa dampingan"
+  ],
+  "kebutuhan": [
+    "Mobil angkut sampah",
+    "Sarana penyimpanan",
+    "Alat kerja",
+    "Dana operasional"
+  ],
+  "kendala": [
+    "Sebagian warga belum terbiasa memilah dari rumah",
+    "Keterbatasan sarana, alat kerja, dan tempat penyimpanan",
+    "Harga jual sampah fluktuatif",
+    "Keterbatasan dana operasional",
+    "Belum memiliki mobil angkut"
+  ],
+  "companyProfilePdf": "/dokumen/company-profile-bakti-lembur.pdf"
+}

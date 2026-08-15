@@ -1,0 +1,42 @@
+{
+  "_catatan": "Struktur array angkatan — mitigasi risiko R7 (halaman kemitraan jadi arsip mati). Angkatan berikutnya ditambahkan sebagai elemen baru, bukan mengganti yang lama.",
+  "angkatan": [
+    {
+      "nama": "KKN 10 Sarimukti UIN SGD Bandung",
+      "kampus": "UIN Sunan Gunung Djati Bandung",
+      "tahun": 2026,
+      "periode": "TBD",
+      "kontribusi": [
+        "Pembangunan website dan digitalisasi profil lembaga",
+        "Edukasi literasi pilah sampah",
+        "Produksi konten dokumentasi",
+        "Pendampingan produk ekonomi sirkular",
+        "Riset dan pendataan"
+      ],
+      "anggota": [
+        { "nama": "Ishak Maulana", "peran": "Ketua", "bidang": "Inti" },
+        { "nama": "Amira Sabita", "peran": "Sekretaris", "bidang": "Inti" },
+        { "nama": "Nazwa Yulianti Munjana", "peran": "Bendahara", "bidang": "Inti" },
+        { "nama": "Alfina Dinova", "peran": "Anggota", "bidang": "Acara" },
+        { "nama": "Ira Niroh", "peran": "Anggota", "bidang": "Acara" },
+        { "nama": "Rahmah Sabila", "peran": "Anggota", "bidang": "Acara" },
+        { "nama": "Faiz Abdul Aziz", "peran": "Anggota", "bidang": "Acara" },
+        { "nama": "Septi Ainul Ramadhan", "peran": "Anggota", "bidang": "Acara" },
+        { "nama": "Isniyatul Hidayah", "peran": "Anggota", "bidang": "PDD" },
+        { "nama": "Farid Nur Faujan", "peran": "Anggota", "bidang": "PDD" },
+        { "nama": "Ainiyyah Nur Afifah A", "peran": "Anggota", "bidang": "PDD" },
+        { "nama": "Riyan Andriyansyah", "peran": "Anggota", "bidang": "Humlog" },
+        { "nama": "Salman Muzaki Rabbani", "peran": "Anggota", "bidang": "Humlog" },
+        { "nama": "Mutia Susilawati", "peran": "Anggota", "bidang": "Humlog" },
+        { "nama": "Rian Febriansyah", "peran": "Anggota", "bidang": "Humlog" }
+      ]
+    }
+  ],
+  "bentukKolaborasi": [
+    "Digitalisasi profil dan pengelolaan kanal daring",
+    "Edukasi dan literasi pilah sampah untuk warga dan sekolah",
+    "Produksi konten dokumentasi kegiatan",
+    "Pendampingan pengembangan produk ekonomi sirkular",
+    "Riset dan pendataan nasabah serta timbulan sampah"
+  ]
+}

@@ -1,0 +1,169 @@
+---
+/**
+ * S6 — Jadwal & Lokasi Penimbangan. Latar: netral (PRD §S6).
+ *
+ * Tidak mencantumkan jam buka: lembaga tidak memiliki jam layanan tetap,
+ * hanya jadwal penimbangan. Iframe peta lazy.
+ *
+ * Koordinat lat/long belum tersedia (PRD §17 item 2) — selama `koordinat.terisi`
+ * masih false, peta tidak dirender dan yang tampil hanya tautan Google Maps.
+ * Menanam koordinat tebakan lebih buruk daripada tidak menampilkan peta.
+ */
+import Seksi from '../ui/Seksi.astro';
+import GlassPanel from '../glass/GlassPanel.astro';
+import GlassChip from '../glass/GlassChip.astro';
+import { beranda, profil } from '../../data';
+
+const { s6 } = beranda;
+const { jadwalPenimbangan, areaJemput, koordinat, alamat } = profil;
+
+const petaSrc = koordinat.terisi
+	? `https://www.google.com/maps?q=${koordinat.lat},${koordinat.long}&hl=id&z=16&output=embed`
+	: null;
+---
+
+<Seksi id="jadwal" eyebrow={s6.eyebrow} judul={s6.judul} latar="netral">
+	<div class="susunan">
+		<div class="sisi-peta">
+			<div class="bingkai glass">
+				{
+					petaSrc ? (
+						<iframe
+							src={petaSrc}
+							title={`Peta lokasi ${profil.nama}`}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							width="600"
+							height="450"
+							class="peta"
+						/>
+					) : (
+						<div class="peta-kosong">
+							<p class="eyebrow">Peta menyusul — koordinat belum diisi</p>
+							<p class="alamat">{alamat.lengkap}</p>
+						</div>
+					)
+				}
+			</div>
+
+			<a
+				href={koordinat.tautanMaps}
+				target="_blank"
+				rel="noopener noreferrer"
+				data-cta
+				data-ga4="klik_maps"
+				class="tombol-maps"
+			>
+				{s6.tombolMaps}
+			</a>
+		</div>
+
+		<div class="sisi-jadwal">
+			<GlassPanel eyebrow={s6.labelJadwal}>
+				<p class="nilai">{jadwalPenimbangan.frekuensi}</p>
+				<div class="chip-baris">
+					{jadwalPenimbangan.hari.map((h) => <GlassChip>{h}</GlassChip>)}
+				</div>
+				<Fragment slot="kaki">
+					{s6.labelLokasi}: {jadwalPenimbangan.lokasiUtama}
+				</Fragment>
+			</GlassPanel>
+
+			<div class="jemput">
+				<h3 class="eyebrow">{s6.labelJemput}</h3>
+				<div class="chip-baris">
+					{areaJemput.map((a) => <GlassChip>{a}</GlassChip>)}
+				</div>
+			</div>
+		</div>
+	</div>
+</Seksi>
+
+<style>
+	.susunan {
+		display: grid;
+		gap: calc(var(--space-unit) * 4);
+	}
+
+	.sisi-peta,
+	.sisi-jadwal {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 2);
+	}
+
+	.bingkai {
+		padding: var(--space-unit);
+	}
+
+	.peta,
+	.peta-kosong {
+		display: block;
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		height: auto;
+		border: 0;
+		border-radius: var(--radius-sm);
+	}
+
+	.peta-kosong {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: var(--space-unit);
+		padding: calc(var(--space-unit) * 3);
+		background: var(--neutral-100);
+		color: var(--neutral-600);
+	}
+
+	.alamat {
+		margin: 0;
+		color: var(--neutral-700);
+	}
+
+	.peta-kosong .eyebrow {
+		margin: 0;
+	}
+
+	.tombol-maps {
+		align-self: flex-start;
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		color: var(--brand-blue);
+		font-weight: 600;
+		text-decoration: none;
+		border-bottom: 2px solid var(--brand-blue);
+	}
+
+	.nilai {
+		margin: 0;
+		font-family: var(--font-mono), ui-monospace, monospace;
+		font-weight: 500;
+		font-size: var(--text-subjudul);
+	}
+
+	.chip-baris {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-unit);
+	}
+
+	.jemput {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 1.5);
+	}
+
+	.jemput h3 {
+		margin: 0;
+		color: var(--neutral-600);
+	}
+
+	@media (min-width: 900px) {
+		.susunan {
+			grid-template-columns: 1fr 1fr;
+			gap: calc(var(--space-unit) * 6);
+		}
+	}
+</style>

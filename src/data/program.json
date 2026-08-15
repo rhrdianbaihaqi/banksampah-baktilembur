@@ -1,0 +1,121 @@
+{
+  "kelompok": [
+    {
+      "frekuensi": "Harian",
+      "program": [
+        {
+          "slug": "gps",
+          "nama": "GPS",
+          "kepanjangan": "Gerakan Pilah Sampah",
+          "deskripsi": "Pemilahan sampah dari rumah oleh nasabah, setiap hari.",
+          "ctaWhatsapp": null
+        }
+      ]
+    },
+    {
+      "frekuensi": "Mingguan",
+      "program": [
+        {
+          "slug": "geberling",
+          "nama": "GEBERLING",
+          "kepanjangan": "Gerakan Bebersih Lingkungan",
+          "deskripsi": "Kerja bakti bersama warga tiap Jumat, pukul 06.00–10.00 WIB.",
+          "ctaWhatsapp": null
+        },
+        {
+          "slug": "gesit",
+          "nama": "GESIT",
+          "kepanjangan": "Gerakan Ekonomi Sirkular Terpadu",
+          "deskripsi": "Pengolahan eco enzyme, komposter, dan budidaya maggot BSF.",
+          "ctaWhatsapp": null
+        }
+      ]
+    },
+    {
+      "frekuensi": "Bulanan",
+      "program": [
+        {
+          "slug": "goes-to-school",
+          "nama": "Bakti Lembur Goes to School",
+          "kepanjangan": null,
+          "deskripsi": "Literasi lingkungan, praktik pengolahan sampah, dan fun games di sekolah.",
+          "ctaWhatsapp": "sekolah"
+        },
+        {
+          "slug": "ecolar",
+          "nama": "ECOLAR",
+          "kepanjangan": null,
+          "deskripsi": "Dukungan bagi pengembang produk ekonomi sirkular menuju wisata edukasi.",
+          "ctaWhatsapp": null
+        }
+      ]
+    },
+    {
+      "frekuensi": "Tahunan",
+      "program": [
+        {
+          "slug": "road-show",
+          "nama": "Road Show Bakti Lembur",
+          "kepanjangan": null,
+          "deskripsi": "Perluasan nasabah, penguatan jejaring mitra, dan pelatihan.",
+          "ctaWhatsapp": null
+        },
+        {
+          "slug": "studi-tour",
+          "nama": "Studi Tour",
+          "kepanjangan": null,
+          "deskripsi": "Peningkatan kapasitas SDM dan unit usaha.",
+          "ctaWhatsapp": null
+        },
+        {
+          "slug": "paket-liburan",
+          "nama": "Paket Liburan",
+          "kepanjangan": null,
+          "deskripsi": "Apresiasi nasabah sekaligus penguatan kampanye pilah sampah.",
+          "ctaWhatsapp": null
+        }
+      ]
+    }
+  ],
+  "produk": [
+    {
+      "nama": "Kompos",
+      "deskripsi": "Diolah dari sampah organik warga, dimanfaatkan kembali untuk pertanian.",
+      "status": "berjalan"
+    },
+    {
+      "nama": "Eco enzyme",
+      "deskripsi": "Cairan serbaguna hasil fermentasi sisa sayur dan buah.",
+      "status": "berjalan"
+    },
+    {
+      "nama": "Maggot BSF",
+      "deskripsi": "Biokonversi sampah organik menjadi pakan ternak bernilai ekonomi.",
+      "status": "berjalan"
+    },
+    {
+      "nama": "Insinerator ramah lingkungan",
+      "deskripsi": "Pengolahan residu yang tidak bisa didaur ulang.",
+      "status": "dalam-proses"
+    }
+  ],
+  "labelStatus": {
+    "berjalan": "Berjalan",
+    "dalam-proses": "Dalam proses"
+  },
+  "rencanaPengembangan": {
+    "periode": "2025–2026",
+    "butir": [
+      "Pengajuan RW 04 sebagai Program Kampung Iklim",
+      "100 lubang biopori",
+      "1 rumah 1 biokomposter",
+      "Tanaman Obat Keluarga (TOGA)",
+      "Kampung Kreasi",
+      "Normalisasi saluran air",
+      "Kemitraan Perhutani",
+      "Ecofarming dan eduwisata",
+      "Kolaborasi Bank Sampah–TPS3R",
+      "Kemitraan dunia usaha"
+    ]
+  }
+}

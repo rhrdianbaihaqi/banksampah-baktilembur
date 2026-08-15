@@ -1,0 +1,91 @@
+---
+/**
+ * Facade YouTube — iframe baru dimuat setelah diklik (PRD §S10, §5.2).
+ *
+ * Menyematkan iframe YouTube sejak awal menarik ratusan KB skrip pihak ketiga
+ * sebelum pengunjung tentu ingin menonton. Di kuota terbatas milik Persona 1,
+ * itu biaya yang dibayar tanpa manfaat.
+ *
+ * Gambar sampul diambil dari YouTube saat build tidak mungkin (situs statis
+ * tanpa jaringan saat runtime), jadi sampulnya blok token — konsisten dengan
+ * pendekatan placeholder di seluruh situs.
+ */
+import Ikon from './Ikon.astro';
+
+interface Props {
+	idYoutube: string;
+	judul: string;
+	label: string;
+}
+
+const { idYoutube, judul, label } = Astro.props;
+---
+
+<div class="facade" data-video={idYoutube} data-judul={judul}>
+	<button type="button" class="tombol" data-ga4="putar_video">
+		<Ikon nama="play" ukuran={32} />
+		<span>{label}</span>
+	</button>
+</div>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-video]').forEach((facade) => {
+		const tombol = facade.querySelector('button');
+		if (!tombol) return;
+
+		tombol.addEventListener(
+			'click',
+			() => {
+				const id = facade.dataset.video;
+				const judul = facade.dataset.judul ?? '';
+				if (!id) return;
+
+				const iframe = document.createElement('iframe');
+				iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+				iframe.title = judul;
+				iframe.allow =
+					'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+				iframe.allowFullscreen = true;
+				iframe.loading = 'lazy';
+				iframe.className = 'sematan';
+
+				facade.replaceChildren(iframe);
+			},
+			{ once: true },
+		);
+	});
+</script>
+
+<style>
+	.facade {
+		position: relative;
+		aspect-ratio: 16 / 9;
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		background: var(--brand-green-dark);
+	}
+
+	.tombol {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-unit);
+		width: 100%;
+		border: 0;
+		background: transparent;
+		color: var(--white);
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: var(--text-isi);
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.facade :global(.sematan) {
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+</style>

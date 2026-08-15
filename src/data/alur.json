@@ -1,0 +1,35 @@
+{
+  "judul": "Cara Menjadi Nasabah",
+  "langkah": [
+    {
+      "nomor": 1,
+      "judul": "Pilah dari rumah",
+      "keterangan": "Pisahkan sampah anorganik dan organik di rumah."
+    },
+    {
+      "nomor": 2,
+      "judul": "Setor atau minta dijemput",
+      "keterangan": "Setorkan ke Bank Sampah Bakti Lembur, atau minta dijemput petugas."
+    },
+    {
+      "nomor": 3,
+      "judul": "Ditimbang petugas",
+      "keterangan": "Sampah ditimbang di hadapan Anda."
+    },
+    {
+      "nomor": 4,
+      "judul": "Dicatat di buku tabungan",
+      "keterangan": "Hasil penimbangan dicatat di buku tabungan nasabah."
+    },
+    {
+      "nomor": 5,
+      "judul": "Dipilah dan dijual",
+      "keterangan": "Sampah dipilah, dikemas, lalu dijual ke offtaker."
+    },
+    {
+      "nomor": 6,
+      "judul": "Tabungan diambil",
+      "keterangan": "Tabungan diambil tiap 6 bulan, atau ditukar sembako di koperasi."
+    }
+  ]
+}

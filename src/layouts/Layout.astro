@@ -1,23 +1,119 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import { profil } from '../data';
+import Navbar from '../components/Navbar.astro';
+
+interface Props {
+	/** Judul halaman tanpa nama lembaga — nama lembaga ditambahkan otomatis. */
+	judul: string;
+	/** Meta description unik per halaman, 150–160 karakter (PRD §11.5). */
+	deskripsi: string;
+	/** Halaman beranda memakai judul penuh tanpa imbuhan. */
+	judulPenuh?: boolean;
+	ogImage?: string;
+}
+
+const { judul, deskripsi, judulPenuh = false, ogImage = '/og-default.jpg' } = Astro.props;
+
+const title = judulPenuh ? judul : `${judul} — ${profil.nama}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogUrl = new URL(ogImage, Astro.site).href;
+
+const { alamat, koordinat, kontak, sosmed, sk } = profil;
+
+// Structured data Organization + LocalBusiness (PRD §11.5).
+// Sengaja TANPA openingHours — lembaga tidak punya jam layanan tetap.
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': ['Organization', 'LocalBusiness'],
+	name: profil.nama,
+	description: profil.tagline,
+	url: Astro.site?.href,
+	email: kontak.email,
+	telephone: `+${kontak.whatsapp.nomorInternasional}`,
+	foundingDate: profil.diresmikan,
+	identifier: sk.nomor,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: alamat.jalan,
+		addressLocality: alamat.kecamatan,
+		addressRegion: alamat.provinsi,
+		postalCode: alamat.kodePos,
+		addressCountry: alamat.negara,
+	},
+	// Koordinat baru disertakan setelah diisi (PRD §17 item 2).
+	...(koordinat.terisi && koordinat.lat !== null && koordinat.long !== null
+		? {
+				geo: {
+					'@type': 'GeoCoordinates',
+					latitude: koordinat.lat,
+					longitude: koordinat.long,
+				},
+			}
+		: {}),
+	sameAs: sosmed.map((s) => s.url),
+};
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="id">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+
+		<title>{title}</title>
+		<meta name="description" content={deskripsi} />
+		<link rel="canonical" href={canonical} />
+
+		<Font cssVariable="--font-display" preload />
+		<Font cssVariable="--font-isi" preload />
+		<Font cssVariable="--font-mono" />
+
+		{/* Mayoritas trafik datang dari tautan yang dibagikan di WhatsApp,
+		    jadi pratinjau tautan adalah kesan pertama (PRD §11.5). */}
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={profil.nama} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={deskripsi} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogUrl} />
+		<meta property="og:locale" content="id_ID" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={deskripsi} />
+		<meta name="twitter:image" content={ogUrl} />
+
+		<script
+			type="application/ld+json"
+			set:html={JSON.stringify(structuredData)}
+			is:inline
+		/>
 	</head>
 	<body>
+		<a href="#konten" class="lewati">Lewati ke konten utama</a>
+		<Navbar />
 		<slot />
 	</body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
+	.lewati {
+		position: absolute;
+		left: -9999px;
+		top: 0;
+		z-index: 100;
+		padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);
+		background: var(--white);
+		color: var(--neutral-900);
+		border-radius: var(--radius-sm);
+	}
+
+	.lewati:focus {
+		left: var(--space-unit);
+		top: var(--space-unit);
 	}
 </style>

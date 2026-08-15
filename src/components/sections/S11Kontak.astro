@@ -1,0 +1,175 @@
+---
+/**
+ * S11 — Dukung & Hubungi Kami. Latar: foto penuh + scrim kuat (PRD §S11).
+ *
+ * Empat jalur, masing-masing satu Panel Kaca Setoran, karena empat persona
+ * berbeda sampai di dasar halaman dengan pertanyaan berbeda. Satu CTA umum
+ * akan gagal melayani keempatnya.
+ *
+ * Kebutuhan lembaga dikomunikasikan terbuka — ini permintaan eksplisit PRD,
+ * bukan tambahan.
+ */
+import Seksi from '../ui/Seksi.astro';
+import GlassPanel from '../glass/GlassPanel.astro';
+import GlassChip from '../glass/GlassChip.astro';
+import CtaWhatsapp from '../ui/CtaWhatsapp.astro';
+import { beranda, profil } from '../../data';
+
+const { s11 } = beranda;
+const { alamat, kontak, sosmed } = profil;
+---
+
+<Seksi
+	id="hubungi"
+	eyebrow={s11.eyebrow}
+	judul={s11.judul}
+	latar="foto"
+	scrim="kuat"
+	labelPlaceholder="Pengurus dan warga di depan TPS"
+>
+	<ul class="jalur">
+		{
+			s11.jalur.map((j) => (
+				<GlassPanel as="li" diAtasFoto eyebrow={j.eyebrow}>
+					<h3 class="judul-jalur">{j.judul}</h3>
+					<p class="ket">{j.keterangan}</p>
+					<CtaWhatsapp kunci={j.cta} />
+
+					{j.tautan && (
+						<Fragment slot="kaki">
+							<a href={j.tautan.href} class="tautan-kaki">
+								{j.tautan.label}
+							</a>
+						</Fragment>
+					)}
+				</GlassPanel>
+			))
+		}
+	</ul>
+
+	<div class="bawah">
+		<div class="blok-bawah">
+			<h3 class="eyebrow">{s11.labelKebutuhan}</h3>
+			<div class="chip-baris">
+				{profil.kebutuhan.map((k) => <GlassChip>{k}</GlassChip>)}
+			</div>
+		</div>
+
+		<address class="blok-bawah kontak">
+			<h3 class="eyebrow">{s11.labelKontak}</h3>
+			<p class="alamat">{alamat.lengkap}</p>
+			<ul class="tautan-kontak">
+				<li>
+					<a href={`mailto:${kontak.email}`} data-cta>{kontak.email}</a>
+				</li>
+				{
+					sosmed.map((s) => (
+						<li>
+							<a
+								href={s.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								data-cta
+								data-ga4="klik_sosmed"
+							>
+								{s.nama} {s.handle}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</address>
+	</div>
+</Seksi>
+
+<style>
+	.jalur {
+		display: grid;
+		gap: calc(var(--space-unit) * 2);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.judul-jalur {
+		margin: 0;
+		font-size: var(--text-subjudul);
+	}
+
+	.ket {
+		margin: 0;
+		color: var(--neutral-100);
+	}
+
+	.tautan-kaki {
+		color: var(--neutral-100);
+		font-weight: 600;
+	}
+
+	.bawah {
+		display: grid;
+		gap: calc(var(--space-unit) * 4);
+	}
+
+	.blok-bawah {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 1.5);
+	}
+
+	.blok-bawah h3 {
+		margin: 0;
+		color: var(--neutral-100);
+	}
+
+	.chip-baris {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-unit);
+	}
+
+	.kontak {
+		font-style: normal;
+	}
+
+	.alamat {
+		margin: 0;
+		max-width: 40ch;
+	}
+
+	.tautan-kontak {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 0.5);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.tautan-kontak a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		color: var(--white);
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	@media (min-width: 700px) {
+		.jalur {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.bawah {
+			grid-template-columns: 1fr 1fr;
+			gap: calc(var(--space-unit) * 6);
+		}
+	}
+
+	@media (min-width: 1000px) {
+		.jalur {
+			grid-template-columns: repeat(4, 1fr);
+			gap: calc(var(--space-unit) * 3);
+		}
+	}
+</style>

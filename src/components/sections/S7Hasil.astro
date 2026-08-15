@@ -1,0 +1,66 @@
+---
+/**
+ * S7 — Hasil Nyata. Latar: foto penuh + scrim kuat (PRD §S7).
+ * Enam kartu kaca berikon di atas foto lanskap kampung.
+ */
+import Seksi from '../ui/Seksi.astro';
+import GlassPanel from '../glass/GlassPanel.astro';
+import Ikon from '../ui/Ikon.astro';
+import { beranda, mitra } from '../../data';
+
+const { s7 } = beranda;
+---
+
+<Seksi
+	id="hasil"
+	eyebrow={s7.eyebrow}
+	judul={s7.judul}
+	latar="foto"
+	scrim="kuat"
+	labelPlaceholder="Lanskap kampung Nagrog"
+>
+	<ul class="grid">
+		{
+			mitra.hasilNyata.map((h) => (
+				<GlassPanel as="li" diAtasFoto>
+					<Ikon nama={h.ikon} />
+					<h3 class="judul-kartu">{h.judul}</h3>
+					<p class="ket">{h.keterangan}</p>
+				</GlassPanel>
+			))
+		}
+	</ul>
+</Seksi>
+
+<style>
+	.grid {
+		display: grid;
+		gap: calc(var(--space-unit) * 2);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.judul-kartu {
+		margin: 0;
+		font-size: var(--text-subjudul);
+	}
+
+	.ket {
+		margin: 0;
+		color: var(--neutral-100);
+	}
+
+	@media (min-width: 700px) {
+		.grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1000px) {
+		.grid {
+			grid-template-columns: repeat(3, 1fr);
+			gap: calc(var(--space-unit) * 3);
+		}
+	}
+</style>

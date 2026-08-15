@@ -1,0 +1,71 @@
+---
+/**
+ * Tombol CTA WhatsApp. Nomor dan pesan pre-fill selalu dari `whatsapp.json`
+ * lewat `ctaWhatsapp()` — tidak pernah ditulis di komponen (PRD §11.2).
+ *
+ * `data-ga4` menyiapkan event PRD §11.8; pemasangan GA4 menyusul.
+ */
+import { ctaWhatsapp } from '../../data';
+import type { KunciCta } from '../../data/types';
+
+interface Props {
+	kunci: KunciCta;
+	/** Label alternatif bila konteksnya butuh kalimat berbeda dari data. */
+	label?: string;
+	varian?: 'primer' | 'sekunder';
+	class?: string;
+}
+
+const { kunci, label, varian = 'primer', class: kelas = '' } = Astro.props;
+const cta = ctaWhatsapp(kunci);
+---
+
+<a
+	href={cta.url}
+	target="_blank"
+	rel="noopener noreferrer"
+	data-cta
+	data-ga4={cta.eventGa4}
+	class:list={['cta', varian, kelas]}
+>
+	{label ?? cta.label}
+</a>
+
+<style>
+	.cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-unit);
+		padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 3);
+		border-radius: var(--radius-sm);
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: var(--text-isi);
+		font-weight: 600;
+		text-decoration: none;
+		text-align: center;
+	}
+
+	.primer {
+		background: var(--brand-green);
+		color: var(--white);
+		border: 1px solid var(--brand-green);
+	}
+
+	.primer:hover {
+		background: var(--brand-green-dark);
+		border-color: var(--brand-green-dark);
+	}
+
+	.sekunder {
+		background: var(--glass-light-strong);
+		color: var(--neutral-900);
+		border: 1px solid var(--glass-border);
+	}
+
+	@media (prefers-reduced-transparency: reduce) {
+		.sekunder {
+			background: var(--white);
+		}
+	}
+</style>

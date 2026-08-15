@@ -1,0 +1,30 @@
+{
+  "_catatan": "PRD §13 — foto dengan izinTayang:false ATAU adaWajahAnak:true TIDAK dirender. Aturan ini ditegakkan di kode (lihat src/data/galeri.ts), bukan hanya di proses kerja. Jangan melewatinya dengan merender langsung dari berkas ini.",
+  "kategori": [
+    {
+      "slug": "penimbangan",
+      "judul": "Kegiatan Penimbangan",
+      "foto": []
+    },
+    {
+      "slug": "geberling",
+      "judul": "Gerakan Bebersih Lingkungan",
+      "foto": []
+    },
+    {
+      "slug": "ekonomi-sirkular",
+      "judul": "Pengolahan & Ekonomi Sirkular",
+      "foto": []
+    },
+    {
+      "slug": "goes-to-school",
+      "judul": "Bakti Lembur Goes to School",
+      "foto": []
+    },
+    {
+      "slug": "kunjungan",
+      "judul": "Kunjungan & Kemitraan",
+      "foto": []
+    }
+  ]
+}
