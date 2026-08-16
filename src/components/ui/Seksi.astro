@@ -119,7 +119,12 @@ const judulId = id ? `${id}-judul` : undefined;
 
 	.kepala .eyebrow {
 		margin: 0;
-		color: var(--neutral-600);
+		font-family: var(--font-mono), monospace;
+		font-size: 0.85rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--brand-green);
 	}
 
 	.latar-foto .kepala .eyebrow {
@@ -128,7 +133,11 @@ const judulId = id ? `${id}-judul` : undefined;
 
 	.judul {
 		margin: 0;
+		font-family: var(--font-hero), system-ui, sans-serif;
 		font-size: var(--text-seksi);
+		font-weight: 800;
+		font-style: italic;
+		letter-spacing: -0.02em;
 	}
 
 	@media (min-width: 768px) {

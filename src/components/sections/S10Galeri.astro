@@ -1,17 +1,11 @@
 ---
 /**
- * S10 — Galeri Kegiatan. Latar: foto penuh + scrim lembut (PRD §S10).
- *
- * Foto ditarik lewat `galeriTersaring()`, satu-satunya jalur render galeri.
- * Fungsi itu membuang foto ber-`izinTayang: false` atau `adaWajahAnak: true`
- * (§13). Jangan pernah memetakan `galeri.json` langsung di sini.
- *
- * Selama tim KKN belum menyetorkan foto berikut status izinnya, daftar ini
- * kosong dan seksi menampilkan keterangan apa adanya — bukan foto stok.
+ * S10 — Galeri Kegiatan.
+ * Redesign: Horizontal Slider layout dengan custom header sesuai referensi.
  */
 import { Image } from "astro:assets";
 import Seksi from "../ui/Seksi.astro";
-import GlassPanel from "../glass/GlassPanel.astro";
+import Ikon from "../ui/Ikon.astro";
 import VideoFacade from "../ui/VideoFacade.astro";
 import { beranda, galeriTersaring, profil } from "../../data";
 
@@ -20,7 +14,7 @@ const kategori = galeriTersaring();
 
 // Foto galeri disimpan di src/assets/images/ dan dioptimasi astro:assets.
 const berkas = import.meta.glob<{ default: ImageMetadata }>(
-	"../../assets/images/*.{jpg,jpeg,png,avif,webp}",
+	"../../assets/images/**/*.{jpg,JPG,jpeg,JPEG,png,PNG,avif,webp}",
 );
 ---
 
@@ -28,112 +22,377 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 	id="galeri"
 	eyebrow={s10.eyebrow}
 	judul={s10.judul}
-	latar="foto"
-	scrim="lembut"
-	labelPlaceholder="Kolase kegiatan bank sampah"
+	latar="netral"
+	tanpaKepala={true}
 >
-	{
-		kategori.length > 0 ? (
-			<ul class="grid">
-				{kategori.flatMap((k) =>
-					k.foto.map((f) => (
-						<li class="sel">
-							<figure class="bingkai glass">
-								<Image
-									src={berkas[
-										`../../assets/images/${f.file}`
-									]!()}
-									alt={f.alt}
-									widths={[320, 640, 960]}
-									sizes="(min-width: 1000px) 320px, 50vw"
-									loading="lazy"
-									class="foto"
-								/>
-								<figcaption class="ket">{f.alt}</figcaption>
-							</figure>
-						</li>
-					)),
-				)}
-			</ul>
-		) : (
-			<GlassPanel diAtasFoto>
-				<p class="kosong">{s10.kosong}</p>
-			</GlassPanel>
-		)
-	}
+	<div class="galeri-kontainer">
+		<!-- CUSTOM HEADER (Sesuai Referensi) -->
+		<div class="galeri-header-wrap">
+			<div class="galeri-title-box">
+				<span class="red-line"></span>
+				<h2 class="galeri-title"><span class="stabilo-hijau">{s10.judul}</span></h2>
+			</div>
+			
+			<div class="galeri-nav">
+				<button type="button" class="nav-btn prev-btn" aria-label="Sebelumnya" id="gal-prev">
+					<Ikon nama="arrow-left" ukuran={24} />
+				</button>
+				<button type="button" class="nav-btn next-btn" aria-label="Selanjutnya" id="gal-next">
+					<Ikon nama="arrow-right" ukuran={24} />
+				</button>
+			</div>
+		</div>
 
-	<div class="video">
-		<VideoFacade
-			idYoutube={profil.video.idYoutube}
-			judul={profil.video.judul}
-			label={s10.labelVideo}
-		/>
+		<!-- SLIDER -->
+		<div class="galeri-slider-wrapper">
+			{
+				kategori.length > 0 ? (
+					<ul class="galeri-track" id="galeri-track">
+						{kategori.flatMap((k) =>
+							k.foto.map((f) => (
+								<li class="galeri-slide">
+									<Image
+										src={berkas[`../../assets/images/${f.file}`]!()}
+										alt={f.alt}
+										widths={[320, 640, 960]}
+										sizes="(min-width: 1000px) 500px, 85vw"
+										loading="lazy"
+										class="slide-foto"
+									/>
+								</li>
+							)),
+						)}
+					</ul>
+				) : (
+					<div class="galeri-kosong">
+						<p>{s10.kosong}</p>
+					</div>
+				)
+			}
+		</div>
+
+		<!-- ELEMEN TAMBAHAN (Video & Link) -->
+		<div class="galeri-footer">
+			<div class="video-wrap">
+				<VideoFacade
+					idYoutube={profil.video.idYoutube}
+					judul={profil.video.judul}
+					label={s10.labelVideo}
+				/>
+			</div>
+			
+			<div class="link-wrap">
+				<a href={s10.tautanSelengkapnya.href} class="btn-selengkapnya">
+					<span>{s10.tautanSelengkapnya.label}</span>
+					<Ikon nama="arrow-right" ukuran={18} />
+				</a>
+			</div>
+		</div>
 	</div>
-
-	<a href={s10.tautanSelengkapnya.href} class="selengkapnya">
-		{s10.tautanSelengkapnya.label}
-	</a>
 </Seksi>
 
 <style>
-	.grid {
-		display: grid;
-		gap: calc(var(--space-unit) * 2);
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.bingkai {
-		margin: 0;
-		padding: var(--space-unit);
-	}
-
-	/* Dimensi eksplisit lewat aspect-ratio mencegah pergeseran tata letak
-	   saat gambar lazy selesai dimuat (PRD §11.4, CLS < 0,1). */
-	.foto {
-		display: block;
+	.galeri-kontainer {
+		display: flex;
+		flex-direction: column;
 		width: 100%;
-		aspect-ratio: 4 / 3;
-		object-fit: cover;
-		border-radius: var(--radius-sm);
 	}
 
-	.ket {
-		padding: var(--space-unit) calc(var(--space-unit) * 0.5) 0;
-		font-size: var(--text-kecil);
-		color: var(--neutral-700);
+	/* HEADER */
+	.galeri-header-wrap {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: calc(var(--space-unit) * 6);
 	}
 
-	.kosong {
+	.galeri-title-box {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+	}
+
+	.red-line {
+		width: 32px;
+		height: 2px;
+		background-color: #ef4444; /* Warna merah sesuai gambar */
+	}
+
+	.galeri-title {
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: clamp(2rem, 4vw, 2.5rem);
+		font-weight: 800;
+		font-style: italic;
+		letter-spacing: -0.02em;
+		color: var(--neutral-900);
 		margin: 0;
 	}
 
-	.video {
+	/* Efek Stabilo Hijau Muda pada Judul */
+	.stabilo-hijau {
+		position: relative;
+		display: inline-block;
+		white-space: nowrap;
+		z-index: 1;
+	}
+
+	.stabilo-hijau::before {
+		content: '';
+		position: absolute;
+		left: -4px;
+		right: -4px;
+		bottom: 10%;
+		height: 36%;
+		background: rgba(144, 238, 144, 0.7); /* Light green / hijau muda stabilo */
+		z-index: -1;
+		border-radius: 4px;
+		transform: rotate(-1.5deg);
+	}
+
+	/* NAVIGATION BUTTONS */
+	.galeri-nav {
+		display: flex;
+		gap: 12px;
+	}
+
+	.nav-btn {
+		width: 48px;
+		height: 48px;
+		border-radius: 8px; /* Tombol Kotak Sesuai Permintaan */
+		border: 1px solid var(--neutral-200);
+		background: #ffffff;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--neutral-700);
+		cursor: pointer;
+		box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+		transition: all 0.2s ease;
+	}
+
+	.nav-btn:hover {
+		background: var(--brand-green);
+		color: #ffffff;
+		border-color: var(--brand-green);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 16px rgba(62, 116, 53, 0.2);
+	}
+
+	/* SLIDER WRAPPER (Bleeding Layout) */
+	.galeri-slider-wrapper {
+		position: relative;
+		width: 100vw;
+		margin-left: calc(50% - 50vw); /* Memecah batas max-width container */
+		margin-bottom: calc(var(--space-unit) * 8);
+	}
+
+	.galeri-track {
+		display: flex;
+		gap: 30px; /* Gap yang lebar antar foto */
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		overflow-x: auto;
+		scroll-behavior: smooth;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none; /* Firefox */
+		/* Padding dinamis agar awal slider sejajar dengan batas container (1120px) */
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+
+	.galeri-track::-webkit-scrollbar {
+		display: none; /* Chrome/Safari */
+	}
+
+	@media (min-width: 768px) {
+		.galeri-track {
+			padding-left: max(64px, calc((100vw - 1120px) / 2));
+			padding-right: max(64px, calc((100vw - 1120px) / 2));
+		}
+	}
+
+	/* FOTO KOTAK TAJAM */
+	.galeri-slide {
+		scroll-snap-align: start;
+		flex-shrink: 0;
+		width: 85vw;
+		max-width: 450px;
+	}
+
+	.slide-foto {
+		width: 100%;
+		height: 320px;
+		object-fit: cover;
+		display: block;
+		border-radius: 0; /* Kotak siku-siku sesuai referensi gambar */
+	}
+
+	@media (min-width: 768px) {
+		.slide-foto {
+			height: 380px;
+		}
+	}
+
+	.galeri-kosong {
+		padding-left: max(64px, calc((100vw - 1120px) / 2));
+		color: var(--neutral-600);
+		font-style: italic;
+	}
+
+	/* FOOTER (Video & Link) */
+	.galeri-footer {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 4);
+	}
+
+	.video-wrap {
+		width: 100%;
 		max-width: 720px;
 	}
 
-	.selengkapnya {
-		align-self: flex-start;
+	.link-wrap {
+		display: flex;
+	}
+
+	.btn-selengkapnya {
 		display: inline-flex;
 		align-items: center;
-		min-height: 44px;
-		color: var(--white);
+		gap: 12px;
 		font-weight: 600;
+		font-family: var(--font-ui), system-ui, sans-serif;
+		color: var(--white);
+		background-color: var(--brand-green);
+		padding: 14px 28px;
+		border-radius: var(--radius-md);
 		text-decoration: none;
-		border-bottom: 2px solid var(--white);
+		transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+		box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
 	}
 
-	@media (min-width: 700px) {
-		.grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
+	.btn-selengkapnya:hover {
+		background-color: var(--brand-green-dark);
+		transform: translateY(-2px);
+		box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+		color: var(--white);
 	}
 
-	@media (min-width: 1000px) {
-		.grid {
-			grid-template-columns: repeat(4, 1fr);
-			gap: calc(var(--space-unit) * 3);
-		}
+	.btn-selengkapnya:active {
+		transform: translateY(0);
+		box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
 	}
 </style>
+
+<script>
+	function setupGaleriSlider() {
+		const track = document.getElementById('galeri-track');
+		const btnPrev = document.getElementById('gal-prev');
+		const btnNext = document.getElementById('gal-next');
+
+		if (!track || !btnPrev || !btnNext) return;
+
+		let isDown = false;
+		let startX;
+		let scrollLeft;
+		let autoPlayTimer;
+
+		// Hindari penggandaan event listener jika dipanggil berkali-kali
+		if (track.hasAttribute('data-slider-init')) return;
+		track.setAttribute('data-slider-init', 'true');
+
+		// --- Auto-play Logic ---
+		const startAutoPlay = () => {
+			stopAutoPlay();
+			autoPlayTimer = setInterval(() => {
+				const scrollAmount = track.firstElementChild ? track.firstElementChild.clientWidth + 30 : 480;
+				// Jika sudah mencapai ujung kanan, kembali ke awal
+				if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 5) {
+					track.scrollTo({ left: 0, behavior: 'smooth' });
+				} else {
+					track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+				}
+			}, 3000);
+		};
+
+		const stopAutoPlay = () => {
+			if (autoPlayTimer) clearInterval(autoPlayTimer);
+		};
+
+		startAutoPlay();
+
+		track.addEventListener('mouseenter', stopAutoPlay);
+		track.addEventListener('mouseleave', startAutoPlay);
+		track.addEventListener('touchstart', stopAutoPlay, { passive: true });
+		track.addEventListener('touchend', startAutoPlay);
+
+		// --- Manual Navigation Buttons ---
+		const getScrollAmount = () => track.firstElementChild ? track.firstElementChild.clientWidth + 30 : 480;
+
+		btnPrev.addEventListener('click', () => {
+			stopAutoPlay();
+			if (track.scrollLeft <= 5) {
+				// Loop ke paling kanan
+				track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+			} else {
+				track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+			}
+			startAutoPlay();
+		});
+
+		btnNext.addEventListener('click', () => {
+			stopAutoPlay();
+			if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 5) {
+				// Loop kembali ke awal
+				track.scrollTo({ left: 0, behavior: 'smooth' });
+			} else {
+				track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+			}
+			startAutoPlay();
+		});
+
+		// --- Drag to Scroll (Mouse) ---
+		track.addEventListener('mousedown', (e) => {
+			isDown = true;
+			track.style.scrollSnapType = 'none';
+			track.style.scrollBehavior = 'auto';
+			track.style.cursor = 'grabbing';
+			startX = e.pageX - track.offsetLeft;
+			scrollLeft = track.scrollLeft;
+			stopAutoPlay();
+		});
+
+		track.addEventListener('mouseleave', () => {
+			if (!isDown) return;
+			isDown = false;
+			track.style.scrollSnapType = 'x mandatory';
+			track.style.scrollBehavior = 'smooth';
+			track.style.cursor = 'grab';
+			startAutoPlay();
+		});
+
+		track.addEventListener('mouseup', () => {
+			isDown = false;
+			track.style.scrollSnapType = 'x mandatory';
+			track.style.scrollBehavior = 'smooth';
+			track.style.cursor = 'grab';
+			startAutoPlay();
+		});
+
+		track.addEventListener('mousemove', (e) => {
+			if (!isDown) return;
+			e.preventDefault();
+			const x = e.pageX - track.offsetLeft;
+			const walk = (x - startX) * 2;
+			track.scrollLeft = scrollLeft - walk;
+		});
+
+		track.style.cursor = 'grab';
+	}
+
+	// Eksekusi fungsi setup saat komponen dimuat
+	setupGaleriSlider();
+	
+	// Jika menggunakan View Transitions
+	document.addEventListener('astro:page-load', setupGaleriSlider);
+</script>

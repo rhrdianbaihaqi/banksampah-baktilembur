@@ -1,19 +1,14 @@
 ---
 /**
- * S11 — Dukung & Hubungi Kami. Latar: foto penuh + scrim kuat (PRD §S11).
+ * S11 — Dukung & Hubungi Kami. Latar: netral (desain baru).
  *
- * Empat jalur, masing-masing satu Panel Kaca Setoran, karena empat persona
- * berbeda sampai di dasar halaman dengan pertanyaan berbeda. Satu CTA umum
- * akan gagal melayani keempatnya.
- *
- * Kebutuhan lembaga dikomunikasikan terbuka — ini permintaan eksplisit PRD,
- * bukan tambahan.
+ * Merombak layout menjadi Card Interaktif (selectable cards) bergaya bento.
+ * Seluruh kotak dapat ditekan langsung menuju WhatsApp terkait.
  */
 import Seksi from '../ui/Seksi.astro';
-import GlassPanel from '../glass/GlassPanel.astro';
 import GlassChip from '../glass/GlassChip.astro';
-import CtaWhatsapp from '../ui/CtaWhatsapp.astro';
-import { beranda, profil } from '../../data';
+import Ikon from '../ui/Ikon.astro';
+import { beranda, profil, ctaWhatsapp } from '../../data';
 
 const { s11 } = beranda;
 const { alamat, kontak, sosmed } = profil;
@@ -23,103 +18,186 @@ const { alamat, kontak, sosmed } = profil;
 	id="hubungi"
 	eyebrow={s11.eyebrow}
 	judul={s11.judul}
-	latar="foto"
-	scrim="kuat"
-	labelPlaceholder="Pengurus dan warga di depan TPS"
+	latar="netral"
 >
-	<ul class="jalur">
-		{
-			s11.jalur.map((j) => (
-				<GlassPanel as="li" diAtasFoto eyebrow={j.eyebrow}>
-					<h3 class="judul-jalur">{j.judul}</h3>
-					<p class="ket">{j.keterangan}</p>
-					<CtaWhatsapp kunci={j.cta} />
-
-					{j.tautan && (
-						<Fragment slot="kaki">
-							<a href={j.tautan.href} class="tautan-kaki">
-								{j.tautan.label}
-							</a>
-						</Fragment>
-					)}
-				</GlassPanel>
-			))
-		}
-	</ul>
-
-	<div class="bawah">
-		<div class="blok-bawah">
-			<h3 class="eyebrow">{s11.labelKebutuhan}</h3>
-			<div class="chip-baris">
-				{profil.kebutuhan.map((k) => <GlassChip>{k}</GlassChip>)}
-			</div>
-		</div>
-
-		<address class="blok-bawah kontak">
-			<h3 class="eyebrow">{s11.labelKontak}</h3>
-			<p class="alamat">{alamat.lengkap}</p>
-			<ul class="tautan-kontak">
-				<li>
-					<a href={`mailto:${kontak.email}`} data-cta>{kontak.email}</a>
-				</li>
-				{
-					sosmed.map((s) => (
+	<div class="kontak-kontainer">
+		<ul class="jalur-cards">
+			{
+				s11.jalur.map((j) => {
+					// Panggil utilitas untuk mendapatkan URL berdasarkan ID cta (misal: "halo-warga")
+					const ctaData = ctaWhatsapp(j.cta);
+					return (
 						<li>
-							<a
-								href={s.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								data-cta
-								data-ga4="klik_sosmed"
-							>
-								{s.nama} {s.handle}
+							<a href={ctaData.url} class="kartu-jalur" target="_blank" rel="noopener noreferrer" data-cta data-ga4={ctaData.eventGa4}>
+								<div class="kartu-header">
+									<span class="eyebrow-jalur">{j.eyebrow}</span>
+									<span class="ikon-panah-wrap"><Ikon nama="arrow-right" ukuran={20} /></span>
+								</div>
+								<h3 class="judul-jalur">{j.judul}</h3>
+								<p class="ket">{j.keterangan}</p>
 							</a>
 						</li>
-					))
-				}
-			</ul>
-		</address>
+					);
+				})
+			}
+		</ul>
+
+		<div class="bawah">
+			<div class="blok-bawah">
+				<h3 class="eyebrow">{s11.labelKebutuhan}</h3>
+				<div class="chip-baris">
+					{profil.kebutuhan.map((k) => <GlassChip>{k}</GlassChip>)}
+				</div>
+			</div>
+
+			<address class="blok-bawah kontak">
+				<h3 class="eyebrow">{s11.labelKontak}</h3>
+				<p class="alamat">{alamat.lengkap}</p>
+				<ul class="tautan-kontak">
+					<li>
+						<a href={`mailto:${kontak.email}`} data-cta>{kontak.email}</a>
+					</li>
+				</ul>
+				<ul class="daftar-sosmed">
+					{
+						sosmed.map((s) => (
+							<li>
+								<a
+									href={s.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									aria-label={s.nama}
+									data-cta
+									data-ga4="klik_sosmed"
+									class="ikon-bulat"
+								>
+									<Ikon nama={s.nama.toLowerCase()} ukuran={20} />
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</address>
+		</div>
 	</div>
 </Seksi>
 
 <style>
-	.jalur {
+	.kontak-kontainer {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 8);
+	}
+
+	.jalur-cards {
 		display: grid;
-		gap: calc(var(--space-unit) * 2);
+		gap: calc(var(--space-unit) * 3);
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
 
+	.kartu-jalur {
+		display: flex;
+		flex-direction: column;
+		padding: calc(var(--space-unit) * 4);
+		background: var(--white);
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--neutral-200);
+		text-decoration: none;
+		color: inherit;
+		transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+		height: 100%;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.kartu-jalur::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: var(--brand-green);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.3s ease;
+	}
+
+	.kartu-jalur:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 32px rgba(22, 163, 74, 0.1);
+		border-color: var(--brand-green-light);
+	}
+
+	.kartu-jalur:hover::before {
+		transform: scaleX(1);
+	}
+
+	.kartu-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: calc(var(--space-unit) * 2);
+	}
+
+	.eyebrow-jalur {
+		font-family: var(--font-mono), monospace;
+		font-size: 0.85rem;
+		font-weight: 700;
+		color: var(--brand-green);
+		letter-spacing: 0.05em;
+	}
+
+	.ikon-panah-wrap {
+		color: var(--neutral-400);
+		transition: color 0.3s ease, transform 0.3s ease;
+	}
+
+	.kartu-jalur:hover .ikon-panah-wrap {
+		color: var(--brand-green);
+		transform: translateX(4px);
+	}
+
 	.judul-jalur {
-		margin: 0;
-		font-size: var(--text-subjudul);
+		margin: 0 0 calc(var(--space-unit) * 1.5) 0;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: var(--neutral-900);
+		line-height: 1.2;
 	}
 
 	.ket {
 		margin: 0;
-		color: var(--neutral-100);
-	}
-
-	.tautan-kaki {
-		color: var(--neutral-100);
-		font-weight: 600;
+		color: var(--neutral-600);
+		font-size: 1rem;
+		line-height: 1.6;
+		flex-grow: 1;
 	}
 
 	.bawah {
 		display: grid;
-		gap: calc(var(--space-unit) * 4);
+		gap: calc(var(--space-unit) * 6);
+		padding-top: calc(var(--space-unit) * 6);
+		border-top: 1px solid var(--neutral-200);
 	}
 
 	.blok-bawah {
 		display: flex;
 		flex-direction: column;
-		gap: calc(var(--space-unit) * 1.5);
+		gap: calc(var(--space-unit) * 2);
 	}
 
-	.blok-bawah h3 {
+	.eyebrow {
 		margin: 0;
-		color: var(--neutral-100);
+		font-family: var(--font-mono), monospace;
+		font-size: 0.85rem;
+		font-weight: 700;
+		color: var(--neutral-500);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 	}
 
 	.chip-baris {
@@ -135,12 +213,14 @@ const { alamat, kontak, sosmed } = profil;
 	.alamat {
 		margin: 0;
 		max-width: 40ch;
+		color: var(--neutral-800);
+		line-height: 1.6;
 	}
 
 	.tautan-kontak {
 		display: flex;
 		flex-direction: column;
-		gap: calc(var(--space-unit) * 0.5);
+		gap: calc(var(--space-unit) * 1);
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -149,27 +229,54 @@ const { alamat, kontak, sosmed } = profil;
 	.tautan-kontak a {
 		display: inline-flex;
 		align-items: center;
-		min-height: 44px;
-		color: var(--white);
+		gap: 8px;
+		color: var(--brand-green-dark);
 		text-decoration: underline;
 		text-underline-offset: 4px;
+		font-weight: 600;
+		transition: color 0.2s ease;
 	}
 
-	@media (min-width: 700px) {
-		.jalur {
-			grid-template-columns: repeat(2, 1fr);
+	.tautan-kontak a:hover {
+		color: var(--brand-green);
+	}
+	
+	.daftar-sosmed {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		margin: calc(var(--space-unit) * 2) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.ikon-bulat {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		border-radius: 50%;
+		background-color: var(--neutral-100);
+		color: var(--brand-green-dark);
+		text-decoration: none;
+		transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+	}
+
+	.ikon-bulat:hover {
+		background-color: var(--brand-green-dark);
+		color: var(--white);
+		transform: translateY(-2px);
+	}
+
+	@media (min-width: 768px) {
+		.jalur-cards {
+			grid-template-columns: repeat(3, 1fr);
 		}
 
 		.bawah {
 			grid-template-columns: 1fr 1fr;
-			gap: calc(var(--space-unit) * 6);
-		}
-	}
-
-	@media (min-width: 1000px) {
-		.jalur {
-			grid-template-columns: repeat(4, 1fr);
-			gap: calc(var(--space-unit) * 3);
+			gap: calc(var(--space-unit) * 8);
 		}
 	}
 </style>

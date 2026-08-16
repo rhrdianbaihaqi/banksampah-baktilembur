@@ -126,16 +126,6 @@
         }
       },
       {
-        "eyebrow": "KAMPUS",
-        "judul": "Ajukan lokasi KKN atau pengabdian",
-        "keterangan": "Bakti Lembur menerima kelompok KKN dan program pengabdian masyarakat.",
-        "cta": "kkn",
-        "tautan": {
-          "label": "Bentuk kolaborasi yang tersedia",
-          "href": "/kemitraan"
-        }
-      },
-      {
         "eyebrow": "DESA LAIN",
         "judul": "Replikasi di desa Anda",
         "keterangan": "Kami mendampingi desa yang ingin mendirikan bank sampah serupa.",

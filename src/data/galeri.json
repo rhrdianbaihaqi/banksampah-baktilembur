@@ -4,7 +4,38 @@
     {
       "slug": "penimbangan",
       "judul": "Kegiatan Penimbangan",
-      "foto": []
+      "foto": [
+        {
+          "file": "latarbelakang/IMG_8919.JPG",
+          "alt": "Suasana kegiatan di Bank Sampah Bakti Lembur",
+          "izinTayang": true,
+          "adaWajahAnak": false
+        },
+        {
+          "file": "latarbelakang/IMG_8920.JPG",
+          "alt": "Warga melakukan penimbangan sampah terpilah",
+          "izinTayang": true,
+          "adaWajahAnak": false
+        },
+        {
+          "file": "latarbelakang/IMG_5957.jpg",
+          "alt": "Pencatatan hasil tabungan sampah warga",
+          "izinTayang": true,
+          "adaWajahAnak": false
+        },
+        {
+          "file": "latarbelakang/IMG_8915.JPG",
+          "alt": "Penimbangan rutin bersama pengurus bank sampah",
+          "izinTayang": true,
+          "adaWajahAnak": false
+        },
+        {
+          "file": "latarbelakang/Picture4.jpg",
+          "alt": "Sosialisasi dan edukasi pengelolaan sampah",
+          "izinTayang": true,
+          "adaWajahAnak": false
+        }
+      ]
     },
     {
       "slug": "geberling",
