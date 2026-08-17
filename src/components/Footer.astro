@@ -87,18 +87,37 @@ const startYear = new Date(diresmikan).getFullYear();
 			</div>
 			
 			<div class="footer-sosmed-bottom">
-				{sosmed.map(s => (
-					<a
-						href={s.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="sosmed-icon-link"
-						aria-label={`${s.nama} — ${s.handle}`}
-						title={`${s.nama} ${s.handle}`}
-					>
-						<Ikon nama={s.ikon} ukuran={20} />
-					</a>
-				))}
+				<div class="sosmed-bottom-group">
+					<span class="sosmed-bottom-label">Bank Sampah:</span>
+					{sosmed.filter(s => s.kelompok === 'banksampah').map(s => (
+						<a
+							href={s.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="sosmed-icon-link"
+							aria-label={`${s.nama} — ${s.handle}`}
+							title={`${s.nama} ${s.handle}`}
+						>
+							<Ikon nama={s.ikon} ukuran={20} />
+						</a>
+					))}
+				</div>
+				<span class="sosmed-bottom-divider">|</span>
+				<div class="sosmed-bottom-group">
+					<span class="sosmed-bottom-label">KKN Kel. 10:</span>
+					{sosmed.filter(s => s.kelompok === 'kkn').map(s => (
+						<a
+							href={s.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="sosmed-icon-link"
+							aria-label={`${s.nama} — ${s.handle}`}
+							title={`${s.nama} ${s.handle}`}
+						>
+							<Ikon nama={s.ikon} ukuran={20} />
+						</a>
+					))}
+				</div>
 			</div>
 		</div>
 
@@ -282,13 +301,37 @@ const startYear = new Date(diresmikan).getFullYear();
 	.footer-sosmed-bottom {
 		display: flex;
 		align-items: center;
+		flex-wrap: wrap;
+		justify-content: center;
 		gap: calc(var(--space-unit) * 2);
+	}
+
+	.sosmed-bottom-group {
+		display: flex;
+		align-items: center;
+		gap: calc(var(--space-unit) * 1.5);
+	}
+
+	.sosmed-bottom-label {
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--neutral-100);
+		opacity: 0.5;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.sosmed-bottom-divider {
+		color: var(--neutral-100);
+		opacity: 0.2;
+		font-size: 0.9rem;
 	}
 
 	.sosmed-icon-link {
 		color: var(--neutral-100);
 		opacity: 0.7;
-		transition: opacity 0.2s ease, color 0.2s ease;
+		transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -297,5 +340,6 @@ const startYear = new Date(diresmikan).getFullYear();
 	.sosmed-icon-link:hover {
 		opacity: 1;
 		color: var(--white);
+		transform: translateY(-2px);
 	}
 </style>
