@@ -82,7 +82,7 @@ const currentYear = new Date().getFullYear();
 			<ul class="contact-list">
 				<li>
 					<span class="icon-circle">
-						<IoCallOutline size={18} />
+						<IoCallOutline size={15} />
 					</span>
 					<div class="contact-text-wrap">
 						<span class="contact-text">Pendaftaran: {kontak.whatsapp.nomorTampil}</span>
@@ -90,7 +90,7 @@ const currentYear = new Date().getFullYear();
 				</li>
 				<li>
 					<span class="icon-circle">
-						<IoMailOutline size={18} />
+						<IoMailOutline size={15} />
 					</span>
 					<div class="contact-text-wrap">
 						<span class="contact-text contact-email">{kontak.email}</span>
@@ -104,7 +104,7 @@ const currentYear = new Date().getFullYear();
 			<h3 class="col-title">Alamat</h3>
 			<div class="address-box">
 				<span class="icon-circle flex-shrink-0">
-					<IoLocationSharp size={18} />
+					<IoLocationSharp size={15} />
 				</span>
 				<p class="address-text">{profil.alamat.lengkap}</p>
 			</div>
@@ -167,13 +167,13 @@ const currentYear = new Date().getFullYear();
 	.footer {
 		background: var(--brand-green);
 		color: var(--white);
-		padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3) calc(var(--space-unit) * 4);
+		padding: calc(var(--space-unit) * 6) calc(var(--space-unit) * 3) calc(var(--space-unit) * 3);
 		font-family: var(--font-isi), system-ui, sans-serif;
 	}
 
 	@media (min-width: 768px) {
 		.footer {
-			padding: calc(var(--space-unit) * 10) calc(var(--space-unit) * 6) calc(var(--space-unit) * 5);
+			padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 5) calc(var(--space-unit) * 4);
 		}
 	}
 
@@ -182,16 +182,18 @@ const currentYear = new Date().getFullYear();
 		margin: 0 auto;
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: calc(var(--space-unit) * 6);
+		gap: calc(var(--space-unit) * 4.5);
 	}
 
+	/* Tablet: 2 Kolom Seimbang */
 	@media (min-width: 640px) {
 		.footer-container {
 			grid-template-columns: repeat(2, 1fr);
-			gap: calc(var(--space-unit) * 6);
+			gap: calc(var(--space-unit) * 5) calc(var(--space-unit) * 4);
 		}
 	}
 
+	/* Desktop: 4 Kolom Proporsional */
 	@media (min-width: 1024px) {
 		.footer-container {
 			grid-template-columns: 1.4fr 1.55fr 1.3fr 0.95fr;
@@ -204,6 +206,7 @@ const currentYear = new Date().getFullYear();
 		flex-direction: column;
 		align-items: flex-start;
 		text-align: left;
+		width: 100%;
 	}
 
 	/* ─── KOLOM 1: BRAND & SOSMED ─────────────────────────────────────── */
@@ -379,18 +382,19 @@ const currentYear = new Date().getFullYear();
 		}
 	}
 
-	/* Lingkaran Ikon (Persis sesuai screenshot Kontak) */
+	/* Lingkaran Ikon (Kontak, Email, Lokasi) */
 	.icon-circle {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 38px;
-		height: 38px;
+		width: 32px;
+		height: 32px;
 		background: rgba(255, 255, 255, 0.18);
 		border: 1px solid rgba(255, 255, 255, 0.2);
 		border-radius: 50%;
 		flex-shrink: 0;
 		color: var(--white);
+		transition: background 0.2s ease;
 	}
 
 	/* ─── ALAMAT & PETA ─────────────────────────────────────────────── */
@@ -493,8 +497,8 @@ const currentYear = new Date().getFullYear();
 
 	/* ─── FOOTER BOTTOM ─────────────────────────────────────────────── */
 	.footer-bottom {
-		margin-top: calc(var(--space-unit) * 8);
-		padding-top: calc(var(--space-unit) * 4);
+		margin-top: calc(var(--space-unit) * 5);
+		padding-top: calc(var(--space-unit) * 2.5);
 		border-top: 1px solid rgba(255, 255, 255, 0.18);
 		text-align: center;
 	}
@@ -510,4 +514,45 @@ const currentYear = new Date().getFullYear();
 	.mt-2 { margin-top: 8px; }
 	.mt-3 { margin-top: 12px; }
 	.mt-4 { margin-top: 16px; }
+
+	/* ─── RESPONSIVE MOBILE OPTIMIZATIONS (< 640px) ─────────────────── */
+	@media (max-width: 640px) {
+		.icon-circle {
+			width: 28px;
+			height: 28px;
+		}
+
+		.social-icon {
+			width: 28px;
+			height: 28px;
+		}
+
+		.contact-list {
+			gap: 12px;
+		}
+
+		.contact-list li {
+			gap: 10px;
+		}
+
+		.address-box {
+			gap: 10px;
+		}
+
+		.contact-text,
+		.address-text,
+		.social-handle,
+		.quick-link-item {
+			font-size: 0.875rem;
+		}
+
+		.col-title {
+			font-size: 1.15rem;
+			margin-bottom: 14px;
+		}
+
+		.map-container {
+			height: 140px;
+		}
+	}
 </style>
