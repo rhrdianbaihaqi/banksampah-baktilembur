@@ -78,8 +78,7 @@ const { s11 } = beranda;
 						<Image
 							src={logoBankSampah}
 							alt="Logo Bank Sampah Bakti Lembur"
-							width={100}
-							height={100}
+							width={160}
 							loading="lazy"
 							decoding="async"
 							class="logo-img"
@@ -340,6 +339,7 @@ const { s11 } = beranda;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		padding: 12px;
 		background: linear-gradient(
 			135deg,
 			rgba(255, 255, 255, 0.8) 0%,
@@ -364,9 +364,12 @@ const { s11 } = beranda;
 	}
 
 	.logo-img {
-		width: 70%;
-		height: 70%;
+		max-width: 100%;
+		max-height: 100%;
+		width: auto;
+		height: auto;
 		object-fit: contain;
+		display: block;
 	}
 
 	.side-info {

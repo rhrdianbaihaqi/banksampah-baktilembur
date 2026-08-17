@@ -207,12 +207,17 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
   }
 
   .logo-img {
-    height: 32px;
+    height: 34px;
     width: auto;
-    max-width: 44px;
+    max-width: 140px;
     object-fit: contain;
     display: block;
     transition: transform 0.2s ease, filter 0.3s ease;
+  }
+
+  /* Perkecil sedikit logo Bank Sampah agar seimbang dengan logo bundar KKN & UIN */
+  .logo-module .logo-img:first-child {
+    height: 27px;
   }
 
   /* Ubah logo tertentu menjadi putih polos saat navbar transparan */
@@ -235,6 +240,9 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     }
     .logo-img {
       height: 26px;
+    }
+    .logo-module .logo-img:first-child {
+      height: 21px;
     }
   }
 
