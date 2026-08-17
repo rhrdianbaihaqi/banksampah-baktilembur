@@ -198,16 +198,17 @@ export interface Beranda {
 	};
 	s11: {
 		eyebrow: string;
-		judul: string;
-		jalur: Array<{
-			eyebrow: string;
+		judul: {
+			awal: string;
+			sorot: string;
+		};
+		subjudul: string;
+		deskripsi: string;
+		impactPoints: Array<{
+			icon: string;
 			judul: string;
-			keterangan: string;
-			cta: KunciCta;
-			tautan: Tautan | null;
+			deskripsi: string;
 		}>;
-		labelKebutuhan: string;
-		labelKontak: string;
 	};
 }
 

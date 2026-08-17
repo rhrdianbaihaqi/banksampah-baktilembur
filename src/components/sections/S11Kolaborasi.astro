@@ -16,7 +16,7 @@ import logoUin from '../../assets/images/logo/logouin.webp';
 const { s11 } = beranda;
 ---
 
-<Seksi id="kolaborasi" eyebrow={s11.eyebrow} judul={s11.judul} latar="netral">
+<Seksi id="kolaborasi" eyebrow={s11.eyebrow} judul={`${s11.judul.awal}${s11.judul.sorot}`} latar="netral" tanpaKepala={true}>
 	<div class="kolaborasi-container">
 		
 		<!-- DECORATIVE BACKGROUND -->
@@ -29,9 +29,18 @@ const { s11 } = beranda;
 		<!-- MAIN CONTENT WRAPPER -->
 		<div class="kolaborasi-content">
 			
+			<!-- HEADER KUSTOM DI TENGAH DENGAN STABILO -->
+			<header class="kolaborasi-header">
+				<p class="eyebrow-kustom">{s11.eyebrow}</p>
+				<h2 class="judul-kustom">
+					{s11.judul.awal}
+					<span class="stabilo-hijau">{s11.judul.sorot}</span>
+				</h2>
+			</header>
+
 			<!-- TOP SECTION: Heading + Deskripsi -->
 			<div class="kolaborasi-intro">
-				<h2 class="kolaborasi-subjudul">{s11.subjudul}</h2>
+				<h3 class="kolaborasi-subjudul">{s11.subjudul}</h3>
 				<p class="kolaborasi-deskripsi">{s11.deskripsi}</p>
 			</div>
 
@@ -182,6 +191,56 @@ const { s11 } = beranda;
 		display: flex;
 		flex-direction: column;
 		gap: calc(var(--space-unit) * 6);
+	}
+
+	/* ─── HEADER TENGAH KUSTOM ───────────────────────────────────────── */
+	.kolaborasi-header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: var(--space-unit);
+		margin-bottom: calc(var(--space-unit) * 1);
+	}
+
+	.eyebrow-kustom {
+		margin: 0;
+		font-family: var(--font-mono), monospace;
+		font-size: 0.85rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--brand-green);
+	}
+
+	.judul-kustom {
+		margin: 0;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: var(--text-seksi);
+		font-weight: 800;
+		font-style: italic;
+		letter-spacing: -0.02em;
+		color: var(--neutral-900);
+	}
+
+	.stabilo-hijau {
+		position: relative;
+		display: inline-block;
+		white-space: nowrap;
+		z-index: 1;
+	}
+
+	.stabilo-hijau::before {
+		content: '';
+		position: absolute;
+		left: -4px;
+		right: -4px;
+		bottom: 10%;
+		height: 36%;
+		background: rgba(144, 238, 144, 0.7); /* Light green / hijau muda stabilo */
+		z-index: -1;
+		border-radius: 4px;
+		transform: rotate(-1.5deg);
 	}
 
 	/* ─── INTRO SECTION ──────────────────────────────────────────────── */
