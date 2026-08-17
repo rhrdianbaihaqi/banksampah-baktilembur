@@ -32,37 +32,43 @@ const currentYear = new Date().getFullYear();
 			</div>
 			
 			<div class="social-wrapper">
+				<!-- Bank Sampah -->
 				<div class="social-block">
-					<p class="social-label">Bank Sampah:</p>
-					<div class="social-group">
+					<p class="social-block-title">Bank Sampah:</p>
+					<div class="social-items-list">
 						{sosmed.filter(s => s.kelompok === 'banksampah').map(s => (
 							<a
 								href={s.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="social-icon"
-								aria-label={`${s.nama} — ${s.handle}`}
-								title={`${s.nama} ${s.handle}`}
+								class="social-row-link"
+								title={`${s.nama} — ${s.handle}`}
 							>
-								{s.ikon === 'instagram' ? <FaInstagram size={18} /> : <FaTiktok size={16} />}
+								<span class="social-icon">
+									{s.ikon === 'instagram' ? <FaInstagram size={15} /> : <FaTiktok size={14} />}
+								</span>
+								<span class="social-handle">{s.handle}</span>
 							</a>
 						))}
 					</div>
 				</div>
 
+				<!-- KKN Kelompok 10 -->
 				<div class="social-block">
-					<p class="social-label">KKN Kelompok 10:</p>
-					<div class="social-group">
+					<p class="social-block-title">KKN Kelompok 10:</p>
+					<div class="social-items-list">
 						{sosmed.filter(s => s.kelompok === 'kkn').map(s => (
 							<a
 								href={s.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="social-icon"
-								aria-label={`${s.nama} — ${s.handle}`}
-								title={`${s.nama} ${s.handle}`}
+								class="social-row-link"
+								title={`${s.nama} — ${s.handle}`}
 							>
-								{s.ikon === 'instagram' ? <FaInstagram size={18} /> : <FaTiktok size={16} />}
+								<span class="social-icon">
+									{s.ikon === 'instagram' ? <FaInstagram size={15} /> : <FaTiktok size={14} />}
+								</span>
+								<span class="social-handle">{s.handle}</span>
 							</a>
 						))}
 					</div>
@@ -87,7 +93,7 @@ const currentYear = new Date().getFullYear();
 						<IoMailOutline size={18} />
 					</span>
 					<div class="contact-text-wrap">
-						<span class="contact-text">{kontak.email}</span>
+						<span class="contact-text contact-email">{kontak.email}</span>
 					</div>
 				</li>
 			</ul>
@@ -172,7 +178,7 @@ const currentYear = new Date().getFullYear();
 	}
 
 	.footer-container {
-		max-width: 1200px;
+		max-width: 1240px;
 		margin: 0 auto;
 		display: grid;
 		grid-template-columns: 1fr;
@@ -182,14 +188,14 @@ const currentYear = new Date().getFullYear();
 	@media (min-width: 640px) {
 		.footer-container {
 			grid-template-columns: repeat(2, 1fr);
-			gap: calc(var(--space-unit) * 5);
+			gap: calc(var(--space-unit) * 6);
 		}
 	}
 
 	@media (min-width: 1024px) {
 		.footer-container {
-			grid-template-columns: 1.3fr 1.15fr 1.25fr 1fr;
-			gap: calc(var(--space-unit) * 5);
+			grid-template-columns: 1.4fr 1.55fr 1.3fr 0.95fr;
+			gap: calc(var(--space-unit) * 4.5);
 		}
 	}
 
@@ -211,13 +217,13 @@ const currentYear = new Date().getFullYear();
 		align-items: flex-start;
 		justify-content: flex-start;
 		width: 100%;
-		margin-bottom: 16px;
+		margin-bottom: 14px;
 	}
 
 	.footer-logo {
-		height: 48px;
+		height: 46px;
 		width: auto;
-		max-width: 170px;
+		max-width: 160px;
 		object-fit: contain;
 		object-position: left center;
 		display: block;
@@ -228,47 +234,73 @@ const currentYear = new Date().getFullYear();
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 14px;
+		gap: 12px;
 		width: 100%;
 	}
 
 	.social-block {
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		gap: 6px;
+		width: 100%;
 	}
 
-	.social-label {
-		font-size: 0.9375rem;
-		font-weight: 500;
+	.social-block-title {
+		font-size: 0.875rem;
+		font-weight: 600;
 		color: var(--white);
 		opacity: 0.95;
 		margin: 0;
+		letter-spacing: 0.01em;
 	}
 
-	.social-group {
+	.social-items-list {
 		display: flex;
-		gap: 10px;
+		flex-direction: column;
+		gap: 6px;
+		width: 100%;
 	}
 
-	/* Gaya Lingkaran Ikon Sosial (Sesuai Referensi Gambar) */
+	.social-row-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 9px;
+		text-decoration: none;
+		color: var(--white);
+		opacity: 0.9;
+		transition: opacity 0.2s ease, transform 0.2s ease;
+	}
+
+	.social-row-link:hover {
+		opacity: 1;
+		transform: translateX(3px);
+	}
+
 	.social-icon {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 38px;
-		height: 38px;
+		width: 30px;
+		height: 30px;
 		background: rgba(255, 255, 255, 0.18);
 		border: 1px solid rgba(255, 255, 255, 0.2);
 		border-radius: 50%;
+		flex-shrink: 0;
 		color: var(--white);
-		transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+		transition: background 0.2s ease, border-color 0.2s ease;
 	}
 
-	.social-icon:hover {
+	.social-row-link:hover .social-icon {
 		background: rgba(255, 255, 255, 0.32);
 		border-color: rgba(255, 255, 255, 0.4);
-		transform: translateY(-2px);
+	}
+
+	.social-handle {
+		font-size: 0.84rem;
+		font-weight: 400;
+		color: var(--white);
+		opacity: 0.95;
+		word-break: break-all;
 	}
 
 	/* ─── HEADING KOLOM & GARIS BAWAH PUTIH ───────────────────────────── */
@@ -325,6 +357,7 @@ const currentYear = new Date().getFullYear();
 	.contact-text-wrap {
 		display: flex;
 		flex-direction: column;
+		min-width: 0;
 	}
 
 	.contact-text {
@@ -332,7 +365,18 @@ const currentYear = new Date().getFullYear();
 		line-height: 1.5;
 		color: var(--white);
 		opacity: 0.95;
-		word-break: break-word;
+	}
+
+	.contact-email {
+		word-break: normal;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 480px) {
+		.contact-email {
+			white-space: normal;
+			word-break: break-all;
+		}
 	}
 
 	/* Lingkaran Ikon (Persis sesuai screenshot Kontak) */
