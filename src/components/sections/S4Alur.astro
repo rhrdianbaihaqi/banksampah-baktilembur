@@ -324,27 +324,18 @@ const ikonLangkah = [
 
 	.card-ikon-wrap {
 		margin-bottom: calc(var(--space-unit) * 2.5);
-		transition: transform 0.25s cubic-bezier(0.2, 1, 0.3, 1);
 	}
 
 	.card-ikon {
 		width: 58px;
 		height: 58px;
-		border-radius: 0;
-		background: var(--brand-green-light);
-		color: var(--brand-green);
+		border-radius: var(--radius-sm); /* Sudut rounded halus (10px) */
+		background: var(--brand-green);
+		color: var(--white); /* Ikon warna putih murni */
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 4px 12px rgba(62, 116, 53, 0.07);
-		transition: all 0.25s cubic-bezier(0.2, 1, 0.3, 1);
-	}
-
-	.alur-card:hover .card-ikon {
-		background: var(--brand-green);
-		color: var(--white);
-		transform: scale(1.06);
-		box-shadow: 0 8px 20px rgba(62, 116, 53, 0.2);
+		box-shadow: 0 4px 14px rgba(62, 116, 53, 0.22);
 	}
 
 	.card-judul {
@@ -534,13 +525,14 @@ const ikonLangkah = [
 		.mobile-ikon {
 			width: 42px;
 			height: 42px;
-			border-radius: 0; /* Kotak siku-siku */
-			background: var(--brand-green-light);
-			color: var(--brand-green);
+			border-radius: 8px; /* Sudut rounded halus */
+			background: var(--brand-green);
+			color: var(--white); /* Ikon putih */
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			flex-shrink: 0;
+			box-shadow: 0 2px 8px rgba(62, 116, 53, 0.2);
 		}
 
 		.timeline-judul {
