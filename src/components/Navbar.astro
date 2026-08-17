@@ -36,7 +36,7 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
               height={item.tinggi * 2}
               loading="eager"
               decoding="async"
-              class="logo-img"
+              class:list={["logo-img", i !== 2 && "logo-putih"]}
             />
           ))
         }
@@ -116,12 +116,12 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     top: 0;
     z-index: 100;
 
-    /* KONDISI SEBELUM SCROLL (IMAGE 2): Full White Bar, Flat, Solid */
-    background-color: var(--white);
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    /* KONDISI SEBELUM SCROLL: Transparan */
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
     padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2.5);
-    pointer-events: auto;
+    pointer-events: none;
 
     transition:
       background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
@@ -132,26 +132,25 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
 
   @media (min-width: 768px) {
     .navbar-wrapper {
-      padding: calc(var(--space-unit) * 1.75) calc(var(--space-unit) * 4);
-    }
-  }
-
-  /* KONDISI SETELAH SCROLL (IMAGE 1): Wrapper transparan, konten melayang (floating) */
-  .navbar-wrapper.is-scrolled {
-    background-color: transparent;
-    border-bottom-color: transparent;
-    box-shadow: none;
-    padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2.5);
-    pointer-events: none; /* Klik tembus wrapper, hanya aktif di modul */
-  }
-
-  @media (min-width: 768px) {
-    .navbar-wrapper.is-scrolled {
       padding: calc(var(--space-unit) * 2) calc(var(--space-unit) * 4);
     }
   }
 
-  /* ─── Grid 3-Kolom untuk Menjamin Menu Berada di Tengah (Center) ─── */
+  /* KONDISI SETELAH SCROLL: Solid White Bar */
+  .navbar-wrapper.is-scrolled {
+    background-color: var(--white);
+    border-bottom-color: var(--border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2.5);
+    pointer-events: auto; 
+  }
+
+  @media (min-width: 768px) {
+    .navbar-wrapper.is-scrolled {
+      padding: calc(var(--space-unit) * 1.75) calc(var(--space-unit) * 4);
+    }
+  }
+
   .navbar-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -159,6 +158,7 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     align-items: center;
     justify-content: space-between;
     gap: calc(var(--space-unit) * 1.5);
+    pointer-events: auto; /* Pastikan interaksi klik berfungsi */
   }
 
   @media (min-width: 768px) {
@@ -173,22 +173,18 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     display: flex;
     justify-content: flex-start;
   }
-
   .nav-col-center {
     display: none;
   }
-
   @media (min-width: 768px) {
     .nav-col-center {
       display: flex;
       justify-content: center;
     }
   }
-
   .nav-col-right {
     display: none;
   }
-
   @media (min-width: 768px) {
     .nav-col-right {
       display: flex;
@@ -197,7 +193,7 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
   }
 
   /* ════════════════════════════════════════════════════════════════════
-     2. LOGO MODULE (Menyatu dengan Background sebelum scroll)
+     2. LOGO MODULE
      ════════════════════════════════════════════════════════════════════ */
   .logo-module {
     display: inline-flex;
@@ -206,28 +202,8 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     padding: calc(var(--space-unit) * 0.5) 0;
     text-decoration: none;
     flex-shrink: 0;
-    pointer-events: auto;
-
-    /* KONDISI SEBELUM SCROLL: Menyatu murni dengan background putih */
     background: transparent;
-    border: 1px solid transparent;
-    border-radius: var(--radius-md);
-    box-shadow: none;
-
-    transition:
-      background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      padding 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.2s ease;
-  }
-
-  /* KONDISI SETELAH SCROLL: Menjadi Floating Card Putih Solid */
-  .navbar-wrapper.is-scrolled .logo-module {
-    background: var(--white);
-    border-color: var(--border);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
-    padding: calc(var(--space-unit) * 0.75) calc(var(--space-unit) * 1.5);
+    transition: transform 0.2s ease;
   }
 
   .logo-img {
@@ -236,16 +212,25 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     max-width: 44px;
     object-fit: contain;
     display: block;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, filter 0.3s ease;
+  }
+
+  /* Ubah logo tertentu menjadi putih polos saat navbar transparan */
+  .logo-putih {
+    filter: brightness(0) invert(1);
   }
 
   .logo-module:hover .logo-img {
     transform: scale(1.04);
   }
 
+  /* Kembalikan warna asli logo saat navbar menjadi putih */
+  .navbar-wrapper.is-scrolled .logo-putih {
+    filter: none;
+  }
+
   @media (max-width: 640px) {
     .logo-module {
-      padding: calc(var(--space-unit) * 0.5) calc(var(--space-unit) * 1.25);
       gap: calc(var(--space-unit) * 0.75);
     }
     .logo-img {
@@ -254,7 +239,7 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
   }
 
   /* ════════════════════════════════════════════════════════════════════
-     3. MENU NAVIGASI DESKTOP (Center Aligned)
+     3. MENU NAVIGASI DESKTOP
      ════════════════════════════════════════════════════════════════════ */
   .nav-menu-desktop {
     list-style: none;
@@ -262,21 +247,8 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     display: flex;
     align-items: center;
     gap: calc(var(--space-unit) * 0.5);
-    border-radius: var(--radius-md);
-    pointer-events: auto;
-
-    /* KONDISI SEBELUM SCROLL (IMAGE 2): Flat, menyatu dengan bar putih */
     background: transparent;
-    border: 1px solid transparent;
-    box-shadow: none;
     padding: calc(var(--space-unit) * 0.5) calc(var(--space-unit) * 0.75);
-
-    transition:
-      background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      -webkit-backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .nav-item {
@@ -291,66 +263,48 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     text-decoration: none;
     border-radius: var(--radius-sm);
     white-space: nowrap;
-    border: 1px solid transparent;
     background-color: transparent;
 
-    /* Styling garis bawah sama persis dengan lebar teks */
+    /* SEBELUM SCROLL: Teks Putih Terang, Tanpa Hover/Aktif Efek */
+    color: #FFFFFF;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4); /* Opsional agar lebih terbaca di background terang */
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  }
+
+  /* Memastikan tetap putih dan polos sebelum di-scroll */
+  .nav-item:hover,
+  .nav-item.aktif {
+    color: #FFFFFF;
+    text-decoration: none;
+  }
+
+  /* SETELAH SCROLL: Teks Gelap, Ada Hover Hijau, Ada Garis Bawah Aktif */
+  .navbar-wrapper.is-scrolled .nav-item {
+    color: var(--neutral-700);
+    text-shadow: none;
     text-decoration-thickness: 2px;
     text-underline-offset: 6px;
     text-decoration-color: transparent;
-
-    /* KONDISI SEBELUM SCROLL: Teks gelap kontras tinggi */
-    color: var(--neutral-700);
-
-    transition:
-      color 0.2s ease,
-      text-decoration-color 0.2s ease;
   }
-
-  .nav-item:hover {
+  .navbar-wrapper.is-scrolled .nav-item:hover {
     color: var(--brand-green);
-    background-color: transparent;
   }
-
-  .nav-item.aktif {
+  .navbar-wrapper.is-scrolled .nav-item.aktif {
     color: var(--brand-green);
     font-weight: 600;
     text-decoration: underline;
     text-decoration-color: var(--brand-green);
   }
 
-  /* ─── KONDISI SETELAH SCROLL (IMAGE 1): Liquid Glass Capsule Gelap ─── */
-  .navbar-wrapper.is-scrolled .nav-menu-desktop {
-    background: rgba(18, 24, 18, 0.55);
-    border-color: rgba(255, 255, 255, 0.35);
-    box-shadow:
-      0 12px 40px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-  }
-
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    .navbar-wrapper.is-scrolled .nav-menu-desktop {
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      backdrop-filter: blur(24px) saturate(180%);
-    }
-  }
-
+  /* SETELAH SCROLL: Teks Gelap */
   .navbar-wrapper.is-scrolled .nav-item {
-    color: rgba(255, 255, 255, 0.88);
+    color: var(--neutral-700);
   }
-
   .navbar-wrapper.is-scrolled .nav-item:hover {
-    color: var(--white);
-    background-color: rgba(255, 255, 255, 0.12);
+    color: var(--brand-green);
   }
-
   .navbar-wrapper.is-scrolled .nav-item.aktif {
-    color: var(--white);
-    background-color: transparent;
-    border-color: transparent;
-    box-shadow: none;
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.5); /* Glow halus menyatu dengan kaca */
+    color: var(--brand-green);
   }
 
   /* ════════════════════════════════════════════════════════════════════
@@ -366,41 +320,18 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     font-weight: 600;
     text-decoration: none;
     border-radius: var(--radius-md);
-    pointer-events: auto;
 
-    /* Sebelum scroll: Solid Brand Green */
     background: var(--brand-green);
     color: var(--white);
     border: 1px solid var(--brand-green-dark);
     box-shadow: 0 2px 8px rgba(62, 116, 53, 0.25);
-
-    transition:
-      background-color 0.35s ease,
-      border-color 0.35s ease,
-      box-shadow 0.35s ease,
-      transform 0.15s ease;
+    transition: background-color 0.35s ease, transform 0.15s ease, box-shadow 0.35s ease;
   }
 
   .nav-cta-btn:hover {
     background: var(--brand-green-dark);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(62, 116, 53, 0.35);
-  }
-
-  /* Setelah scroll: Floating Pill Green */
-  .navbar-wrapper.is-scrolled .nav-cta-btn {
-    background: rgba(62, 116, 53, 0.88);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow:
-      0 8px 24px rgba(0, 0, 0, 0.25),
-      inset 0 1px 1px rgba(255, 255, 255, 0.4);
-  }
-
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    .navbar-wrapper.is-scrolled .nav-cta-btn {
-      -webkit-backdrop-filter: blur(16px);
-      backdrop-filter: blur(16px);
-    }
   }
 
   /* ════════════════════════════════════════════════════════════════════
@@ -416,18 +347,8 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     height: 44px;
     padding: 0;
     cursor: pointer;
-    border-radius: var(--radius-md);
-    pointer-events: auto;
-
-    /* Sebelum scroll: Menyatu flat dengan header putih */
     background: transparent;
-    border: 1px solid transparent;
-    box-shadow: none;
-
-    transition:
-      background-color 0.35s ease,
-      border-color 0.35s ease,
-      box-shadow 0.35s ease;
+    border: none;
   }
 
   @media (min-width: 768px) {
@@ -441,29 +362,12 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     width: 20px;
     height: 2px;
     border-radius: 2px;
-    background: var(--neutral-900);
-    transition:
-      transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 0.2s ease,
-      background-color 0.35s ease;
-  }
-
-  /* Hamburger saat scroll: Liquid Glass */
-  .navbar-wrapper.is-scrolled .nav-toggle-btn {
-    background: rgba(18, 24, 18, 0.72);
-    border-color: rgba(255, 255, 255, 0.28);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-  }
-
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    .navbar-wrapper.is-scrolled .nav-toggle-btn {
-      -webkit-backdrop-filter: blur(16px);
-      backdrop-filter: blur(16px);
-    }
+    background: var(--white); /* Sebelum scroll: Putih */
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, background-color 0.35s ease;
   }
 
   .navbar-wrapper.is-scrolled .bar {
-    background: var(--white);
+    background: var(--neutral-900); /* Sesudah scroll: Gelap */
   }
 
   .nav-toggle-btn[aria-expanded="true"] .bar:nth-child(1) {
@@ -476,7 +380,7 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     transform: translateY(-7px) rotate(-45deg);
   }
 
-  /* ─── Mobile Drawer ─────────────────────────────────────────────── */
+  /* Mobile Drawer (Selalu Solid Putih agar tulisan terbaca saat dibuka) */
   .mobile-drawer {
     pointer-events: auto;
     margin-top: calc(var(--space-unit) * 1.25);
@@ -487,11 +391,7 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     overflow: hidden;
     max-height: 0;
     opacity: 0;
-    transition:
-      max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 0.25s ease,
-      background-color 0.35s ease,
-      border-color 0.35s ease;
+    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
   }
 
   .mobile-drawer[aria-hidden="false"] {
@@ -522,10 +422,7 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     color: var(--neutral-700);
     text-decoration: none;
     border-left: 3px solid transparent;
-    transition:
-      background-color 0.15s ease,
-      color 0.15s ease,
-      border-color 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
 
   .mobile-nav-item:hover {
@@ -539,91 +436,24 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     background-color: rgba(62, 116, 53, 0.05);
     border-left-color: var(--brand-green);
   }
-
-  /* Drawer saat scroll */
-  .navbar-wrapper.is-scrolled .mobile-drawer {
-    background: rgba(18, 24, 18, 0.65);
-    border-color: rgba(255, 255, 255, 0.22);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-  }
-
-  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    .navbar-wrapper.is-scrolled .mobile-drawer {
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      backdrop-filter: blur(24px) saturate(180%);
-    }
-  }
-
-  .navbar-wrapper.is-scrolled .mobile-nav-item {
-    color: rgba(255, 255, 255, 0.88);
-  }
-
-  .navbar-wrapper.is-scrolled .mobile-nav-item:hover {
-    color: var(--white);
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .navbar-wrapper.is-scrolled .mobile-nav-item.aktif {
-    color: var(--white);
-    background-color: transparent;
-    border-left-color: transparent;
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
-  }
-
-  /* ════════════════════════════════════════════════════════════════════
-     6. AKSESIBILITAS
-     ════════════════════════════════════════════════════════════════════ */
-  @media (prefers-reduced-transparency: reduce) {
-    .nav-menu-desktop,
-    .mobile-drawer,
-    .nav-toggle-btn,
-    .nav-cta-btn {
-      -webkit-backdrop-filter: none !important;
-      backdrop-filter: none !important;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .navbar-wrapper,
-    .nav-menu-desktop,
-    .nav-item,
-    .bar,
-    .mobile-drawer,
-    .mobile-nav-item,
-    .logo-img,
-    .nav-cta-btn,
-    .logo-module {
-      transition: none !important;
-    }
-  }
 </style>
 
 <script>
-  /**
-   * 1. Deteksi scroll posisi (scrollY > 20) untuk mengaktifkan class .is-scrolled
-   * 2. Scrollspy: Menandai menu aktif sesuai seksi di viewport
-   * 3. Toggle Drawer Mobile & Aksesibilitas Keyboard (Esc)
-   */
   const navbar = document.getElementById("main-navbar");
-  const toggle = document.getElementById(
-    "nav-toggle",
-  ) as HTMLButtonElement | null;
+  const toggle = document.getElementById("nav-toggle") as HTMLButtonElement | null;
   const drawer = document.getElementById("nav-drawer") as HTMLElement | null;
-  const desktopLinks = document.querySelectorAll(
-    "[data-nav-link]",
-  ) as NodeListOf<HTMLAnchorElement>;
-  const mobileLinks = document.querySelectorAll(
-    "[data-mobile-nav-link]",
-  ) as NodeListOf<HTMLAnchorElement>;
+  const desktopLinks = document.querySelectorAll("[data-nav-link]") as NodeListOf<HTMLAnchorElement>;
+  const mobileLinks = document.querySelectorAll("[data-mobile-nav-link]") as NodeListOf<HTMLAnchorElement>;
 
-  // Deteksi Scroll (Dinonaktifkan: Navbar kini selalu tampil konsisten/solid putih)
-  // const handleScroll = () => {
-  //   if (navbar) {
-  //     navbar.classList.toggle("is-scrolled", window.scrollY > 20);
-  //   }
-  // };
-  // window.addEventListener("scroll", handleScroll, { passive: true });
-  // handleScroll();
+  // Deteksi Scroll: Mengaktifkan mode solid white
+  const handleScroll = () => {
+    if (navbar) {
+      navbar.classList.toggle("is-scrolled", window.scrollY > 20);
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  handleScroll();
 
   // Mobile Drawer Toggle
   if (toggle && drawer) {
@@ -641,10 +471,7 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     });
 
     document.addEventListener("keydown", (e) => {
-      if (
-        e.key === "Escape" &&
-        toggle.getAttribute("aria-expanded") === "true"
-      ) {
+      if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
         toggle.setAttribute("aria-expanded", "false");
         drawer.setAttribute("aria-hidden", "true");
         toggle.focus();
@@ -690,7 +517,7 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
           }
         });
         if (window.scrollY < 100) {
-          setActiveLink(null); // Beranda
+          setActiveLink(null);
         }
       },
       { rootMargin: "-20% 0px -70% 0px", threshold: 0 },
