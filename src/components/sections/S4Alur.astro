@@ -11,16 +11,23 @@ import Ikon from '../ui/Ikon.astro';
 import { alur, beranda } from '../../data';
 import bgAlur from '../../assets/images/latarbelakang/IMG_8920.JPG';
 
+import { IoHome } from "react-icons/io5";
+import { FaTrashAlt } from "react-icons/fa";
+import { FaBalanceScaleLeft } from "react-icons/fa";
+import { FaBookBookmark } from "react-icons/fa6";
+import { BiSolidPackage } from "react-icons/bi";
+import { TbPigMoney } from "react-icons/tb";
+
 const { s4 } = beranda;
 
-/** Nama ikon Lucide untuk tiap langkah (urutan sesuai alur.json) */
-const ikonLangkah: string[] = [
-	'home',        // 01 Pilah dari Rumah
-	'truck',       // 02 Setor ke Bank Sampah
-	'scale',       // 03 Timbang Sampah
-	'book-open',   // 04 Catat di Buku Tabungan
-	'package',     // 05 Pilah, Kemas & Jual
-	'piggy-bank',  // 06 Manfaatkan Tabungan
+/** Urutan React Icons untuk tiap langkah (1 s.d. 6) */
+const ikonLangkah = [
+	IoHome,              // 1. Pilah dari Rumah
+	FaTrashAlt,          // 2. Setor ke Bank Sampah
+	FaBalanceScaleLeft,  // 3. Timbang Sampah
+	FaBookBookmark,      // 4. Catat di Buku Tabungan
+	BiSolidPackage,      // 5. Pilah, Kemas & Jual
+	TbPigMoney,          // 6. Manfaatkan Tabungan
 ];
 ---
 
@@ -66,69 +73,82 @@ const ikonLangkah: string[] = [
 
 			<!-- CSS Grid untuk 6 Card -->
 			<div class="grid-cards">
-				{alur.langkah.map((l, i) => (
-					<div class="alur-card" data-step={i} style={`--card-delay: ${i * 0.1}s;`}>
-						<!-- Badge Nomor di Sudut -->
-						<div class="card-nomor">
-							{String(l.nomor).padStart(2, '0')}
-						</div>
-						
-						<!-- Ikon dalam Soft Circle -->
-						<div class="card-ikon-wrap">
-							<div class="card-ikon">
-								<Ikon nama={ikonLangkah[i]} ukuran={32} />
+				{alur.langkah.map((l, i) => {
+					const IkonComp = ikonLangkah[i];
+					return (
+						<div class="alur-card" data-step={i} style={`--card-delay: ${i * 0.08}s;`}>
+							<!-- Badge Nomor di Sudut -->
+							<div class="card-nomor">
+								{String(l.nomor).padStart(2, '0')}
 							</div>
+							
+							<!-- Ikon dalam Soft Square Box -->
+							<div class="card-ikon-wrap">
+								<div class="card-ikon">
+									<IkonComp size={28} />
+								</div>
+							</div>
+							
+							<!-- Teks Konten -->
+							<h3 class="card-judul">{l.judul}</h3>
+							<p class="card-deskripsi">{l.keterangan}</p>
 						</div>
-						
-						<!-- Teks Konten -->
-						<h3 class="card-judul">{l.judul}</h3>
-						<p class="card-deskripsi">{l.keterangan}</p>
-					</div>
-				))}
+					);
+				})}
 
 				<!-- Arrow Connectors (Absolute positioning based on grid) -->
 				<!-- Antara 1 & 2 -->
-				<div class="arrow-connector arr-1-2"><Ikon nama="chevron-right" ukuran={20} /></div>
+				<div class="arrow-connector arr-1-2"><Ikon nama="chevron-right" ukuran={18} /></div>
 				<!-- Antara 2 & 3 -->
-				<div class="arrow-connector arr-2-3"><Ikon nama="chevron-right" ukuran={20} /></div>
+				<div class="arrow-connector arr-2-3"><Ikon nama="chevron-right" ukuran={18} /></div>
 				<!-- Antara 4 & 5 -->
-				<div class="arrow-connector arr-4-5"><Ikon nama="chevron-right" ukuran={20} /></div>
+				<div class="arrow-connector arr-4-5"><Ikon nama="chevron-right" ukuran={18} /></div>
 				<!-- Antara 5 & 6 -->
-				<div class="arrow-connector arr-5-6"><Ikon nama="chevron-right" ukuran={20} /></div>
+				<div class="arrow-connector arr-5-6"><Ikon nama="chevron-right" ukuran={18} /></div>
 			</div>
 		</div>
 
 		<!-- TABLET GRID LAYOUT (2x3) -->
 		<div class="alur-grid-tablet">
-			{alur.langkah.map((l, i) => (
-				<div class="alur-card" data-step={i} style={`--card-delay: ${i * 0.1}s;`}>
-					<div class="card-nomor">{String(l.nomor).padStart(2, '0')}</div>
-					<div class="card-ikon-wrap">
-						<div class="card-ikon"><Ikon nama={ikonLangkah[i]} ukuran={28} /></div>
+			{alur.langkah.map((l, i) => {
+				const IkonComp = ikonLangkah[i];
+				return (
+					<div class="alur-card" data-step={i} style={`--card-delay: ${i * 0.08}s;`}>
+						<div class="card-nomor">{String(l.nomor).padStart(2, '0')}</div>
+						<div class="card-ikon-wrap">
+							<div class="card-ikon">
+								<IkonComp size={24} />
+							</div>
+						</div>
+						<h3 class="card-judul">{l.judul}</h3>
+						<p class="card-deskripsi">{l.keterangan}</p>
 					</div>
-					<h3 class="card-judul">{l.judul}</h3>
-					<p class="card-deskripsi">{l.keterangan}</p>
-				</div>
-			))}
+				);
+			})}
 		</div>
 
 		<!-- MOBILE VERTICAL TIMELINE -->
 		<div class="alur-mobile" id="alur-mobile">
 			<div class="timeline-garis" aria-hidden="true"></div>
-			{alur.langkah.map((l, i) => (
-				<div class="timeline-item" data-step={i} style={`--mob-delay: ${i * 0.1}s;`}>
-					<div class="timeline-marker">
-						<span class="timeline-nomor">{String(l.nomor).padStart(2, '0')}</span>
-					</div>
-					<div class="timeline-konten">
-						<div class="mobile-ikon"><Ikon nama={ikonLangkah[i]} ukuran={20} /></div>
-						<div class="mobile-teks">
-							<h3 class="timeline-judul">{l.judul}</h3>
-							<p class="timeline-ket">{l.keterangan}</p>
+			{alur.langkah.map((l, i) => {
+				const IkonComp = ikonLangkah[i];
+				return (
+					<div class="timeline-item" data-step={i} style={`--mob-delay: ${i * 0.08}s;`}>
+						<div class="timeline-marker">
+							<span class="timeline-nomor">{String(l.nomor).padStart(2, '0')}</span>
+						</div>
+						<div class="timeline-konten">
+							<div class="mobile-ikon">
+								<IkonComp size={18} />
+							</div>
+							<div class="mobile-teks">
+								<h3 class="timeline-judul">{l.judul}</h3>
+								<p class="timeline-ket">{l.keterangan}</p>
+							</div>
 						</div>
 					</div>
-				</div>
-			))}
+				);
+			})}
 		</div>
 
 	</div>
@@ -142,9 +162,20 @@ const ikonLangkah: string[] = [
 		width: 100%;
 		position: relative;
 		overflow: hidden;
-		/* Padding atas ditambah agar judul "Enam Langkah" tidak tertimpa overlap video dari seksi atas */
-		padding: calc(var(--space-unit) * 26) calc(var(--space-unit) * 3) calc(var(--space-unit) * 12);
+		padding: calc(var(--space-unit) * 12) calc(var(--space-unit) * 3) calc(var(--space-unit) * 7);
 		box-sizing: border-box;
+	}
+
+	@media (min-width: 640px) {
+		.seksi-alur {
+			padding: calc(var(--space-unit) * 16) calc(var(--space-unit) * 4) calc(var(--space-unit) * 9);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.seksi-alur {
+			padding: calc(var(--space-unit) * 22) calc(var(--space-unit) * 4) calc(var(--space-unit) * 12);
+		}
 	}
 
 	.latar-belakang-gambar {
@@ -165,7 +196,7 @@ const ikonLangkah: string[] = [
 	.overlay-latar {
 		position: absolute;
 		inset: 0;
-		background: rgba(255, 255, 255, 0.92); /* Sangat subtle, foto tetap membayang di belakang */
+		background: rgba(255, 255, 255, 0.92);
 	}
 	@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
 		.overlay-latar {
@@ -179,11 +210,11 @@ const ikonLangkah: string[] = [
 		position: relative;
 		z-index: 1;
 		width: 100%;
-		max-width: 1180px; /* Sedikit dilebarkan agar 3 card lebih lega */
+		max-width: 1120px;
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
-		gap: calc(var(--space-unit) * 8);
+		gap: calc(var(--space-unit) * 7);
 	}
 
 	/* ═══════════════════════════════════════════
@@ -201,45 +232,34 @@ const ikonLangkah: string[] = [
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		padding: 8px 20px;
-		background: rgba(201, 123, 33, 0.1); /* Soft orange background */
+		padding: 6px 18px;
+		background: rgba(201, 123, 33, 0.1);
 		color: var(--accent-earth);
 		font-family: var(--font-mono), monospace;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
-		font-size: 0.875rem; /* Font diperbesar sedikit (sebelumnya 0.75rem) */
-		border-radius: 100px; /* Pill shape */
-		margin-bottom: 4px; /* Memberikan margin kebawah sedikit */
+		font-size: 0.8125rem;
+		border-radius: 100px;
 	}
 
 	.judul {
 		margin: 0;
 		font-family: var(--font-hero), system-ui, sans-serif;
-		font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+		font-size: clamp(1.85rem, 3.2vw, 2.5rem);
 		font-weight: 800;
-		line-height: 1.15;
+		line-height: 1.2;
 		color: var(--neutral-900);
 		letter-spacing: -0.02em;
 	}
 
 	.pengantar {
 		margin: 0;
-		max-width: 65ch;
+		max-width: 62ch;
 		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: 1.0625rem; /* 17px */
+		font-size: 1rem;
 		line-height: 1.6;
 		color: var(--neutral-600);
-	}
-
-	@media (min-width: 900px) {
-		.seksi-alur {
-			/* Padding atas ditambah secara signifikan di desktop untuk menghindari tabrakan dengan video */
-			padding: calc(var(--space-unit) * 38) calc(var(--space-unit) * 4) calc(var(--space-unit) * 16);
-		}
-		.kontainer-seksi {
-			gap: calc(var(--space-unit) * 12);
-		}
 	}
 
 	/* ═══════════════════════════════════════════
@@ -250,19 +270,19 @@ const ikonLangkah: string[] = [
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		padding: calc(var(--space-unit) * 6) calc(var(--space-unit) * 4) calc(var(--space-unit) * 5);
-		border-radius: 28px;
+		padding: calc(var(--space-unit) * 4.5) calc(var(--space-unit) * 3) calc(var(--space-unit) * 4);
+		border-radius: var(--radius-md);
 		background: var(--white);
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-		border: 1px solid rgba(0,0,0,0.03);
+		box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+		border: 1px solid rgba(0, 0, 0, 0.04);
 		position: relative;
-		transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.3s ease;
+		transition: transform 0.25s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.25s ease;
 		height: 100%;
 		
 		/* Animasi reveal awal */
 		opacity: 0;
-		transform: translateY(24px);
-		transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.3s ease;
+		transform: translateY(20px);
+		transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.25s ease;
 	}
 
 	.alur-grid-desktop.is-visible .alur-card,
@@ -273,95 +293,98 @@ const ikonLangkah: string[] = [
 	}
 
 	.alur-card:hover {
-		transform: translateY(-6px);
-		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+		transform: translateY(-5px);
+		box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 	}
 	
 	.alur-grid-desktop.is-visible .alur-card:hover,
 	.alur-grid-tablet.is-visible .alur-card:hover {
-		transform: translateY(-6px);
+		transform: translateY(-5px);
 	}
 
 	.card-nomor {
 		position: absolute;
-		top: -16px;
-		left: -16px;
-		width: 44px;
-		height: 44px;
+		top: -12px;
+		left: -12px;
+		width: 38px;
+		height: 38px;
 		border-radius: 50%;
 		background: var(--accent-earth);
 		color: var(--white);
 		font-family: var(--font-hero), sans-serif;
 		font-weight: 800;
-		font-size: 1rem;
+		font-size: 0.875rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border: 4px solid var(--white);
-		box-shadow: 0 4px 10px rgba(201, 123, 33, 0.2);
+		border: 3px solid var(--white);
+		box-shadow: 0 4px 10px rgba(201, 123, 33, 0.25);
 		z-index: 2;
 	}
 
 	.card-ikon-wrap {
-		margin-bottom: calc(var(--space-unit) * 4.5); /* Lebih turun ke bawah */
-		transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1);
-	}
-	
-	.alur-card:hover .card-ikon-wrap {
-		transform: scale(1.08);
+		margin-bottom: calc(var(--space-unit) * 2.5);
+		transition: transform 0.25s cubic-bezier(0.2, 1, 0.3, 1);
 	}
 
 	.card-ikon {
-		width: 72px;
-		height: 72px;
-		border-radius: 50%;
-		background: var(--brand-green-light); /* Soft green container */
+		width: 58px;
+		height: 58px;
+		border-radius: 0;
+		background: var(--brand-green-light);
 		color: var(--brand-green);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		box-shadow: 0 4px 12px rgba(62, 116, 53, 0.07);
+		transition: all 0.25s cubic-bezier(0.2, 1, 0.3, 1);
+	}
+
+	.alur-card:hover .card-ikon {
+		background: var(--brand-green);
+		color: var(--white);
+		transform: scale(1.06);
+		box-shadow: 0 8px 20px rgba(62, 116, 53, 0.2);
 	}
 
 	.card-judul {
-		margin: 0 0 calc(var(--space-unit) * 1.5) 0;
-		font-size: 1.375rem; /* Diperbesar sedikit (sebelumnya 1.25rem / 20px) */
+		margin: 0 0 calc(var(--space-unit) * 1.25) 0;
+		font-size: 1.1875rem;
 		font-weight: 700;
 		font-family: var(--font-hero), system-ui, sans-serif;
-		color: var(--brand-green-dark); /* Hijau elegan */
+		color: var(--brand-green-dark);
 		line-height: 1.3;
 	}
 
 	.card-deskripsi {
 		margin: 0;
-		font-size: 1rem; /* Diperbesar sedikit (sebelumnya 0.9375rem / 15px) */
+		font-size: 0.9375rem;
 		color: var(--neutral-600);
 		line-height: 1.6;
 	}
-
 
 	/* ═══════════════════════════════════════════
 	   DESKTOP GRID 3×2 & CONNECTORS
 	   ═══════════════════════════════════════════ */
 	.alur-grid-desktop {
-		display: none; /* Sembunyikan default */
+		display: none;
 	}
 
 	@media (min-width: 1024px) {
 		.alur-grid-desktop {
 			display: block;
 			position: relative;
-			padding: 0 40px; /* Ruang untuk side loops */
+			padding: 0 36px;
 		}
 		
 		.grid-cards {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
-			gap: calc(var(--space-unit) * 6) calc(var(--space-unit) * 8);
+			gap: calc(var(--space-unit) * 5) calc(var(--space-unit) * 5.5);
 			position: relative;
 			z-index: 2;
 		}
 
-		/* Menyesuaikan grid gap dengan width agar SVG sejajar */
 		.svg-layer {
 			position: absolute;
 			top: 0; left: 0; width: 100%; height: 100%;
@@ -371,9 +394,9 @@ const ikonLangkah: string[] = [
 
 		.side-loop {
 			position: absolute;
-			width: 60px;
-			height: calc(100% - 100px); /* Menyesuaikan jarak card atas dan bawah */
-			top: 15%; /* Mengarah ke tengah vertikal baris atas */
+			width: 52px;
+			height: calc(100% - 80px);
+			top: 15%;
 		}
 		
 		.loop-left { left: 0; }
@@ -382,8 +405,8 @@ const ikonLangkah: string[] = [
 		/* Arrow bulat antar card */
 		.arrow-connector {
 			position: absolute;
-			width: 36px;
-			height: 36px;
+			width: 32px;
+			height: 32px;
 			border-radius: 50%;
 			background: var(--brand-green);
 			color: var(--white);
@@ -396,13 +419,11 @@ const ikonLangkah: string[] = [
 			
 			opacity: 0;
 			animation: fadeIn 0.5s ease forwards;
-			animation-delay: 0.8s;
+			animation-delay: 0.6s;
 		}
 
 		@keyframes fadeIn { to { opacity: 1; } }
 
-		/* Posisi akurat mengikuti Grid 3 kolom */
-		/* Kolom 1 (0-33%), Kolom 2 (33-66%), Kolom 3 (66-100%) */
 		.arr-1-2 { top: 25%; left: 33.33%; }
 		.arr-2-3 { top: 25%; left: 66.66%; }
 		.arr-4-5 { top: 75%; left: 33.33%; }
@@ -410,7 +431,7 @@ const ikonLangkah: string[] = [
 	}
 
 	/* ═══════════════════════════════════════════
-	   TABLET GRID 2×3 (600px - 1023px)
+	   TABLET GRID 2×3 (640px - 1023px)
 	   ═══════════════════════════════════════════ */
 	.alur-grid-tablet {
 		display: none;
@@ -420,7 +441,7 @@ const ikonLangkah: string[] = [
 		.alur-grid-tablet {
 			display: grid;
 			grid-template-columns: repeat(2, 1fr);
-			gap: calc(var(--space-unit) * 5) calc(var(--space-unit) * 4);
+			gap: calc(var(--space-unit) * 4) calc(var(--space-unit) * 3.5);
 		}
 	}
 
@@ -511,14 +532,15 @@ const ikonLangkah: string[] = [
 		}
 
 		.mobile-ikon {
-			width: 40px;
-			height: 40px;
-			border-radius: 50%;
+			width: 42px;
+			height: 42px;
+			border-radius: 0; /* Kotak siku-siku */
 			background: var(--brand-green-light);
 			color: var(--brand-green);
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			flex-shrink: 0;
 		}
 
 		.timeline-judul {
