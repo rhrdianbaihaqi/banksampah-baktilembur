@@ -3,28 +3,33 @@
   "langkah": [
     {
       "nomor": 1,
-      "judul": "Pilah & Kumpulkan",
-      "keterangan": "Pisahkan sampah anorganik dan organik mulai dari rumah Anda atau titik mitra."
+      "judul": "Pilah dari Rumah",
+      "keterangan": "Pisahkan sampah organik dan anorganik dari rumah agar lebih mudah dikelola dan memiliki nilai manfaat."
     },
     {
       "nomor": 2,
       "judul": "Setor ke Bank Sampah",
-      "keterangan": "Bawa sampah ke Bank Sampah Bakti Lembur untuk ditimbang secara transparan oleh petugas."
+      "keterangan": "Bawa sampah yang sudah terpilah ke Bank Sampah Bakti Lembur untuk disetorkan sebagai tabungan sampah."
     },
     {
       "nomor": 3,
-      "judul": "Dicatat di Tabungan",
-      "keterangan": "Hasil penimbangan langsung dicatat ke dalam buku tabungan nasabah."
+      "judul": "Timbang Sampah",
+      "keterangan": "Sampah yang disetorkan ditimbang berdasarkan jenisnya untuk mengetahui jumlah dan nilai sampah yang terkumpul."
     },
     {
       "nomor": 4,
-      "judul": "Diproses & Didaur Ulang",
-      "keterangan": "Sampah dipilah lebih lanjut di gudang dan disalurkan ke pabrik daur ulang."
+      "judul": "Catat di Buku Tabungan",
+      "keterangan": "Hasil penimbangan dicatat ke dalam buku tabungan sebagai saldo milik nasabah."
     },
     {
       "nomor": 5,
-      "judul": "Manfaat Tabungan",
-      "keterangan": "Tabungan dapat diambil saat dibutuhkan, ditukar sembako, atau dimanfaatkan untuk kegiatan kriya."
+      "judul": "Pilah, Kemas & Jual",
+      "keterangan": "Sampah dipilah dan dikemas kembali, kemudian dijual kepada pengepul atau offtaker untuk dikelola lebih lanjut."
+    },
+    {
+      "nomor": 6,
+      "judul": "Manfaatkan Tabungan",
+      "keterangan": "Tabungan dapat diambil setiap 6 bulan sekali atau ditukarkan dengan sembako melalui Koperasi Bank Sampah Bakti Lembur."
     }
   ]
 }

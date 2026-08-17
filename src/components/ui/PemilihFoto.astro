@@ -135,10 +135,28 @@ const foto = Object.values(berkas).map((m) => m.default);
 		position: relative;
 		width: 100%;
 		aspect-ratio: 1 / 1;
-		border-radius: 0;
+		border-radius: var(--radius-lg);
 		overflow: hidden;
 		/* Warna dasar supaya tidak ada kedipan putih sebelum foto termuat. */
 		background: var(--brand-green-dark);
+		/* Shadow halus untuk depth dan premium look */
+		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.1);
+	}
+
+	/* Gradient overlay halus pada .panggung untuk kesan premium */
+	.panggung::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			135deg,
+			rgba(62, 116, 53, 0.08) 0%,
+			rgba(62, 116, 53, 0.04) 50%,
+			rgba(201, 123, 33, 0.06) 100%
+		);
+		border-radius: var(--radius-lg);
+		pointer-events: none;
+		z-index: 3;
 	}
 
 	.utama {
@@ -151,7 +169,7 @@ const foto = Object.values(berkas).map((m) => m.default);
 		visibility: hidden;
 		transition: opacity 0.6s ease, visibility 0.6s ease;
 		z-index: 1;
-		border-radius: 0;
+		border-radius: var(--radius-lg);
 	}
 
 	.utama.aktif {

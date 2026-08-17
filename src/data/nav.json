@@ -4,10 +4,8 @@
     { "label": "Beranda",     "href": "/" },
     { "label": "Tentang",     "href": "#latar-belakang" },
     { "label": "Alur",        "href": "#cara-jadi-nasabah" },
-    { "label": "Program",     "href": "#program" },
     { "label": "Jadwal",      "href": "#jadwal" },
-    { "label": "Galeri",      "href": "#galeri" },
-    { "label": "Kontak",      "href": "#hubungi" }
+    { "label": "Galeri",      "href": "#galeri" }
   ],
   "logo": [
     {

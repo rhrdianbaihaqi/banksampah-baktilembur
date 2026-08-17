@@ -1,44 +1,31 @@
 ---
 /**
- * S4 — Alur Penyetoran Sampah Terpadu.
+ * S4 — Alur Penyetoran Sampah Terpadu (6 Langkah).
  *
- * Desain Hybrid: Absolute Positioning HTML Cards 
- * + SVG Background menyesuaikan layout gambar referensi (U-Shape).
- * Bebas dari wrapper <Seksi> agar lebar konsisten dengan 1140px.
+ * Redesign: Clean, spacious, modern, editorial style.
+ * Desktop: Grid 3×2 dengan visual alur melingkar (referensi visual).
+ * Tablet: Grid 2×3. Mobile: Vertical timeline.
  */
 import { Picture } from 'astro:assets';
+import Ikon from '../ui/Ikon.astro';
 import { alur, beranda } from '../../data';
 import bgAlur from '../../assets/images/latarbelakang/IMG_8920.JPG';
 
 const { s4 } = beranda;
 
-const icons: string[] = [
-	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>`,
-	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 5.828 9.318a1.828 1.828 0 0 1-.001-1.789 1.785 1.785 0 0 1 1.545-.898h8.47l-1.929 3.34"/><path d="m9 9 3-3-3-3"/></svg>`,
-	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>`,
-	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/></svg>`,
-	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>`
+/** Nama ikon Lucide untuk tiap langkah (urutan sesuai alur.json) */
+const ikonLangkah: string[] = [
+	'home',        // 01 Pilah dari Rumah
+	'truck',       // 02 Setor ke Bank Sampah
+	'scale',       // 03 Timbang Sampah
+	'book-open',   // 04 Catat di Buku Tabungan
+	'package',     // 05 Pilah, Kemas & Jual
+	'piggy-bank',  // 06 Manfaatkan Tabungan
 ];
-
-/* 
- * Layout Absolute Position (Desktop)
- * S-Curve 5 Langkah: Kiri Atas -> Tengah Atas -> Kanan Atas -> Kanan Bawah -> Tengah Bawah
- * ViewBox SVG: 1000 x 750 
- */
-const positions = [
-	{ left: '15%', top: '16%' }, // 01 (Kiri Atas)
-	{ left: '50%', top: '16%' }, // 02 (Tengah Atas)
-	{ left: '85%', top: '16%' }, // 03 (Kanan Atas)
-	{ left: '85%', top: '70%' }, // 04 (Kanan Bawah)
-	{ left: '50%', top: '70%' }, // 05 (Tengah Bawah)
-];
-
-// Path SVG road berbentuk S-curve untuk 5 kartu
-const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 ---
 
 <section id="cara-jadi-nasabah" class="seksi-alur" aria-label="Alur Penyetoran Sampah">
-	<!-- Elemen Background Gambar Latar (Sesuai panduan PRD: astro:assets <img> bukan background CSS) -->
+	<!-- Background gambar latar dengan overlay putih yang subtle -->
 	<div class="latar-belakang-gambar" aria-hidden="true">
 		<Picture
 			src={bgAlur}
@@ -53,70 +40,92 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 	</div>
 
 	<div class="kontainer-seksi">
-		
 		<!-- Kepala Seksi -->
 		<header class="kepala">
-			<p class="eyebrow">{s4.eyebrow}</p>
+			<div class="eyebrow-pill">{s4.eyebrow}</div>
 			<h2 class="judul">{s4.judul}</h2>
 			<p class="pengantar">{s4.pengantar}</p>
 		</header>
 
-		<!-- DESKTOP HYBRID LAYOUT -->
-		<div class="roadmap-desktop" id="roadmap-hybrid" aria-label="Infografis langkah penyetoran sampah">
+		<!-- DESKTOP GRID LAYOUT (3x2) -->
+		<div class="alur-grid-desktop" id="alur-grid-desktop" aria-hidden="false">
 			
-			<!-- 1. Layer Background: SVG Road -->
-			<div class="road-svg-container" aria-hidden="true">
-				<svg viewBox="0 0 1000 750" preserveAspectRatio="xMidYMid meet" class="road-svg">
-					<!-- Bayangan jalan -->
-					<path d={roadPath} fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
-					<!-- Badan jalan utama -->
-					<path d={roadPath} fill="none" stroke="#e5e7eb" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
-					<!-- Marka putus-putus -->
-					<path d={roadPath} fill="none" stroke="#9ca3af" stroke-width="3" stroke-dasharray="20 14" stroke-linecap="round" stroke-linejoin="round" class="road-dashes" />
-					
-					<!-- Arah panah rute (Visual cues) -->
-					<g fill="#9ca3af">
-						<!-- Panah Kanan (1->2) -->
-						<polygon points="315,115 332,125 315,135" />
-						<!-- Panah Kanan (2->3) -->
-						<polygon points="655,115 672,125 655,135" />
-						<!-- Panah Turun (3->4) -->
-						<polygon points="840,315 850,332 860,315" />
-						<!-- Panah Kiri (4->5) -->
-						<polygon points="685,515 668,525 685,535" />
-					</g>
+			<!-- Decorative SVG Connectors (Side Loops) -->
+			<div class="svg-layer">
+				<svg class="side-loop loop-left" viewBox="0 0 100 300" preserveAspectRatio="none">
+					<!-- Garis putus-putus dari 4 naik ke 1 -->
+					<path d="M 100 250 C 0 250 0 50 100 50" fill="none" stroke="var(--brand-green)" stroke-width="2" stroke-dasharray="6 4" />
+					<polygon points="50,140 40,155 60,155" fill="var(--brand-green)" transform="rotate(90 50 150)" />
+				</svg>
+				<svg class="side-loop loop-right" viewBox="0 0 100 300" preserveAspectRatio="none">
+					<!-- Garis putus-putus dari 3 turun ke 6 -->
+					<path d="M 0 50 C 100 50 100 250 0 250" fill="none" stroke="var(--brand-green)" stroke-width="2" stroke-dasharray="6 4" />
+					<polygon points="50,140 40,155 60,155" fill="var(--brand-green)" transform="rotate(-90 50 150)" />
 				</svg>
 			</div>
 
-			<!-- 2. Layer Atas: HTML Cards -->
-			{alur.langkah.map((l, i) => (
-				<div class="station-wrapper" style={`left: ${positions[i].left}; top: ${positions[i].top}; --st-delay: ${i * 0.15}s;`} data-step={i}>
-					<div class="station-card hover-lift">
-						<!-- Lingkaran Ikon (Tepat sejajar dengan jalan) -->
-						<div class="station-marker">
-							<div class="station-icon" set:html={icons[i]}></div>
-							<span class="station-badge">{l.nomor}</span>
+			<!-- CSS Grid untuk 6 Card -->
+			<div class="grid-cards">
+				{alur.langkah.map((l, i) => (
+					<div class="alur-card" data-step={i} style={`--card-delay: ${i * 0.1}s;`}>
+						<!-- Badge Nomor di Sudut -->
+						<div class="card-nomor">
+							{String(l.nomor).padStart(2, '0')}
 						</div>
-						<!-- Konten Teks -->
-						<h3 class="station-title">{l.judul}</h3>
-						<p class="station-desc">{l.keterangan}</p>
+						
+						<!-- Ikon dalam Soft Circle -->
+						<div class="card-ikon-wrap">
+							<div class="card-ikon">
+								<Ikon nama={ikonLangkah[i]} ukuran={32} />
+							</div>
+						</div>
+						
+						<!-- Teks Konten -->
+						<h3 class="card-judul">{l.judul}</h3>
+						<p class="card-deskripsi">{l.keterangan}</p>
 					</div>
+				))}
+
+				<!-- Arrow Connectors (Absolute positioning based on grid) -->
+				<!-- Antara 1 & 2 -->
+				<div class="arrow-connector arr-1-2"><Ikon nama="chevron-right" ukuran={20} /></div>
+				<!-- Antara 2 & 3 -->
+				<div class="arrow-connector arr-2-3"><Ikon nama="chevron-right" ukuran={20} /></div>
+				<!-- Antara 4 & 5 -->
+				<div class="arrow-connector arr-4-5"><Ikon nama="chevron-right" ukuran={20} /></div>
+				<!-- Antara 5 & 6 -->
+				<div class="arrow-connector arr-5-6"><Ikon nama="chevron-right" ukuran={20} /></div>
+			</div>
+		</div>
+
+		<!-- TABLET GRID LAYOUT (2x3) -->
+		<div class="alur-grid-tablet">
+			{alur.langkah.map((l, i) => (
+				<div class="alur-card" data-step={i} style={`--card-delay: ${i * 0.1}s;`}>
+					<div class="card-nomor">{String(l.nomor).padStart(2, '0')}</div>
+					<div class="card-ikon-wrap">
+						<div class="card-ikon"><Ikon nama={ikonLangkah[i]} ukuran={28} /></div>
+					</div>
+					<h3 class="card-judul">{l.judul}</h3>
+					<p class="card-deskripsi">{l.keterangan}</p>
 				</div>
 			))}
 		</div>
 
-		<!-- MOBILE FALLBACK: Vertical Timeline -->
-		<div class="roadmap-mobile" id="roadmap-mobile-view">
-			<div class="mobile-timeline-line" aria-hidden="true"></div>
+		<!-- MOBILE VERTICAL TIMELINE -->
+		<div class="alur-mobile" id="alur-mobile">
+			<div class="timeline-garis" aria-hidden="true"></div>
 			{alur.langkah.map((l, i) => (
-				<div class="mobile-card-row" style={`--mob-delay: ${i * 0.12}s;`} data-step={i}>
-					<div class="mob-marker">
-						<div class="mob-icon" set:html={icons[i]}></div>
-						<span class="mob-badge">{l.nomor}</span>
+				<div class="timeline-item" data-step={i} style={`--mob-delay: ${i * 0.1}s;`}>
+					<div class="timeline-marker">
+						<span class="timeline-nomor">{String(l.nomor).padStart(2, '0')}</span>
 					</div>
-					<div class="mob-content">
-						<h3 class="mob-title">{l.judul}</h3>
-						<p class="mob-desc">{l.keterangan}</p>
+					<div class="timeline-konten">
+						<div class="mobile-ikon"><Ikon nama={ikonLangkah[i]} ukuran={20} /></div>
+						<div class="mobile-teks">
+							<h3 class="timeline-judul">{l.judul}</h3>
+							<p class="timeline-ket">{l.keterangan}</p>
+						</div>
 					</div>
 				</div>
 			))}
@@ -126,12 +135,15 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 </section>
 
 <style>
+	/* ═══════════════════════════════════════════
+	   BASE SECTION & BACKGROUND
+	   ═══════════════════════════════════════════ */
 	.seksi-alur {
 		width: 100%;
 		position: relative;
 		overflow: hidden;
-		/* Tambahan padding atas ekstra (24 unit = 192px) agar teks judul tidak tertimpa video yang overlap */
-		padding: calc(var(--space-unit) * 24) calc(var(--space-unit) * 3) calc(var(--space-unit) * 8);
+		/* Padding atas ditambah agar judul "Enam Langkah" tidak tertimpa overlap video dari seksi atas */
+		padding: calc(var(--space-unit) * 26) calc(var(--space-unit) * 3) calc(var(--space-unit) * 12);
 		box-sizing: border-box;
 	}
 
@@ -153,332 +165,414 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 	.overlay-latar {
 		position: absolute;
 		inset: 0;
-		/* Opacity diturunkan menjadi 0.65 agar gambar latar belakang lebih jelas terlihat */
-		background: rgba(249, 250, 251, 0.65);
+		background: rgba(255, 255, 255, 0.92); /* Sangat subtle, foto tetap membayang di belakang */
+	}
+	@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+		.overlay-latar {
+			background: rgba(255, 255, 255, 0.85);
+			-webkit-backdrop-filter: blur(4px);
+			backdrop-filter: blur(4px);
+		}
 	}
 
-	/* Kontainer 1140px presisi seperti S3Latar */
 	.kontainer-seksi {
 		position: relative;
 		z-index: 1;
 		width: 100%;
-		max-width: 1140px;
+		max-width: 1180px; /* Sedikit dilebarkan agar 3 card lebih lega */
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
-		gap: calc(var(--space-unit) * 6);
+		gap: calc(var(--space-unit) * 8);
 	}
 
+	/* ═══════════════════════════════════════════
+	   HEADER (Editorial & Clean)
+	   ═══════════════════════════════════════════ */
 	.kepala {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		gap: calc(var(--space-unit) * 1.5);
+		gap: calc(var(--space-unit) * 2);
 	}
 
-	.eyebrow {
-		margin: 0;
+	.eyebrow-pill {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 8px 20px;
+		background: rgba(201, 123, 33, 0.1); /* Soft orange background */
+		color: var(--accent-earth);
 		font-family: var(--font-mono), monospace;
 		font-weight: 700;
-		color: var(--accent-earth); /* Aksen emas/amber */
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		font-size: 0.875rem;
+		letter-spacing: 0.08em;
+		font-size: 0.875rem; /* Font diperbesar sedikit (sebelumnya 0.75rem) */
+		border-radius: 100px; /* Pill shape */
+		margin-bottom: 4px; /* Memberikan margin kebawah sedikit */
 	}
 
 	.judul {
 		margin: 0;
 		font-family: var(--font-hero), system-ui, sans-serif;
-		font-size: clamp(2rem, 4vw, 3rem);
-		font-weight: 700;
-		line-height: 1.2;
+		font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+		font-weight: 800;
+		line-height: 1.15;
 		color: var(--neutral-900);
+		letter-spacing: -0.02em;
 	}
 
 	.pengantar {
 		margin: 0;
-		max-width: 60ch;
+		max-width: 65ch;
 		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: 1rem;
+		font-size: 1.0625rem; /* 17px */
 		line-height: 1.6;
-		color: #4b5563;
+		color: var(--neutral-600);
 	}
 
 	@media (min-width: 900px) {
 		.seksi-alur {
-			/* Padding atas ekstra (32 unit = 256px) untuk overlap desktop (160px) + gap (96px) */
-			padding: calc(var(--space-unit) * 32) calc(var(--space-unit) * 4) calc(var(--space-unit) * 12);
+			/* Padding atas ditambah secara signifikan di desktop untuk menghindari tabrakan dengan video */
+			padding: calc(var(--space-unit) * 38) calc(var(--space-unit) * 4) calc(var(--space-unit) * 16);
 		}
 		.kontainer-seksi {
-			gap: calc(var(--space-unit) * 10);
+			gap: calc(var(--space-unit) * 12);
 		}
 	}
 
-	/* ════════════════════════════════════════════════════════
-	   DESKTOP HYBRID LAYOUT
-	   ════════════════════════════════════════════════════════ */
-	.roadmap-desktop {
-		display: none;
-		position: relative;
-		width: 100%;
-		max-width: 1000px; /* Terjaga proporsi SVG-nya di dalam 1140px */
-		margin: 0 auto;
-		aspect-ratio: 1000 / 750;
-	}
-
-	@media (min-width: 900px) {
-		.roadmap-desktop { display: block; }
-		.roadmap-mobile { display: none !important; }
-	}
-
-	.road-svg-container {
-		position: absolute;
-		top: 0; left: 0;
-		width: 100%; height: 100%;
-		z-index: 1;
-		pointer-events: none;
-	}
-
-	.road-svg {
-		width: 100%;
-		height: 100%;
-		overflow: visible;
-	}
-
-	.road-dashes {
-		animation: dashScroll 1.5s linear infinite;
-	}
-
-	@keyframes dashScroll {
-		to { stroke-dashoffset: -68; }
-	}
-
-	/* Wrapper untuk Positioning Absolute */
-	.station-wrapper {
-		position: absolute;
-		width: 28%;
-		transform: translateX(-50%);
-		z-index: 2;
-		
-		/* Animasi reveal awal */
-		opacity: 0;
-		margin-top: 30px;
-		transition: margin-top 0.5s ease, opacity 0.6s ease;
-	}
-	
-	.roadmap-desktop.is-visible .station-wrapper {
-		opacity: 1;
-		margin-top: 0;
-		transition-delay: var(--st-delay);
-	}
-
-	/* Kartu HTML */
-	.station-card {
-		position: relative;
+	/* ═══════════════════════════════════════════
+	   CARD DESIGN (Dipakai di Desktop & Tablet)
+	   ═══════════════════════════════════════════ */
+	.alur-card {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		padding: calc(var(--space-unit) * 4.5) calc(var(--space-unit) * 2.5) calc(var(--space-unit) * 3);
-		border-radius: var(--radius-lg);
-		background: #ffffff; /* Kartu Terang */
-		border: 1px solid #e5e7eb; /* Border halus */
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-		transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-	}
-
-	.station-card:hover {
-		border-color: var(--brand-green);
-		box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-		transform: translateY(-8px);
-	}
-
-	/* Marker Lingkaran */
-	.station-marker {
-		position: absolute;
-		top: -32px;
-		width: 64px;
-		height: 64px;
-		border-radius: 50%;
-		background: var(--brand-green);
-		border: 4px solid var(--white);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-		transition: transform 0.3s ease, background 0.3s ease;
-		color: var(--white);
-	}
-
-	.station-card:hover .station-marker {
-		transform: scale(1.1) rotate(-5deg);
-		background: var(--brand-green-dark);
-		border-color: var(--accent-earth);
-	}
-
-	.station-icon {
-		width: 28px;
-		height: 28px;
-	}
-	.station-icon :global(svg) {
-		width: 100%;
+		padding: calc(var(--space-unit) * 6) calc(var(--space-unit) * 4) calc(var(--space-unit) * 5);
+		border-radius: 28px;
+		background: var(--white);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+		border: 1px solid rgba(0,0,0,0.03);
+		position: relative;
+		transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.3s ease;
 		height: 100%;
+		
+		/* Animasi reveal awal */
+		opacity: 0;
+		transform: translateY(24px);
+		transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.3s ease;
 	}
 
-	.station-badge {
+	.alur-grid-desktop.is-visible .alur-card,
+	.alur-grid-tablet.is-visible .alur-card {
+		opacity: 1;
+		transform: translateY(0);
+		transition-delay: var(--card-delay);
+	}
+
+	.alur-card:hover {
+		transform: translateY(-6px);
+		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+	}
+	
+	.alur-grid-desktop.is-visible .alur-card:hover,
+	.alur-grid-tablet.is-visible .alur-card:hover {
+		transform: translateY(-6px);
+	}
+
+	.card-nomor {
 		position: absolute;
-		top: -4px;
-		right: -8px;
-		width: 28px;
-		height: 28px;
+		top: -16px;
+		left: -16px;
+		width: 44px;
+		height: 44px;
 		border-radius: 50%;
 		background: var(--accent-earth);
 		color: var(--white);
-		font-family: var(--font-mono), monospace;
+		font-family: var(--font-hero), sans-serif;
 		font-weight: 800;
-		font-size: 0.8rem;
+		font-size: 1rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border: 2px solid var(--white);
-		box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+		border: 4px solid var(--white);
+		box-shadow: 0 4px 10px rgba(201, 123, 33, 0.2);
+		z-index: 2;
 	}
 
-	.station-title {
-		margin: 0 0 calc(var(--space-unit) * 1) 0;
-		font-size: 1.125rem;
+	.card-ikon-wrap {
+		margin-bottom: calc(var(--space-unit) * 4.5); /* Lebih turun ke bawah */
+		transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+	}
+	
+	.alur-card:hover .card-ikon-wrap {
+		transform: scale(1.08);
+	}
+
+	.card-ikon {
+		width: 72px;
+		height: 72px;
+		border-radius: 50%;
+		background: var(--brand-green-light); /* Soft green container */
+		color: var(--brand-green);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.card-judul {
+		margin: 0 0 calc(var(--space-unit) * 1.5) 0;
+		font-size: 1.375rem; /* Diperbesar sedikit (sebelumnya 1.25rem / 20px) */
 		font-weight: 700;
 		font-family: var(--font-hero), system-ui, sans-serif;
-		color: var(--neutral-900);
+		color: var(--brand-green-dark); /* Hijau elegan */
 		line-height: 1.3;
 	}
 
-	.station-desc {
+	.card-deskripsi {
 		margin: 0;
-		font-size: 0.875rem;
-		color: #4b5563;
-		line-height: 1.5;
+		font-size: 1rem; /* Diperbesar sedikit (sebelumnya 0.9375rem / 15px) */
+		color: var(--neutral-600);
+		line-height: 1.6;
 	}
 
-	/* ════════════════════════════════════════════════════════
-	   MOBILE FALLBACK
-	   ════════════════════════════════════════════════════════ */
-	.roadmap-mobile {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		gap: calc(var(--space-unit) * 4);
-		padding: calc(var(--space-unit) * 2) 0;
+
+	/* ═══════════════════════════════════════════
+	   DESKTOP GRID 3×2 & CONNECTORS
+	   ═══════════════════════════════════════════ */
+	.alur-grid-desktop {
+		display: none; /* Sembunyikan default */
 	}
 
-	.mobile-timeline-line {
-		position: absolute;
-		top: 0; bottom: 0; left: 32px;
-		width: 4px;
-		background: #e5e7eb;
-		border-radius: 4px;
-		z-index: 0;
-		transform-origin: top;
-		transform: scaleY(0);
-		transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-	}
-
-	.roadmap-mobile.is-visible .mobile-timeline-line { transform: scaleY(1); }
-
-	.mobile-card-row {
-		position: relative;
-		z-index: 1;
-		display: flex;
-		align-items: flex-start;
-		gap: calc(var(--space-unit) * 2.5);
-		opacity: 0;
-		transform: translateX(-20px);
-		transition: opacity 0.5s ease, transform 0.5s ease;
-	}
-
-	.roadmap-mobile.is-visible .mobile-card-row {
-		opacity: 1;
-		transform: translateX(0);
-		transition-delay: var(--mob-delay);
-	}
-
-	.mob-marker {
-		flex-shrink: 0;
-		position: relative;
-		width: 64px; height: 64px;
-		border-radius: 50%;
-		background: var(--brand-green);
-		border: 3px solid var(--white);
-		box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-		display: flex; align-items: center; justify-content: center;
-		color: var(--white);
-		transition: transform 0.3s ease;
-	}
-	.mobile-card-row:hover .mob-marker {
-		transform: scale(1.1);
-		background: var(--brand-green-dark);
-		border-color: var(--accent-earth);
-	}
-	.mob-icon { width: 32px; height: 32px; }
-	.mob-icon :global(svg) { width: 100%; height: 100%; }
-
-	.mob-badge {
-		position: absolute;
-		top: -6px; right: -6px;
-		width: 24px; height: 24px;
-		border-radius: 50%;
-		background: var(--accent-earth);
-		color: var(--white);
-		font-family: var(--font-mono), monospace;
-		font-weight: 700; font-size: 0.75rem;
-		display: flex; align-items: center; justify-content: center;
-		border: 2px solid var(--white);
-	}
-
-	.mob-content {
-		flex: 1;
-		padding: calc(var(--space-unit) * 2.5);
-		border-radius: var(--radius-md);
-		background: #ffffff;
-		border: 1px solid #e5e7eb;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-	}
-	.mob-title {
-		margin: 0 0 calc(var(--space-unit) * 1) 0;
-		font-size: 1.125rem;
-		font-weight: 700;
-		font-family: var(--font-hero), system-ui, sans-serif;
-		color: var(--neutral-900);
-	}
-	.mob-desc {
-		margin: 0;
-		font-size: 0.875rem;
-		color: #4b5563;
-		line-height: 1.5;
-	}
-
-	/* ── Preferensi Gerak Berkurang ── */
-	@media (prefers-reduced-motion: reduce) {
-		.road-dashes { animation: none; }
-		.station-wrapper, .station-card, .mobile-card-row, .mobile-timeline-line, .station-marker {
-			transition: none !important;
-			opacity: 1 !important; transform: none !important; margin-top: 0 !important;
+	@media (min-width: 1024px) {
+		.alur-grid-desktop {
+			display: block;
+			position: relative;
+			padding: 0 40px; /* Ruang untuk side loops */
 		}
-		.mobile-timeline-line { transform: scaleY(1) !important; }
+		
+		.grid-cards {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: calc(var(--space-unit) * 6) calc(var(--space-unit) * 8);
+			position: relative;
+			z-index: 2;
+		}
+
+		/* Menyesuaikan grid gap dengan width agar SVG sejajar */
+		.svg-layer {
+			position: absolute;
+			top: 0; left: 0; width: 100%; height: 100%;
+			pointer-events: none;
+			z-index: 1;
+		}
+
+		.side-loop {
+			position: absolute;
+			width: 60px;
+			height: calc(100% - 100px); /* Menyesuaikan jarak card atas dan bawah */
+			top: 15%; /* Mengarah ke tengah vertikal baris atas */
+		}
+		
+		.loop-left { left: 0; }
+		.loop-right { right: 0; }
+
+		/* Arrow bulat antar card */
+		.arrow-connector {
+			position: absolute;
+			width: 36px;
+			height: 36px;
+			border-radius: 50%;
+			background: var(--brand-green);
+			color: var(--white);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 4px 10px rgba(62, 116, 53, 0.2);
+			transform: translate(-50%, -50%);
+			z-index: 3;
+			
+			opacity: 0;
+			animation: fadeIn 0.5s ease forwards;
+			animation-delay: 0.8s;
+		}
+
+		@keyframes fadeIn { to { opacity: 1; } }
+
+		/* Posisi akurat mengikuti Grid 3 kolom */
+		/* Kolom 1 (0-33%), Kolom 2 (33-66%), Kolom 3 (66-100%) */
+		.arr-1-2 { top: 25%; left: 33.33%; }
+		.arr-2-3 { top: 25%; left: 66.66%; }
+		.arr-4-5 { top: 75%; left: 33.33%; }
+		.arr-5-6 { top: 75%; left: 66.66%; }
+	}
+
+	/* ═══════════════════════════════════════════
+	   TABLET GRID 2×3 (600px - 1023px)
+	   ═══════════════════════════════════════════ */
+	.alur-grid-tablet {
+		display: none;
+	}
+
+	@media (min-width: 640px) and (max-width: 1023px) {
+		.alur-grid-tablet {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: calc(var(--space-unit) * 5) calc(var(--space-unit) * 4);
+		}
+	}
+
+	/* ═══════════════════════════════════════════
+	   MOBILE VERTICAL TIMELINE (<640px)
+	   ═══════════════════════════════════════════ */
+	.alur-mobile {
+		display: none;
+	}
+
+	@media (max-width: 639px) {
+		.alur-mobile {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			gap: calc(var(--space-unit) * 3);
+			padding: calc(var(--space-unit) * 2) 0;
+		}
+
+		.timeline-garis {
+			position: absolute;
+			top: 16px;
+			bottom: 16px;
+			left: 22px;
+			width: 2px;
+			background: var(--brand-green-light);
+			z-index: 0;
+			transform-origin: top;
+			transform: scaleY(0);
+			transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+		}
+
+		.alur-mobile.is-visible .timeline-garis {
+			transform: scaleY(1);
+		}
+
+		.timeline-item {
+			position: relative;
+			z-index: 1;
+			display: flex;
+			align-items: flex-start;
+			gap: calc(var(--space-unit) * 2);
+
+			/* Reveal */
+			opacity: 0;
+			transform: translateX(-16px);
+			transition: opacity 0.4s ease, transform 0.4s ease;
+		}
+
+		.alur-mobile.is-visible .timeline-item {
+			opacity: 1;
+			transform: translateX(0);
+			transition-delay: var(--mob-delay);
+		}
+
+		.timeline-marker {
+			flex-shrink: 0;
+			position: relative;
+			width: 44px;
+			height: 44px;
+			border-radius: 50%;
+			background: var(--white);
+			border: 2px solid var(--accent-earth);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 2;
+			margin-top: 8px; /* Alignment dengan konten */
+		}
+
+		.timeline-nomor {
+			color: var(--accent-earth);
+			font-family: var(--font-hero), sans-serif;
+			font-weight: 800;
+			font-size: 0.9rem;
+		}
+
+		.timeline-konten {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+			padding: calc(var(--space-unit) * 3);
+			border-radius: 20px;
+			background: var(--white);
+			border: 1px solid rgba(0,0,0,0.04);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+		}
+
+		.mobile-ikon {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background: var(--brand-green-light);
+			color: var(--brand-green);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.timeline-judul {
+			margin: 0 0 4px 0;
+			font-size: 1.125rem;
+			font-weight: 700;
+			font-family: var(--font-hero), system-ui, sans-serif;
+			color: var(--brand-green-dark);
+		}
+
+		.timeline-ket {
+			margin: 0;
+			font-size: 0.875rem;
+			color: var(--neutral-600);
+			line-height: 1.5;
+		}
+	}
+
+	/* ═══════════════════════════════════════════
+	   PREFERENSI GERAK BERKURANG
+	   ═══════════════════════════════════════════ */
+	@media (prefers-reduced-motion: reduce) {
+		.alur-card,
+		.timeline-item,
+		.timeline-garis,
+		.arrow-connector {
+			transition: none !important;
+			opacity: 1 !important;
+			transform: none !important;
+			animation: none !important;
+		}
+		.timeline-garis {
+			transform: scaleY(1) !important;
+		}
+		.alur-card:hover {
+			transform: none;
+		}
+		.alur-card:hover .card-ikon-wrap {
+			transform: none;
+		}
 	}
 </style>
 
 <script>
 	const observerOptions = {
 		root: null,
-		rootMargin: '0px 0px -100px 0px',
-		threshold: 0.15
+		rootMargin: '0px 0px -80px 0px',
+		threshold: 0.1
 	};
 
 	const setupReveal = () => {
-		const desktop = document.getElementById('roadmap-hybrid');
-		const mobile = document.getElementById('roadmap-mobile-view');
+		const desktop = document.getElementById('alur-grid-desktop');
+		const tablet = document.querySelector('.alur-grid-tablet');
+		const mobile = document.getElementById('alur-mobile');
 
 		const obs = new IntersectionObserver((entries, observer) => {
 			entries.forEach(entry => {
@@ -490,6 +584,7 @@ const roadPath = "M 150 120 L 850 120 C 960 120 960 525 850 525 L 500 525";
 		}, observerOptions);
 
 		if (desktop) obs.observe(desktop);
+		if (tablet) obs.observe(tablet);
 		if (mobile) obs.observe(mobile);
 	};
 

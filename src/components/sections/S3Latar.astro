@@ -35,7 +35,10 @@ const { s3 } = beranda;
 							<span class="tanda">
 								<Ikon nama="check-circle-2" ukuran={18} />
 							</span>
-							<p class="teks">{k.teks}</p>
+							<div class="isi-butir">
+								{k.judul && <h3 class="judul-butir">{k.judul}</h3>}
+								<p class="teks">{k.teks}</p>
+							</div>
 						</li>
 					))
 				}
@@ -154,6 +157,21 @@ const { s3 } = beranda;
 		font-size: 0.875rem; /* 14px */
 		line-height: 1.55;
 		color: #374151;
+	}
+
+	.isi-butir {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 0.5);
+	}
+
+	.judul-butir {
+		margin: 0;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: 0.9375rem; /* 15px */
+		font-weight: 700;
+		line-height: 1.3;
+		color: var(--neutral-900);
 	}
 
 	/* Kontainer khusus video agar overlap dengan seksi di bawahnya */

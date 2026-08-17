@@ -49,18 +49,23 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 				kategori.length > 0 ? (
 					<ul class="galeri-track" id="galeri-track">
 						{kategori.flatMap((k) =>
-							k.foto.map((f) => (
-								<li class="galeri-slide">
-									<Image
-										src={berkas[`../../assets/images/${f.file}`]!()}
-										alt={f.alt}
-										widths={[320, 640, 960]}
-										sizes="(min-width: 1000px) 500px, 85vw"
-										loading="lazy"
-										class="slide-foto"
-									/>
-								</li>
-							)),
+							k.foto.map((f) => {
+								const imgLoader = berkas[`../../assets/images/${f.file}`];
+								if (!imgLoader) return null;
+								
+								return (
+									<li class="galeri-slide">
+										<Image
+											src={imgLoader()}
+											alt={f.alt}
+											widths={[320, 640, 960]}
+											sizes="(min-width: 1000px) 500px, 85vw"
+											loading="lazy"
+											class="slide-foto"
+										/>
+									</li>
+								);
+							}),
 						)}
 					</ul>
 				) : (

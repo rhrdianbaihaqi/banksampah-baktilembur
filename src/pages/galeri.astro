@@ -63,11 +63,14 @@ const deskripsi = "Dokumentasi foto aktivitas penimbangan, pengelolaan, dan kemi
 											else if (pola === 5) spanClass = 'bento-lebar';
 											else spanClass = 'bento-kecil';
 
+											const imgLoader = berkas[`../assets/images/${f.file}`];
+											if (!imgLoader) return null;
+
 											return (
 												<figure class={`bento-item ${spanClass}`}>
 													<div class="foto-wrap">
 														<Image
-															src={berkas[`../assets/images/${f.file}`]!()}
+															src={imgLoader()}
 															alt={f.alt}
 															widths={[400, 800, 1200]}
 															sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"

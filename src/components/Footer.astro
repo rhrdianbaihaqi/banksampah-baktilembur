@@ -1,0 +1,300 @@
+---
+/**
+ * Footer — Informasi kontak dan credit KKN
+ * Subtle dan clean, tetap fokus pada Bank Sampah sebagai brand utama
+ */
+import Ikon from './ui/Ikon.astro';
+import { profil } from '../data';
+
+const { kontak, sosmed, nama, diresmikan } = profil;
+const currentYear = new Date().getFullYear();
+const startYear = new Date(diresmikan).getFullYear();
+---
+
+<footer class="footer" role="contentinfo">
+	<div class="footer-content">
+		
+		<!-- FOOTER TOP: Info Kontak & Sosial -->
+		<div class="footer-top">
+			<div class="footer-section">
+				<p class="footer-heading">{nama}</p>
+				<div class="footer-kontak">
+					<a href={`mailto:${kontak.email}`} class="footer-link" aria-label={`Email ke ${nama}`}>
+						{kontak.email}
+					</a>
+					<a href={`https://wa.me/${kontak.whatsapp.nomorInternasional}`} target="_blank" rel="noopener noreferrer" class="footer-link" aria-label={`WhatsApp ${nama}`}>
+						{kontak.whatsapp.nomorLokal}
+					</a>
+				</div>
+			</div>
+
+			<!-- Social Media -->
+			<div class="footer-section">
+				<p class="footer-heading">Ikuti Kami</p>
+				<div class="footer-sosmed-grup">
+					<!-- Bank Sampah -->
+					<div class="sosmed-grup">
+						<span class="sosmed-grup-label">Bank Sampah</span>
+						<div class="footer-sosmed">
+							{sosmed.filter(s => s.kelompok === 'banksampah').map(s => (
+								<a
+									href={s.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="sosmed-link"
+									aria-label={`${s.nama} — ${s.handle}`}
+									title={`${s.nama} ${s.handle}`}
+								>
+									<Ikon nama={s.ikon} ukuran={18} />
+								</a>
+							))}
+						</div>
+					</div>
+					<!-- KKN -->
+					<div class="sosmed-grup">
+						<span class="sosmed-grup-label">KKN Kelompok 10</span>
+						<div class="footer-sosmed">
+							{sosmed.filter(s => s.kelompok === 'kkn').map(s => (
+								<a
+									href={s.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="sosmed-link"
+									aria-label={`${s.nama} — ${s.handle}`}
+									title={`${s.nama} ${s.handle}`}
+								>
+									<Ikon nama={s.ikon} ukuran={18} />
+								</a>
+							))}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- FOOTER DIVIDER -->
+		<div class="footer-divider"></div>
+
+		<!-- FOOTER BOTTOM: Copyright & KKN Credit -->
+		<div class="footer-bottom">
+			<div class="footer-copyright">
+				<p class="copyright-text">
+					© {startYear}–{currentYear} {nama}. 
+					<span class="kkn-credit">
+						Didigitalisasikan melalui Program Kerja KKN Kelompok 10
+						<a href="https://www.instagram.com/potretsarimukti_10" target="_blank" rel="noopener noreferrer" class="kkn-ig-link" aria-label="Instagram KKN Kelompok 10" title="Instagram KKN Kelompok 10">
+							<Ikon nama="instagram" ukuran={14} />
+						</a>
+					</span>
+				</p>
+			</div>
+		</div>
+
+	</div>
+</footer>
+
+<style>
+	/* ─── FOOTER WRAPPER ──────────────────────────────────────────────── */
+	.footer {
+		margin-top: calc(var(--space-unit) * 12);
+		background: linear-gradient(
+			135deg,
+			rgba(62, 116, 53, 0.06) 0%,
+			rgba(62, 116, 53, 0.03) 100%
+		);
+		border-top: 1px solid rgba(62, 116, 53, 0.12);
+		padding: calc(var(--space-unit) * 6) calc(var(--space-unit) * 2);
+	}
+
+	@media (min-width: 768px) {
+		.footer {
+			padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 4);
+		}
+	}
+
+	.footer-content {
+		max-width: 1140px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 4);
+	}
+
+	/* ─── FOOTER TOP ──────────────────────────────────────────────────── */
+	.footer-top {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: calc(var(--space-unit) * 4);
+	}
+
+	@media (min-width: 768px) {
+		.footer-top {
+			grid-template-columns: repeat(2, 1fr);
+			gap: calc(var(--space-unit) * 6);
+		}
+	}
+
+	.footer-section {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 1.5);
+	}
+
+	.footer-heading {
+		margin: 0;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: 0.875rem;
+		font-weight: 700;
+		color: var(--neutral-900);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	/* ─── FOOTER KONTAK ──────────────────────────────────────────────── */
+	.footer-kontak {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.footer-link {
+		display: inline-block;
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 0.9375rem;
+		color: var(--neutral-700);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.footer-link:hover {
+		color: var(--brand-green);
+		text-decoration: underline;
+	}
+
+	/* ─── FOOTER SOSIAL MEDIA ────────────────────────────────────────── */
+	.footer-sosmed-grup {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 2);
+	}
+
+	.sosmed-grup {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 0.75);
+	}
+
+	.sosmed-grup-label {
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--neutral-600);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.footer-sosmed {
+		display: flex;
+		gap: calc(var(--space-unit) * 1);
+		flex-wrap: wrap;
+	}
+
+	.sosmed-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		background: rgba(62, 116, 53, 0.1);
+		color: var(--brand-green);
+		border-radius: 50%;
+		transition: all 0.2s ease;
+		border: 1px solid rgba(62, 116, 53, 0.15);
+	}
+
+	.sosmed-link:hover {
+		background: var(--brand-green);
+		color: var(--white);
+		transform: translateY(-2px);
+	}
+
+	/* ─── FOOTER DIVIDER ──────────────────────────────────────────────── */
+	.footer-divider {
+		height: 1px;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			rgba(62, 116, 53, 0.15),
+			transparent
+		);
+	}
+
+	/* ─── FOOTER BOTTOM ──────────────────────────────────────────────── */
+	.footer-bottom {
+		text-align: center;
+	}
+
+	.footer-copyright {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: calc(var(--space-unit) * 1);
+	}
+
+	.copyright-text {
+		margin: 0;
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 0.8125rem;
+		line-height: 1.6;
+		color: var(--neutral-600);
+	}
+
+	.kkn-credit {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 6px;
+		font-weight: 500;
+		color: var(--neutral-700);
+		margin-top: 4px;
+	}
+
+	.kkn-ig-link {
+		display: inline-flex;
+		align-items: center;
+		color: var(--neutral-600);
+		transition: color 0.2s ease;
+	}
+	.kkn-ig-link:hover {
+		color: var(--brand-green);
+	}
+
+	/* ─── RESPONSIVE ──────────────────────────────────────────────────── */
+	@media (max-width: 768px) {
+		.footer {
+			margin-top: calc(var(--space-unit) * 8);
+			padding: calc(var(--space-unit) * 4) calc(var(--space-unit) * 2);
+		}
+
+		.footer-content {
+			gap: calc(var(--space-unit) * 3);
+		}
+
+		.footer-section {
+			gap: calc(var(--space-unit) * 1);
+		}
+	}
+
+	/* ─── ACCESSIBILITY ──────────────────────────────────────────────── */
+	@media (prefers-reduced-transparency: reduce) {
+		.footer {
+			background: rgba(62, 116, 53, 0.1);
+		}
+
+		.sosmed-link {
+			background: rgba(62, 116, 53, 0.2);
+			border-color: rgba(62, 116, 53, 0.3);
+		}
+	}
+</style>

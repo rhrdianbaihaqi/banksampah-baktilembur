@@ -3,6 +3,7 @@ import { Font } from 'astro:assets';
 import '../styles/global.css';
 import { profil } from '../data';
 import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
 	/** Judul halaman tanpa nama lembaga — nama lembaga ditambahkan otomatis. */
@@ -98,6 +99,7 @@ const structuredData = {
 		<a href="#konten" class="lewati">Lewati ke konten utama</a>
 		<Navbar />
 		<slot />
+		<Footer />
 	</body>
 </html>
 

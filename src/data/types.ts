@@ -33,7 +33,7 @@ export interface Profil {
 		whatsapp: { sementara: boolean; nomorTampil: string; nomorInternasional: string };
 		email: string;
 	};
-	sosmed: Array<{ nama: string; handle: string; url: string }>;
+	sosmed: Array<{ nama: string; kelompok: string; handle: string; url: string; ikon: string }>;
 	video: { judul: string; idYoutube: string; url: string };
 	visi: string;
 	misi: string[];
