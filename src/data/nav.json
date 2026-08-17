@@ -1,11 +1,26 @@
 {
   "_catatan": "Data navigasi utama. PRD §11.2: tidak ada teks konten di komponen.",
   "tautan": [
-    { "label": "Beranda",     "href": "/" },
-    { "label": "Tentang",     "href": "#latar-belakang" },
-    { "label": "Alur",        "href": "#cara-jadi-nasabah" },
-    { "label": "Jadwal",      "href": "#jadwal" },
-    { "label": "Galeri",      "href": "#galeri" }
+    {
+      "label": "Beranda",
+      "href": "/"
+    },
+    {
+      "label": "Tentang",
+      "href": "#latar-belakang"
+    },
+    {
+      "label": "Alur",
+      "href": "#cara-jadi-nasabah"
+    },
+    {
+      "label": "Jadwal",
+      "href": "#jadwal"
+    },
+    {
+      "label": "Galeri",
+      "href": "#galeri"
+    }
   ],
   "logo": [
     {

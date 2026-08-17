@@ -8,12 +8,12 @@
  * 4. Custom logo selalu berlatar belakang putih solid
  * 5. Transisi halus antar kedua state
  */
-import { Image } from 'astro:assets';
-import { nav } from '../data';
+import { Image } from "astro:assets";
+import { nav } from "../data";
 
-import logoBankSampah from '../assets/images/logo/logobanksampah.png';
-import logoKkn from '../assets/images/logo/logokkn.png';
-import logoUin from '../assets/images/logo/logouin.webp';
+import logoBankSampah from "../assets/images/logo/logobanksampah.png";
+import logoKkn from "../assets/images/logo/logokkn.png";
+import logoUin from "../assets/images/logo/logouin.webp";
 
 const logoAssets = [logoBankSampah, logoKkn, logoUin];
 ---
@@ -22,41 +22,48 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
   <nav class="navbar-container" aria-label="Navigasi utama">
     <!-- 1. KIRI: Container Logo (Selalu Putih Solid) -->
     <div class="nav-col nav-col-left">
-      <a href="/" class="logo-module" aria-label="Beranda Bank Sampah Bakti Lembur">
-        {nav.logo.map((item, i) => (
-          <Image
-            src={logoAssets[i]}
-            alt={item.alt}
-            width={item.lebar * 2}
-            height={item.tinggi * 2}
-            loading="eager"
-            decoding="async"
-            class="logo-img"
-          />
-        ))}
+      <a
+        href="/"
+        class="logo-module"
+        aria-label="Beranda Bank Sampah Bakti Lembur"
+      >
+        {
+          nav.logo.map((item, i) => (
+            <Image
+              src={logoAssets[i]}
+              alt={item.alt}
+              width={item.lebar * 2}
+              height={item.tinggi * 2}
+              loading="eager"
+              decoding="async"
+              class="logo-img"
+            />
+          ))
+        }
       </a>
     </div>
 
     <!-- 2. TENGAH: Menu Navigasi Desktop (Center Aligned) -->
     <div class="nav-col nav-col-center">
       <ul class="nav-menu-desktop" role="list">
-        {nav.tautan.map((item, index) => (
-          <li>
-            <a
-              href={item.href}
-              class:list={['nav-item', index === 0 && 'aktif']}
-              data-nav-link
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
+        {
+          nav.tautan.map((item, index) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={["nav-item", index === 0 && "aktif"]}
+                data-nav-link
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </div>
 
     <!-- 3. KANAN: Spacer Penyeimbang Grid Desktop -->
-    <div class="nav-col nav-col-right">
-    </div>
+    <div class="nav-col nav-col-right"></div>
 
     <!-- 4. Tombol Hamburger (Mobile) -->
     <button
@@ -74,19 +81,27 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
   </nav>
 
   <!-- 5. Drawer Menu Mobile -->
-  <div id="nav-drawer" class="mobile-drawer" aria-hidden="true" role="dialog" aria-label="Menu navigasi mobile">
+  <div
+    id="nav-drawer"
+    class="mobile-drawer"
+    aria-hidden="true"
+    role="dialog"
+    aria-label="Menu navigasi mobile"
+  >
     <ul class="mobile-nav-list" role="list">
-      {nav.tautan.map((item, index) => (
-        <li>
-          <a
-            href={item.href}
-            class:list={['mobile-nav-item', index === 0 && 'aktif']}
-            data-mobile-nav-link
-          >
-            {item.label}
-          </a>
-        </li>
-      ))}
+      {
+        nav.tautan.map((item, index) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={["mobile-nav-item", index === 0 && "aktif"]}
+              data-mobile-nav-link
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </div>
 </header>
@@ -446,13 +461,13 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     background: var(--white);
   }
 
-  .nav-toggle-btn[aria-expanded='true'] .bar:nth-child(1) {
+  .nav-toggle-btn[aria-expanded="true"] .bar:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
   }
-  .nav-toggle-btn[aria-expanded='true'] .bar:nth-child(2) {
+  .nav-toggle-btn[aria-expanded="true"] .bar:nth-child(2) {
     opacity: 0;
   }
-  .nav-toggle-btn[aria-expanded='true'] .bar:nth-child(3) {
+  .nav-toggle-btn[aria-expanded="true"] .bar:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
   }
 
@@ -474,7 +489,7 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
       border-color 0.35s ease;
   }
 
-  .mobile-drawer[aria-hidden='false'] {
+  .mobile-drawer[aria-hidden="false"] {
     max-height: 480px;
     opacity: 1;
   }
@@ -502,7 +517,10 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
     color: var(--neutral-700);
     text-decoration: none;
     border-left: 3px solid transparent;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease;
   }
 
   .mobile-nav-item:hover {
@@ -581,41 +599,50 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
    * 2. Scrollspy: Menandai menu aktif sesuai seksi di viewport
    * 3. Toggle Drawer Mobile & Aksesibilitas Keyboard (Esc)
    */
-  const navbar = document.getElementById('main-navbar');
-  const toggle = document.getElementById('nav-toggle') as HTMLButtonElement | null;
-  const drawer = document.getElementById('nav-drawer') as HTMLElement | null;
-  const desktopLinks = document.querySelectorAll('[data-nav-link]') as NodeListOf<HTMLAnchorElement>;
-  const mobileLinks = document.querySelectorAll('[data-mobile-nav-link]') as NodeListOf<HTMLAnchorElement>;
+  const navbar = document.getElementById("main-navbar");
+  const toggle = document.getElementById(
+    "nav-toggle",
+  ) as HTMLButtonElement | null;
+  const drawer = document.getElementById("nav-drawer") as HTMLElement | null;
+  const desktopLinks = document.querySelectorAll(
+    "[data-nav-link]",
+  ) as NodeListOf<HTMLAnchorElement>;
+  const mobileLinks = document.querySelectorAll(
+    "[data-mobile-nav-link]",
+  ) as NodeListOf<HTMLAnchorElement>;
 
   // Deteksi Scroll
   const handleScroll = () => {
     if (navbar) {
-      navbar.classList.toggle('is-scrolled', window.scrollY > 20);
+      navbar.classList.toggle("is-scrolled", window.scrollY > 20);
     }
   };
 
-  window.addEventListener('scroll', handleScroll, { passive: true });
+  window.addEventListener("scroll", handleScroll, { passive: true });
   handleScroll();
 
   // Mobile Drawer Toggle
   if (toggle && drawer) {
-    toggle.addEventListener('click', () => {
-      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
-      drawer.setAttribute('aria-hidden', isExpanded ? 'true' : 'false');
+    toggle.addEventListener("click", () => {
+      const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", isExpanded ? "false" : "true");
+      drawer.setAttribute("aria-hidden", isExpanded ? "true" : "false");
     });
 
-    drawer.querySelectorAll('a').forEach((a) => {
-      a.addEventListener('click', () => {
-        toggle.setAttribute('aria-expanded', 'false');
-        drawer.setAttribute('aria-hidden', 'true');
+    drawer.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => {
+        toggle.setAttribute("aria-expanded", "false");
+        drawer.setAttribute("aria-hidden", "true");
       });
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-        toggle.setAttribute('aria-expanded', 'false');
-        drawer.setAttribute('aria-hidden', 'true');
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.key === "Escape" &&
+        toggle.getAttribute("aria-expanded") === "true"
+      ) {
+        toggle.setAttribute("aria-expanded", "false");
+        drawer.setAttribute("aria-hidden", "true");
         toggle.focus();
       }
     });
@@ -624,8 +651,8 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
   // Scrollspy menggunakan IntersectionObserver
   const sections = Array.from(desktopLinks)
     .map((link) => {
-      const href = link.getAttribute('href');
-      if (href && href.startsWith('#') && href.length > 1) {
+      const href = link.getAttribute("href");
+      if (href && href.startsWith("#") && href.length > 1) {
         return document.querySelector(href);
       }
       return null;
@@ -634,23 +661,23 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
 
   const setActiveLink = (targetId: string | null) => {
     desktopLinks.forEach((link) => {
-      const href = link.getAttribute('href');
-      const isTarget = targetId ? href === `#${targetId}` : href === '/';
-      link.classList.toggle('aktif', isTarget);
-      if (isTarget) link.setAttribute('aria-current', 'page');
-      else link.removeAttribute('aria-current');
+      const href = link.getAttribute("href");
+      const isTarget = targetId ? href === `#${targetId}` : href === "/";
+      link.classList.toggle("aktif", isTarget);
+      if (isTarget) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
     });
 
     mobileLinks.forEach((link) => {
-      const href = link.getAttribute('href');
-      const isTarget = targetId ? href === `#${targetId}` : href === '/';
-      link.classList.toggle('aktif', isTarget);
-      if (isTarget) link.setAttribute('aria-current', 'page');
-      else link.removeAttribute('aria-current');
+      const href = link.getAttribute("href");
+      const isTarget = targetId ? href === `#${targetId}` : href === "/";
+      link.classList.toggle("aktif", isTarget);
+      if (isTarget) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
     });
   };
 
-  if ('IntersectionObserver' in window && sections.length > 0) {
+  if ("IntersectionObserver" in window && sections.length > 0) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -662,7 +689,7 @@ const logoAssets = [logoBankSampah, logoKkn, logoUin];
           setActiveLink(null); // Beranda
         }
       },
-      { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
+      { rootMargin: "-20% 0px -70% 0px", threshold: 0 },
     );
 
     sections.forEach((sec) => observer.observe(sec));
