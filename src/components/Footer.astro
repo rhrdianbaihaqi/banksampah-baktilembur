@@ -1,10 +1,12 @@
 ---
 /**
- * Footer — Informasi kontak dan credit KKN
- * Subtle dan clean, tetap fokus pada Bank Sampah sebagai brand utama
+ * Footer — Informasi kontak dan navigasi
+ * Mengikuti arahan layout 4 kolom dengan latar belakang gelap.
  */
+import { Image } from 'astro:assets';
 import Ikon from './ui/Ikon.astro';
-import { profil } from '../data';
+import { profil, nav } from '../data';
+import logoBankSampah from '../assets/images/logo/logobanksampah.png';
 
 const { kontak, sosmed, nama, diresmikan } = profil;
 const currentYear = new Date().getFullYear();
@@ -14,79 +16,89 @@ const startYear = new Date(diresmikan).getFullYear();
 <footer class="footer" role="contentinfo">
 	<div class="footer-content">
 		
-		<!-- FOOTER TOP: Info Kontak & Sosial -->
+		<!-- FOOTER TOP: 4 Kolom -->
 		<div class="footer-top">
+			
+			<!-- Kolom 1: Brand & Tagline -->
+			<div class="footer-section brand-section">
+				<div class="brand-header">
+					<Image
+						src={logoBankSampah}
+						alt={`Logo ${nama}`}
+						width={44}
+						height={44}
+						class="footer-logo"
+						loading="lazy"
+						decoding="async"
+					/>
+					<p class="brand-name">{nama}</p>
+				</div>
+				<p class="brand-desc">
+					{profil.tagline}. {profil.misi[0]}
+				</p>
+			</div>
+
+			<!-- Kolom 2: Tautan Cepat -->
 			<div class="footer-section">
-				<p class="footer-heading">{nama}</p>
-				<div class="footer-kontak">
-					<a href={`mailto:${kontak.email}`} class="footer-link" aria-label={`Email ke ${nama}`}>
-						{kontak.email}
-					</a>
-					<a href={`https://wa.me/${kontak.whatsapp.nomorInternasional}`} target="_blank" rel="noopener noreferrer" class="footer-link" aria-label={`WhatsApp ${nama}`}>
-						{kontak.whatsapp.nomorLokal}
-					</a>
+				<p class="footer-heading">Tautan Cepat</p>
+				<ul class="footer-links">
+					{nav.tautan.map((item) => (
+						<li><a href={item.href}>{item.label}</a></li>
+					))}
+				</ul>
+			</div>
+
+			<!-- Kolom 3: Layanan -->
+			<div class="footer-section">
+				<p class="footer-heading">Layanan</p>
+				<ul class="footer-links">
+					<li><a href={`https://wa.me/${kontak.whatsapp.nomorInternasional}`} target="_blank" rel="noopener noreferrer">Pendaftaran Nasabah</a></li>
+					<li><a href="#alur">Informasi Bank Sampah</a></li>
+					<li><a href="#jadwal">Lokasi & Jadwal</a></li>
+				</ul>
+			</div>
+
+			<!-- Kolom 4: Kontak -->
+			<div class="footer-section">
+				<p class="footer-heading">Kontak</p>
+				
+				<div class="kontak-item">
+					<strong class="kontak-label">Alamat:</strong>
+					<p class="kontak-teks">{profil.alamat.lengkap}</p>
+				</div>
+				
+				<div class="kontak-item mt-4">
+					<strong class="kontak-label">Kontak (WhatsApp & Email):</strong>
+					<p class="kontak-teks">{kontak.whatsapp.nomorLokal}<br/>{kontak.email}</p>
 				</div>
 			</div>
 
-			<!-- Social Media -->
-			<div class="footer-section">
-				<p class="footer-heading">Ikuti Kami</p>
-				<div class="footer-sosmed-grup">
-					<!-- Bank Sampah -->
-					<div class="sosmed-grup">
-						<span class="sosmed-grup-label">Bank Sampah</span>
-						<div class="footer-sosmed">
-							{sosmed.filter(s => s.kelompok === 'banksampah').map(s => (
-								<a
-									href={s.url}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="sosmed-link"
-									aria-label={`${s.nama} — ${s.handle}`}
-									title={`${s.nama} ${s.handle}`}
-								>
-									<Ikon nama={s.ikon} ukuran={18} />
-								</a>
-							))}
-						</div>
-					</div>
-					<!-- KKN -->
-					<div class="sosmed-grup">
-						<span class="sosmed-grup-label">KKN Kelompok 10</span>
-						<div class="footer-sosmed">
-							{sosmed.filter(s => s.kelompok === 'kkn').map(s => (
-								<a
-									href={s.url}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="sosmed-link"
-									aria-label={`${s.nama} — ${s.handle}`}
-									title={`${s.nama} ${s.handle}`}
-								>
-									<Ikon nama={s.ikon} ukuran={18} />
-								</a>
-							))}
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 
 		<!-- FOOTER DIVIDER -->
 		<div class="footer-divider"></div>
 
-		<!-- FOOTER BOTTOM: Copyright & KKN Credit -->
+		<!-- FOOTER BOTTOM: Copyright & Sosmed -->
 		<div class="footer-bottom">
 			<div class="footer-copyright">
 				<p class="copyright-text">
-					© {startYear}–{currentYear} {nama}. 
-					<span class="kkn-credit">
-						Didigitalisasikan melalui Program Kerja KKN Kelompok 10
-						<a href="https://www.instagram.com/potretsarimukti_10" target="_blank" rel="noopener noreferrer" class="kkn-ig-link" aria-label="Instagram KKN Kelompok 10" title="Instagram KKN Kelompok 10">
-							<Ikon nama="instagram" ukuran={14} />
-						</a>
-					</span>
+					© {currentYear} {nama}. Didigitalisasikan melalui Program Kerja KKN Kelompok 10.
 				</p>
+			</div>
+			
+			<div class="footer-sosmed-bottom">
+				{sosmed.map(s => (
+					<a
+						href={s.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="sosmed-icon-link"
+						aria-label={`${s.nama} — ${s.handle}`}
+						title={`${s.nama} ${s.handle}`}
+					>
+						<Ikon nama={s.ikon} ukuran={20} />
+					</a>
+				))}
 			</div>
 		</div>
 
@@ -96,205 +108,194 @@ const startYear = new Date(diresmikan).getFullYear();
 <style>
 	/* ─── FOOTER WRAPPER ──────────────────────────────────────────────── */
 	.footer {
-		margin-top: calc(var(--space-unit) * 12);
-		background: linear-gradient(
-			135deg,
-			rgba(62, 116, 53, 0.06) 0%,
-			rgba(62, 116, 53, 0.03) 100%
-		);
-		border-top: 1px solid rgba(62, 116, 53, 0.12);
-		padding: calc(var(--space-unit) * 6) calc(var(--space-unit) * 2);
+		background: var(--neutral-900);
+		padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
 	}
 
 	@media (min-width: 768px) {
 		.footer {
-			padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 4);
+			padding: calc(var(--space-unit) * 10) calc(var(--space-unit) * 6);
 		}
 	}
 
 	.footer-content {
-		max-width: 1140px;
+		max-width: 1200px;
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
-		gap: calc(var(--space-unit) * 4);
+		gap: calc(var(--space-unit) * 6);
 	}
 
-	/* ─── FOOTER TOP ──────────────────────────────────────────────────── */
+	/* ─── FOOTER TOP (4 KOLOM) ────────────────────────────────────────── */
 	.footer-top {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: calc(var(--space-unit) * 4);
+		gap: calc(var(--space-unit) * 6);
 	}
 
-	@media (min-width: 768px) {
+	@media (min-width: 640px) {
 		.footer-top {
 			grid-template-columns: repeat(2, 1fr);
-			gap: calc(var(--space-unit) * 6);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.footer-top {
+			grid-template-columns: 2fr 1fr 1fr 1.5fr;
+			gap: calc(var(--space-unit) * 4);
 		}
 	}
 
 	.footer-section {
 		display: flex;
 		flex-direction: column;
-		gap: calc(var(--space-unit) * 1.5);
-	}
-
-	.footer-heading {
-		margin: 0;
-		font-family: var(--font-hero), system-ui, sans-serif;
-		font-size: 0.875rem;
-		font-weight: 700;
-		color: var(--neutral-900);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	/* ─── FOOTER KONTAK ──────────────────────────────────────────────── */
-	.footer-kontak {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-
-	.footer-link {
-		display: inline-block;
-		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: 0.9375rem;
-		color: var(--neutral-700);
-		text-decoration: none;
-		transition: color 0.2s ease;
-	}
-
-	.footer-link:hover {
-		color: var(--brand-green);
-		text-decoration: underline;
-	}
-
-	/* ─── FOOTER SOSIAL MEDIA ────────────────────────────────────────── */
-	.footer-sosmed-grup {
-		display: flex;
-		flex-direction: column;
 		gap: calc(var(--space-unit) * 2);
 	}
 
-	.sosmed-grup {
+	/* ─── KOLOM 1: BRAND ─────────────────────────────────────────────── */
+	.brand-section {
+		padding-right: calc(var(--space-unit) * 4);
+	}
+
+	.brand-header {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.footer-logo {
+		background: var(--white);
+		border-radius: 8px;
+		padding: 4px;
+	}
+
+	.brand-name {
+		margin: 0;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: 1.125rem;
+		font-weight: 700;
+		color: var(--white);
+		line-height: 1.3;
+	}
+
+	.brand-desc {
+		margin: 0;
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 0.875rem;
+		line-height: 1.6;
+		color: var(--neutral-100);
+		opacity: 0.85;
+	}
+
+	/* ─── HEADING KOLOM ──────────────────────────────────────────────── */
+	.footer-heading {
+		margin: 0;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--white);
+	}
+
+	/* ─── LINKS (TAUTAN & LAYANAN) ───────────────────────────────────── */
+	.footer-links {
+		list-style: none;
+		padding: 0;
+		margin: 0;
 		display: flex;
 		flex-direction: column;
-		gap: calc(var(--space-unit) * 0.75);
+		gap: 12px;
 	}
 
-	.sosmed-grup-label {
+	.footer-links a {
 		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: 0.75rem;
-		font-weight: 600;
-		color: var(--neutral-600);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		font-size: 0.875rem;
+		color: var(--neutral-100);
+		text-decoration: none;
+		opacity: 0.8;
+		transition: opacity 0.2s ease, color 0.2s ease;
 	}
 
-	.footer-sosmed {
-		display: flex;
-		gap: calc(var(--space-unit) * 1);
-		flex-wrap: wrap;
-	}
-
-	.sosmed-link {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 40px;
-		height: 40px;
-		background: rgba(62, 116, 53, 0.1);
-		color: var(--brand-green);
-		border-radius: 50%;
-		transition: all 0.2s ease;
-		border: 1px solid rgba(62, 116, 53, 0.15);
-	}
-
-	.sosmed-link:hover {
-		background: var(--brand-green);
+	.footer-links a:hover {
+		opacity: 1;
 		color: var(--white);
-		transform: translateY(-2px);
+		text-decoration: underline;
+	}
+
+	/* ─── KONTAK ─────────────────────────────────────────────────────── */
+	.kontak-item {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.mt-4 {
+		margin-top: 16px;
+	}
+
+	.kontak-label {
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 0.875rem;
+		font-weight: 700;
+		color: var(--white);
+	}
+
+	.kontak-teks {
+		margin: 0;
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 0.875rem;
+		line-height: 1.6;
+		color: var(--neutral-100);
+		opacity: 0.85;
 	}
 
 	/* ─── FOOTER DIVIDER ──────────────────────────────────────────────── */
 	.footer-divider {
 		height: 1px;
-		background: linear-gradient(
-			90deg,
-			transparent,
-			rgba(62, 116, 53, 0.15),
-			transparent
-		);
+		background: rgba(255, 255, 255, 0.15);
 	}
 
 	/* ─── FOOTER BOTTOM ──────────────────────────────────────────────── */
 	.footer-bottom {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 3);
+		align-items: center;
 		text-align: center;
 	}
 
-	.footer-copyright {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: calc(var(--space-unit) * 1);
+	@media (min-width: 768px) {
+		.footer-bottom {
+			flex-direction: row;
+			justify-content: space-between;
+			text-align: left;
+		}
 	}
 
 	.copyright-text {
 		margin: 0;
 		font-family: var(--font-isi), system-ui, sans-serif;
 		font-size: 0.8125rem;
-		line-height: 1.6;
-		color: var(--neutral-600);
+		color: var(--neutral-100);
+		opacity: 0.7;
 	}
 
-	.kkn-credit {
+	.footer-sosmed-bottom {
+		display: flex;
+		align-items: center;
+		gap: calc(var(--space-unit) * 2);
+	}
+
+	.sosmed-icon-link {
+		color: var(--neutral-100);
+		opacity: 0.7;
+		transition: opacity 0.2s ease, color 0.2s ease;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		flex-wrap: wrap;
-		gap: 6px;
-		font-weight: 500;
-		color: var(--neutral-700);
-		margin-top: 4px;
 	}
 
-	.kkn-ig-link {
-		display: inline-flex;
-		align-items: center;
-		color: var(--neutral-600);
-		transition: color 0.2s ease;
-	}
-	.kkn-ig-link:hover {
-		color: var(--brand-green);
-	}
-
-	/* ─── RESPONSIVE ──────────────────────────────────────────────────── */
-	@media (max-width: 768px) {
-		.footer {
-			margin-top: calc(var(--space-unit) * 8);
-			padding: calc(var(--space-unit) * 4) calc(var(--space-unit) * 2);
-		}
-
-		.footer-content {
-			gap: calc(var(--space-unit) * 3);
-		}
-
-		.footer-section {
-			gap: calc(var(--space-unit) * 1);
-		}
-	}
-
-	/* ─── ACCESSIBILITY ──────────────────────────────────────────────── */
-	@media (prefers-reduced-transparency: reduce) {
-		.footer {
-			background: rgba(62, 116, 53, 0.1);
-		}
-
-		.sosmed-link {
-			background: rgba(62, 116, 53, 0.2);
-			border-color: rgba(62, 116, 53, 0.3);
-		}
+	.sosmed-icon-link:hover {
+		opacity: 1;
+		color: var(--white);
 	}
 </style>
