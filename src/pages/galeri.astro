@@ -151,23 +151,18 @@ const deskripsi = "Dokumentasi foto aktivitas penimbangan, pengelolaan, dan kemi
 
 	/* Efek Stabilo Hijau Muda pada Judul */
 	.stabilo-hijau {
-		position: relative;
-		display: inline-block;
-		white-space: nowrap;
-		z-index: 1;
-	}
-
-	.stabilo-hijau::before {
-		content: '';
-		position: absolute;
-		left: -4px;
-		right: -4px;
-		bottom: 10%;
-		height: 36%;
-		background: rgba(144, 238, 144, 0.7); /* Light green / hijau muda stabilo */
-		z-index: -1;
+		display: inline;
+		background-image: linear-gradient(
+			to bottom,
+			transparent 52%,
+			rgba(144, 238, 144, 0.75) 52%,
+			rgba(144, 238, 144, 0.75) 94%,
+			transparent 94%
+		);
+		-webkit-box-decoration-break: clone;
+		box-decoration-break: clone;
+		padding: 0.05em 0.18em;
 		border-radius: 4px;
-		transform: rotate(-1.5deg);
 	}
 
 	.deskripsi-header {

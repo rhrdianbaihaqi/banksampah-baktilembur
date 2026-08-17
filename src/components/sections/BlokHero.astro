@@ -15,10 +15,7 @@ const { s1 } = beranda;
 const ctaNasabah = ctaWhatsapp("nasabah");
 ---
 
-<div
-	class="hero-blok"
-	id="hero-slider-blok"
->
+<div class="hero-blok" id="hero-slider-blok">
 	<!-- ════ FOTO LATAR BERSAMA (UNTUK KEDUA SLIDE) DENGAN ANIMASI CROSSFADE ════ -->
 	<div class="hero-latar" aria-hidden="true">
 		<!-- Latar 1 (Utama) -->
@@ -79,8 +76,6 @@ const ctaNasabah = ctaWhatsapp("nasabah");
 			</div>
 		</div>
 	</div>
-
-
 </div>
 
 <script>
@@ -125,9 +120,17 @@ const ctaNasabah = ctaWhatsapp("nasabah");
 	}
 
 	@keyframes crossfadeBg {
-		0%, 45% { opacity: 0; }     /* Foto 1 Tampil */
-		50%, 95% { opacity: 1; }    /* Foto 2 Tampil (IMG_8919) */
-		100% { opacity: 0; }
+		0%,
+		45% {
+			opacity: 0;
+		} /* Foto 1 Tampil */
+		50%,
+		95% {
+			opacity: 1;
+		} /* Foto 2 Tampil (IMG_8919) */
+		100% {
+			opacity: 0;
+		}
 	}
 
 	.hero-scrim {
@@ -150,7 +153,9 @@ const ctaNasabah = ctaWhatsapp("nasabah");
 		opacity: 0;
 		visibility: hidden;
 		pointer-events: none;
-		transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.7s ease;
+		transition:
+			opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+			visibility 0.7s ease;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -184,35 +189,37 @@ const ctaNasabah = ctaWhatsapp("nasabah");
 	.hero-judul {
 		margin: 0;
 		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: clamp(2.25rem, 6vw, 4rem);
+		font-size: clamp(1.75rem, 5.2vw, 3.75rem);
 		font-weight: 600;
-		line-height: 1.15;
+		line-height: 1.22;
 		letter-spacing: -0.02em;
 		color: var(--white);
 		text-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
 		text-wrap: balance;
+		max-width: 900px;
 	}
 
-	/* Efek Stabilo Hijau Muda pada Judul */
+	/* Efek Stabilo Hijau Muda pada Judul (Selalu 1 Baris Utuh di Tengah Sesuai Gambar Referensi) */
 	.stabilo-hijau {
+		display: block;
+		width: fit-content;
+		margin: 0.18em auto 0;
 		position: relative;
-		display: inline-block;
 		white-space: nowrap;
 		z-index: 1;
 	}
 
 	.stabilo-hijau::before {
-		content: '';
+		content: "";
 		position: absolute;
-		left: -4px;
-		right: -4px;
-		bottom: 10%;
-		height: 36%;
-		background: rgba(144, 238, 144, 0.7); /* Light green / hijau muda stabilo */
+		left: -6px;
+		right: -6px;
+		bottom: 8%;
+		height: 38%;
+		background: rgba(144, 238, 144, 0.72); /* Light green stabilo */
 		z-index: -1;
 		border-radius: 4px;
-		transform: rotate(-1.5deg);
-		/* Hapus shadow pada ::before agar stabilo terlihat seperti arsiran marker murni */
+		transform: rotate(-1.2deg);
 	}
 
 	/* Efek Stabilo Emas pada Subjudul */
@@ -224,25 +231,27 @@ const ctaNasabah = ctaWhatsapp("nasabah");
 	}
 
 	.stabilo-emas::before {
-		content: '';
+		content: "";
 		position: absolute;
-		left: -2px;
-		right: -6px;
-		bottom: 12%;
+		left: -3px;
+		right: -5px;
+		bottom: 10%;
 		height: 40%;
-		background: rgba(245, 158, 11, 0.55); /* Amber / Emas stabilo */
+		background: rgba(245, 158, 11, 0.6); /* Amber / Emas stabilo */
 		z-index: -1;
-		border-radius: 4px;
-		transform: rotate(1deg);
+		border-radius: 3px;
+		transform: rotate(0.8deg);
 	}
 
-	@media (max-width: 640px) {
-		.stabilo-hijau, .stabilo-emas {
-			white-space: normal;
+	@media (max-width: 480px) {
+		.hero-judul {
+			font-size: clamp(1.35rem, 6.2vw, 1.85rem);
+			line-height: 1.25;
 		}
-		.stabilo-hijau::before, .stabilo-emas::before {
+
+		.stabilo-hijau::before {
 			height: 40%;
-			bottom: 5%;
+			bottom: 6%;
 		}
 	}
 
@@ -250,13 +259,13 @@ const ctaNasabah = ctaWhatsapp("nasabah");
 	.hero-subjudul {
 		margin: 0;
 		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: clamp(1rem, 2vw, 1.2rem);
-		font-weight: 600;
+		font-size: clamp(0.9375rem, 2vw, 1.15rem);
+		font-weight: 500;
 		line-height: 1.6;
 		color: rgba(255, 255, 255, 0.95);
 		max-width: 680px;
 		text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
-		text-wrap: pretty;
+		text-wrap: balance;
 	}
 
 	/* ─── Tombol CTA (Hanya 2 Tombol: WA & Alur) ─────────────────────── */

@@ -5,9 +5,9 @@
  * Google Maps dihapus (koordinat belum terisi, PRD §17 item 2).
  * Ikon: calendar, map-pin, truck, home, book-open — semua terdaftar di Ikon.astro.
  */
-import Seksi from '../ui/Seksi.astro';
-import Ikon from '../ui/Ikon.astro';
-import { beranda, profil } from '../../data';
+import Seksi from "../ui/Seksi.astro";
+import Ikon from "../ui/Ikon.astro";
+import { beranda, profil } from "../../data";
 
 const { s6 } = beranda;
 const { jadwalPenimbangan, areaJemput } = profil;
@@ -15,10 +15,8 @@ const { jadwalPenimbangan, areaJemput } = profil;
 
 <Seksi id="jadwal" eyebrow={s6.eyebrow} judul={s6.judul} latar="netral">
 	<div class="jadwal-grid">
-
 		<!-- KOLOM KIRI: Jadwal & Lokasi -->
 		<div class="jadwal-info">
-
 			<!-- Jadwal Penimbangan -->
 			<div class="info-blok blok-utama">
 				<div class="info-header">
@@ -29,9 +27,11 @@ const { jadwalPenimbangan, areaJemput } = profil;
 				</div>
 				<p class="frekuensi-teks">{jadwalPenimbangan.frekuensi}</p>
 				<div class="hari-tags">
-					{jadwalPenimbangan.hari.map(h => (
-						<span class="hari-tag">{h}</span>
-					))}
+					{
+						jadwalPenimbangan.hari.map((h) => (
+							<span class="hari-tag">{h}</span>
+						))
+					}
 				</div>
 			</div>
 
@@ -45,7 +45,6 @@ const { jadwalPenimbangan, areaJemput } = profil;
 				</div>
 				<p class="info-nilai">{jadwalPenimbangan.lokasiUtama}</p>
 			</div>
-
 		</div>
 
 		<!-- KOLOM KANAN: Area Layanan Jemput -->
@@ -58,16 +57,17 @@ const { jadwalPenimbangan, areaJemput } = profil;
 					<h3 class="info-label">{s6.labelJemput}</h3>
 				</div>
 				<div class="area-tags">
-					{areaJemput.map(a => (
-						<span class="area-tag">
-							<span class="area-dot" aria-hidden="true"></span>
-							{a}
-						</span>
-					))}
+					{
+						areaJemput.map((a) => (
+							<span class="area-tag">
+								<span class="area-dot" aria-hidden="true" />
+								{a}
+							</span>
+						))
+					}
 				</div>
 			</div>
 		</div>
-
 	</div>
 </Seksi>
 
@@ -109,7 +109,9 @@ const { jadwalPenimbangan, areaJemput } = profil;
 		border: 1px solid var(--border);
 		border-radius: var(--radius-md);
 		box-shadow: 0 4px 20px rgba(26, 29, 26, 0.05);
-		transition: transform 0.25s ease, box-shadow 0.25s ease;
+		transition:
+			transform 0.25s ease,
+			box-shadow 0.25s ease;
 	}
 
 	.info-blok:hover {
@@ -202,7 +204,10 @@ const { jadwalPenimbangan, areaJemput } = profil;
 		color: var(--neutral-700);
 		background: var(--neutral-50);
 		border: 1px solid var(--border);
-		transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+		transition:
+			background-color 0.2s ease,
+			border-color 0.2s ease,
+			color 0.2s ease;
 	}
 
 	.area-tag:hover {

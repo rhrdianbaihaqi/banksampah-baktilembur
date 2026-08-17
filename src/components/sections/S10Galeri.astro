@@ -29,7 +29,9 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		<div class="galeri-header-wrap">
 			<div class="galeri-title-box">
 				<span class="red-line"></span>
-				<h2 class="galeri-title"><span class="stabilo-hijau">{s10.judul}</span></h2>
+				<h2 class="galeri-title">
+					<span class="stabilo-hijau">{s10.judul}</span>
+				</h2>
 			</div>
 		</div>
 
@@ -40,9 +42,10 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 					<ul class="galeri-track" id="galeri-track">
 						{kategori.flatMap((k) =>
 							k.foto.map((f) => {
-								const imgLoader = berkas[`../../assets/images/${f.file}`];
+								const imgLoader =
+									berkas[`../../assets/images/${f.file}`];
 								if (!imgLoader) return null;
-								
+
 								return (
 									<li class="galeri-slide">
 										<Image
@@ -65,7 +68,6 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 				)
 			}
 		</div>
-
 	</div>
 </Seksi>
 
@@ -108,23 +110,18 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 
 	/* Efek Stabilo Hijau Muda pada Judul */
 	.stabilo-hijau {
-		position: relative;
-		display: inline-block;
-		white-space: nowrap;
-		z-index: 1;
-	}
-
-	.stabilo-hijau::before {
-		content: '';
-		position: absolute;
-		left: -4px;
-		right: -4px;
-		bottom: 10%;
-		height: 36%;
-		background: rgba(144, 238, 144, 0.7); /* Light green / hijau muda stabilo */
-		z-index: -1;
+		display: inline;
+		background-image: linear-gradient(
+			to bottom,
+			transparent 52%,
+			rgba(144, 238, 144, 0.75) 52%,
+			rgba(144, 238, 144, 0.75) 94%,
+			transparent 94%
+		);
+		-webkit-box-decoration-break: clone;
+		box-decoration-break: clone;
+		padding: 0.05em 0.18em;
 		border-radius: 4px;
-		transform: rotate(-1.5deg);
 	}
 
 	/* SLIDER WRAPPER (Bleeding Layout) */
@@ -188,30 +185,29 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		color: var(--neutral-600);
 		font-style: italic;
 	}
-
 </style>
 
 <script>
 	function setupGaleriSlider() {
-		const track = document.getElementById('galeri-track');
+		const track = document.getElementById("galeri-track");
 
 		if (!track) return;
 
 		// Hindari penggandaan event listener jika dipanggil berkali-kali
-		if (track.hasAttribute('data-slider-init')) return;
-		track.setAttribute('data-slider-init', 'true');
+		if (track.hasAttribute("data-slider-init")) return;
+		track.setAttribute("data-slider-init", "true");
 
 		// 1. Clone items untuk seamless infinite loop
 		// Kita menduplikasi 2 set item untuk buffer di awal dan akhir
 		const originalItems = Array.from(track.children);
-		originalItems.forEach(item => {
+		originalItems.forEach((item) => {
 			const clone = item.cloneNode(true);
-			clone.setAttribute('aria-hidden', 'true');
+			clone.setAttribute("aria-hidden", "true");
 			track.appendChild(clone);
 		});
-		originalItems.forEach(item => {
+		originalItems.forEach((item) => {
 			const clone = item.cloneNode(true);
-			clone.setAttribute('aria-hidden', 'true');
+			clone.setAttribute("aria-hidden", "true");
 			track.appendChild(clone);
 		});
 
@@ -222,24 +218,28 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 
 		// Menghitung lebar 1 set konten
 		const getSetWidth = () => {
-			const itemWidth = track.firstElementChild ? track.firstElementChild.clientWidth + 30 : 480; // 30 is gap
+			const itemWidth = track.firstElementChild
+				? track.firstElementChild.clientWidth + 30
+				: 480; // 30 is gap
 			return originalItems.length * itemWidth;
 		};
 
 		// Posisikan scroll di tengah (set ke-2) pada saat awal, agar bisa digeser ke kiri
 		setTimeout(() => {
-			track.style.scrollBehavior = 'auto';
+			track.style.scrollBehavior = "auto";
 			track.scrollLeft = getSetWidth();
 			void track.offsetWidth; // Force reflow
-			track.style.scrollBehavior = 'smooth';
+			track.style.scrollBehavior = "smooth";
 		}, 50);
 
 		// --- Auto-play Logic ---
 		const startAutoPlay = () => {
 			stopAutoPlay();
 			autoPlayTimer = setInterval(() => {
-				const itemWidth = track.firstElementChild ? track.firstElementChild.clientWidth + 30 : 480;
-				track.scrollBy({ left: itemWidth, behavior: 'smooth' });
+				const itemWidth = track.firstElementChild
+					? track.firstElementChild.clientWidth + 30
+					: 480;
+				track.scrollBy({ left: itemWidth, behavior: "smooth" });
 			}, 3000);
 		};
 
@@ -251,63 +251,63 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 
 		// Seamless Loop Check
 		let scrollTimeout;
-		track.addEventListener('scroll', () => {
+		track.addEventListener("scroll", () => {
 			clearTimeout(scrollTimeout);
 			scrollTimeout = setTimeout(() => {
 				const setWidth = getSetWidth();
-				
+
 				// Jika mencapai set ke-3 (ujung kanan), kembalikan ke set ke-2
 				if (track.scrollLeft >= setWidth * 2 - 10) {
-					track.style.scrollBehavior = 'auto';
+					track.style.scrollBehavior = "auto";
 					track.scrollLeft -= setWidth;
 					void track.offsetWidth;
-					track.style.scrollBehavior = 'smooth';
-				} 
+					track.style.scrollBehavior = "smooth";
+				}
 				// Jika mencapai set ke-1 (ujung kiri), kembalikan ke set ke-2
 				else if (track.scrollLeft <= 10) {
-					track.style.scrollBehavior = 'auto';
+					track.style.scrollBehavior = "auto";
 					track.scrollLeft += setWidth;
 					void track.offsetWidth;
-					track.style.scrollBehavior = 'smooth';
+					track.style.scrollBehavior = "smooth";
 				}
 			}, 150); // Menunggu momentum / smooth scroll berhenti
 		});
 
 		// Pause saat interaksi
-		track.addEventListener('mouseenter', stopAutoPlay);
-		track.addEventListener('mouseleave', startAutoPlay);
-		track.addEventListener('touchstart', stopAutoPlay, { passive: true });
-		track.addEventListener('touchend', startAutoPlay);
+		track.addEventListener("mouseenter", stopAutoPlay);
+		track.addEventListener("mouseleave", startAutoPlay);
+		track.addEventListener("touchstart", stopAutoPlay, { passive: true });
+		track.addEventListener("touchend", startAutoPlay);
 
 		// --- Drag to Scroll (Mouse) ---
-		track.addEventListener('mousedown', (e) => {
+		track.addEventListener("mousedown", (e) => {
 			isDown = true;
-			track.style.scrollSnapType = 'none';
-			track.style.scrollBehavior = 'auto';
-			track.style.cursor = 'grabbing';
+			track.style.scrollSnapType = "none";
+			track.style.scrollBehavior = "auto";
+			track.style.cursor = "grabbing";
 			startX = e.pageX - track.offsetLeft;
 			scrollLeft = track.scrollLeft;
 			stopAutoPlay();
 		});
 
-		track.addEventListener('mouseleave', () => {
+		track.addEventListener("mouseleave", () => {
 			if (!isDown) return;
 			isDown = false;
-			track.style.scrollSnapType = 'x mandatory';
-			track.style.scrollBehavior = 'smooth';
-			track.style.cursor = 'grab';
+			track.style.scrollSnapType = "x mandatory";
+			track.style.scrollBehavior = "smooth";
+			track.style.cursor = "grab";
 			startAutoPlay();
 		});
 
-		track.addEventListener('mouseup', () => {
+		track.addEventListener("mouseup", () => {
 			isDown = false;
-			track.style.scrollSnapType = 'x mandatory';
-			track.style.scrollBehavior = 'smooth';
-			track.style.cursor = 'grab';
+			track.style.scrollSnapType = "x mandatory";
+			track.style.scrollBehavior = "smooth";
+			track.style.cursor = "grab";
 			startAutoPlay();
 		});
 
-		track.addEventListener('mousemove', (e) => {
+		track.addEventListener("mousemove", (e) => {
 			if (!isDown) return;
 			e.preventDefault();
 			const x = e.pageX - track.offsetLeft;
@@ -315,12 +315,12 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 			track.scrollLeft = scrollLeft - walk;
 		});
 
-		track.style.cursor = 'grab';
+		track.style.cursor = "grab";
 	}
 
 	// Eksekusi fungsi setup saat komponen dimuat
 	setupGaleriSlider();
-	
+
 	// Jika menggunakan View Transitions
-	document.addEventListener('astro:page-load', setupGaleriSlider);
+	document.addEventListener("astro:page-load", setupGaleriSlider);
 </script>
