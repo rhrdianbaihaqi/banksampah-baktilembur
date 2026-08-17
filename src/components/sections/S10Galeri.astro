@@ -6,7 +6,6 @@
 import { Image } from "astro:assets";
 import Seksi from "../ui/Seksi.astro";
 import Ikon from "../ui/Ikon.astro";
-import VideoFacade from "../ui/VideoFacade.astro";
 import { beranda, galeriTersaring, profil } from "../../data";
 
 const { s10 } = beranda;
@@ -76,23 +75,6 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 			}
 		</div>
 
-		<!-- ELEMEN TAMBAHAN (Video & Link) -->
-		<div class="galeri-footer">
-			<div class="video-wrap">
-				<VideoFacade
-					idYoutube={profil.video.idYoutube}
-					judul={profil.video.judul}
-					label={s10.labelVideo}
-				/>
-			</div>
-			
-			<div class="link-wrap">
-				<a href={s10.tautanSelengkapnya.href} class="btn-selengkapnya">
-					<span>{s10.tautanSelengkapnya.label}</span>
-					<Ikon nama="arrow-right" ukuran={18} />
-				</a>
-			</div>
-		</div>
 	</div>
 </Seksi>
 
@@ -245,48 +227,6 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		font-style: italic;
 	}
 
-	/* FOOTER (Video & Link) */
-	.galeri-footer {
-		display: flex;
-		flex-direction: column;
-		gap: calc(var(--space-unit) * 4);
-	}
-
-	.video-wrap {
-		width: 100%;
-		max-width: 720px;
-	}
-
-	.link-wrap {
-		display: flex;
-	}
-
-	.btn-selengkapnya {
-		display: inline-flex;
-		align-items: center;
-		gap: 12px;
-		font-weight: 600;
-		font-family: var(--font-ui), system-ui, sans-serif;
-		color: var(--white);
-		background-color: var(--brand-green);
-		padding: 14px 28px;
-		border-radius: var(--radius-md);
-		text-decoration: none;
-		transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
-		box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
-	}
-
-	.btn-selengkapnya:hover {
-		background-color: var(--brand-green-dark);
-		transform: translateY(-2px);
-		box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
-		color: var(--white);
-	}
-
-	.btn-selengkapnya:active {
-		transform: translateY(0);
-		box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
-	}
 </style>
 
 <script>
