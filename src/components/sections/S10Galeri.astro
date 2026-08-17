@@ -31,15 +31,6 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 				<span class="red-line"></span>
 				<h2 class="galeri-title"><span class="stabilo-hijau">{s10.judul}</span></h2>
 			</div>
-			
-			<div class="galeri-nav">
-				<button type="button" class="nav-btn prev-btn" aria-label="Sebelumnya" id="gal-prev">
-					<Ikon nama="arrow-left" ukuran={24} />
-				</button>
-				<button type="button" class="nav-btn next-btn" aria-label="Selanjutnya" id="gal-next">
-					<Ikon nama="arrow-right" ukuran={24} />
-				</button>
-			</div>
 		</div>
 
 		<!-- SLIDER -->
@@ -136,35 +127,6 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		transform: rotate(-1.5deg);
 	}
 
-	/* NAVIGATION BUTTONS */
-	.galeri-nav {
-		display: flex;
-		gap: 12px;
-	}
-
-	.nav-btn {
-		width: 48px;
-		height: 48px;
-		border-radius: 8px; /* Tombol Kotak Sesuai Permintaan */
-		border: 1px solid var(--neutral-200);
-		background: #ffffff;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--neutral-700);
-		cursor: pointer;
-		box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-		transition: all 0.2s ease;
-	}
-
-	.nav-btn:hover {
-		background: var(--brand-green);
-		color: #ffffff;
-		border-color: var(--brand-green);
-		transform: translateY(-2px);
-		box-shadow: 0 6px 16px rgba(62, 116, 53, 0.2);
-	}
-
 	/* SLIDER WRAPPER (Bleeding Layout) */
 	.galeri-slider-wrapper {
 		position: relative;
@@ -232,31 +194,52 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 <script>
 	function setupGaleriSlider() {
 		const track = document.getElementById('galeri-track');
-		const btnPrev = document.getElementById('gal-prev');
-		const btnNext = document.getElementById('gal-next');
 
-		if (!track || !btnPrev || !btnNext) return;
+		if (!track) return;
+
+		// Hindari penggandaan event listener jika dipanggil berkali-kali
+		if (track.hasAttribute('data-slider-init')) return;
+		track.setAttribute('data-slider-init', 'true');
+
+		// 1. Clone items untuk seamless infinite loop
+		// Kita menduplikasi 2 set item untuk buffer di awal dan akhir
+		const originalItems = Array.from(track.children);
+		originalItems.forEach(item => {
+			const clone = item.cloneNode(true);
+			clone.setAttribute('aria-hidden', 'true');
+			track.appendChild(clone);
+		});
+		originalItems.forEach(item => {
+			const clone = item.cloneNode(true);
+			clone.setAttribute('aria-hidden', 'true');
+			track.appendChild(clone);
+		});
 
 		let isDown = false;
 		let startX;
 		let scrollLeft;
 		let autoPlayTimer;
 
-		// Hindari penggandaan event listener jika dipanggil berkali-kali
-		if (track.hasAttribute('data-slider-init')) return;
-		track.setAttribute('data-slider-init', 'true');
+		// Menghitung lebar 1 set konten
+		const getSetWidth = () => {
+			const itemWidth = track.firstElementChild ? track.firstElementChild.clientWidth + 30 : 480; // 30 is gap
+			return originalItems.length * itemWidth;
+		};
+
+		// Posisikan scroll di tengah (set ke-2) pada saat awal, agar bisa digeser ke kiri
+		setTimeout(() => {
+			track.style.scrollBehavior = 'auto';
+			track.scrollLeft = getSetWidth();
+			void track.offsetWidth; // Force reflow
+			track.style.scrollBehavior = 'smooth';
+		}, 50);
 
 		// --- Auto-play Logic ---
 		const startAutoPlay = () => {
 			stopAutoPlay();
 			autoPlayTimer = setInterval(() => {
-				const scrollAmount = track.firstElementChild ? track.firstElementChild.clientWidth + 30 : 480;
-				// Jika sudah mencapai ujung kanan, kembali ke awal
-				if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 5) {
-					track.scrollTo({ left: 0, behavior: 'smooth' });
-				} else {
-					track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-				}
+				const itemWidth = track.firstElementChild ? track.firstElementChild.clientWidth + 30 : 480;
+				track.scrollBy({ left: itemWidth, behavior: 'smooth' });
 			}, 3000);
 		};
 
@@ -266,35 +249,35 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 
 		startAutoPlay();
 
+		// Seamless Loop Check
+		let scrollTimeout;
+		track.addEventListener('scroll', () => {
+			clearTimeout(scrollTimeout);
+			scrollTimeout = setTimeout(() => {
+				const setWidth = getSetWidth();
+				
+				// Jika mencapai set ke-3 (ujung kanan), kembalikan ke set ke-2
+				if (track.scrollLeft >= setWidth * 2 - 10) {
+					track.style.scrollBehavior = 'auto';
+					track.scrollLeft -= setWidth;
+					void track.offsetWidth;
+					track.style.scrollBehavior = 'smooth';
+				} 
+				// Jika mencapai set ke-1 (ujung kiri), kembalikan ke set ke-2
+				else if (track.scrollLeft <= 10) {
+					track.style.scrollBehavior = 'auto';
+					track.scrollLeft += setWidth;
+					void track.offsetWidth;
+					track.style.scrollBehavior = 'smooth';
+				}
+			}, 150); // Menunggu momentum / smooth scroll berhenti
+		});
+
+		// Pause saat interaksi
 		track.addEventListener('mouseenter', stopAutoPlay);
 		track.addEventListener('mouseleave', startAutoPlay);
 		track.addEventListener('touchstart', stopAutoPlay, { passive: true });
 		track.addEventListener('touchend', startAutoPlay);
-
-		// --- Manual Navigation Buttons ---
-		const getScrollAmount = () => track.firstElementChild ? track.firstElementChild.clientWidth + 30 : 480;
-
-		btnPrev.addEventListener('click', () => {
-			stopAutoPlay();
-			if (track.scrollLeft <= 5) {
-				// Loop ke paling kanan
-				track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
-			} else {
-				track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
-			}
-			startAutoPlay();
-		});
-
-		btnNext.addEventListener('click', () => {
-			stopAutoPlay();
-			if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 5) {
-				// Loop kembali ke awal
-				track.scrollTo({ left: 0, behavior: 'smooth' });
-			} else {
-				track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-			}
-			startAutoPlay();
-		});
 
 		// --- Drag to Scroll (Mouse) ---
 		track.addEventListener('mousedown', (e) => {
