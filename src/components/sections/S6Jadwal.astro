@@ -1,71 +1,117 @@
 ---
 /**
  * S6 — Jadwal & Lokasi Penimbangan.
- * Layout 2-kolom: info jadwal di kiri, area layanan di kanan.
- * Google Maps dihapus (koordinat belum terisi, PRD §17 item 2).
- * Ikon: calendar, map-pin, truck, home, book-open — semua terdaftar di Ikon.astro.
+ * Layout 2-kolom: info jadwal di kiri, lokasi & peta Google Maps di kanan.
+ * Menggunakan React Icons: FaCalendarAlt & FaMapLocationDot.
  */
 import Seksi from "../ui/Seksi.astro";
-import Ikon from "../ui/Ikon.astro";
 import { beranda, profil } from "../../data";
+import { FaCalendarAlt } from "react-icons/fa";
+import { FaMapLocationDot } from "react-icons/fa6";
 
 const { s6 } = beranda;
-const { jadwalPenimbangan, areaJemput } = profil;
+const { jadwalPenimbangan, areaJemput, alamat, koordinat } = profil;
+const tautanMaps = koordinat?.tautanMaps || "https://share.google/baPqq1nswNfF5SEc1";
 ---
 
 <Seksi id="jadwal" eyebrow={s6.eyebrow} judul={s6.judul} latar="netral">
 	<div class="jadwal-grid">
-		<!-- KOLOM KIRI: Jadwal & Lokasi -->
-		<div class="jadwal-info">
-			<!-- Jadwal Penimbangan -->
-			<div class="info-blok blok-utama">
-				<div class="info-header">
-					<div class="ikon-wrap">
-						<Ikon nama="calendar" ukuran={20} />
-					</div>
-					<h3 class="info-label">{s6.labelJadwal}</h3>
+		<!-- KARTU 1: Jadwal Penimbangan -->
+		<div class="jadwal-card">
+			<div class="card-header">
+				<div class="card-ikon-wrap">
+					<FaCalendarAlt size={26} />
 				</div>
-				<p class="frekuensi-teks">{jadwalPenimbangan.frekuensi}</p>
-				<div class="hari-tags">
-					{
-						jadwalPenimbangan.hari.map((h) => (
-							<span class="hari-tag">{h}</span>
-						))
-					}
+				<div class="header-text">
+					<span class="card-kategori">{s6.eyebrow}</span>
+					<h3 class="card-judul">{s6.labelJadwal}</h3>
 				</div>
 			</div>
 
-			<!-- Lokasi Utama -->
-			<div class="info-blok">
-				<div class="info-header">
-					<div class="ikon-wrap">
-						<Ikon nama="map-pin" ukuran={20} />
-					</div>
-					<h3 class="info-label">{s6.labelLokasi}</h3>
+			<div class="card-body">
+				<div class="frekuensi-badge">
+					<span class="frekuensi-label">Frekuensi Layanan</span>
+					<h4 class="frekuensi-nilai">{jadwalPenimbangan.frekuensi}</h4>
 				</div>
-				<p class="info-nilai">{jadwalPenimbangan.lokasiUtama}</p>
+
+				<div class="info-section">
+					<span class="section-label">Hari Penimbangan Rutin:</span>
+					<div class="hari-tags">
+						{
+							jadwalPenimbangan.hari.map((h) => (
+								<span class="hari-tag">
+									<span class="tag-bullet" aria-hidden="true" />
+									Hari {h}
+								</span>
+							))
+						}
+					</div>
+				</div>
+
+				<div class="info-catatan">
+					<p class="catatan-teks">
+						Warga dan nasabah dapat membawa tabungan sampah terpilah langsung ke lokasi penimbangan sesuai jadwal yang telah ditentukan.
+					</p>
+				</div>
 			</div>
 		</div>
 
-		<!-- KOLOM KANAN: Area Layanan Jemput -->
-		<div class="jadwal-area">
-			<div class="info-blok">
-				<div class="info-header">
-					<div class="ikon-wrap">
-						<Ikon nama="truck" ukuran={20} />
+		<!-- KARTU 2: Lokasi, Area Layanan & Peta Muncul -->
+		<div class="jadwal-card">
+			<div class="card-header">
+				<div class="card-ikon-wrap">
+					<FaMapLocationDot size={26} />
+				</div>
+				<div class="header-text">
+					<span class="card-kategori">{s6.labelLokasi}</span>
+					<h3 class="card-judul">Lokasi & Titik Kumpul</h3>
+				</div>
+			</div>
+
+			<div class="card-body">
+				<div class="alamat-box">
+					<p class="alamat-teks">{alamat.lengkap}</p>
+				</div>
+
+				<div class="info-section">
+					<span class="section-label">{s6.labelJemput}:</span>
+					<div class="area-tags">
+						{
+							areaJemput.map((a) => (
+								<span class="area-tag">
+									<span class="area-dot" aria-hidden="true" />
+									{a}
+								</span>
+							))
+						}
 					</div>
-					<h3 class="info-label">{s6.labelJemput}</h3>
 				</div>
-				<div class="area-tags">
-					{
-						areaJemput.map((a) => (
-							<span class="area-tag">
-								<span class="area-dot" aria-hidden="true" />
-								{a}
-							</span>
-						))
-					}
+
+				<!-- PETA INTERAKTIF / EMBED GOOGLE MAPS -->
+				<div class="peta-wrapper">
+					<iframe
+						title="Peta Lokasi Bank Sampah Bakti Lembur"
+						src="https://maps.google.com/maps?q=Kp.+Nagrog+Desa+Sarimukti+Kec.+Pasirwangi+Kab.+Garut&t=&z=15&ie=UTF8&iwloc=&output=embed"
+						width="100%"
+						height="190"
+						style="border:0;"
+						allowfullscreen=""
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						class="peta-iframe"
+					></iframe>
 				</div>
+
+				<!-- TOMBOL BUKA GOOGLE MAPS -->
+				<a
+					href={tautanMaps}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="btn-maps"
+				>
+					<FaMapLocationDot size={18} />
+					<span>{s6.tombolMaps || "Buka di Google Maps"}</span>
+				</a>
 			</div>
 		</div>
 	</div>
@@ -76,98 +122,130 @@ const { jadwalPenimbangan, areaJemput } = profil;
 	.jadwal-grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: calc(var(--space-unit) * 6);
-		align-items: start;
+		gap: calc(var(--space-unit) * 4);
+		align-items: stretch;
 	}
 
 	@media (min-width: 900px) {
 		.jadwal-grid {
-			grid-template-columns: 1fr 1fr;
-			gap: calc(var(--space-unit) * 8);
+			grid-template-columns: repeat(2, 1fr);
+			gap: calc(var(--space-unit) * 4.5);
 		}
 	}
 
-	/* ─── KOLOM INFO ───────────────────────────────────────────────── */
-	.jadwal-info {
-		display: flex;
-		flex-direction: column;
-		gap: calc(var(--space-unit) * 4);
-	}
-
-	.jadwal-area {
-		display: flex;
-		flex-direction: column;
-	}
-
-	/* ─── BLOK INFO ────────────────────────────────────────────────── */
-	.info-blok {
-		display: flex;
-		flex-direction: column;
-		gap: calc(var(--space-unit) * 2);
-		padding: calc(var(--space-unit) * 4);
+	/* ─── JADWAL CARD (Sesuai Gaya Kartu Alur & Kolaborasi) ─────────── */
+	.jadwal-card {
 		background: var(--white);
-		border: 1px solid var(--border);
 		border-radius: var(--radius-md);
-		box-shadow: 0 4px 20px rgba(26, 29, 26, 0.05);
-		transition:
-			transform 0.25s ease,
-			box-shadow 0.25s ease;
+		border: 1px solid rgba(0, 0, 0, 0.04);
+		box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+		padding: calc(var(--space-unit) * 4.5) calc(var(--space-unit) * 4);
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 3);
+		transition: transform 0.25s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.25s ease;
+		box-sizing: border-box;
+		height: 100%;
 	}
 
-	.info-blok:hover {
-		transform: translateY(-3px);
-		box-shadow: 0 10px 32px rgba(26, 29, 26, 0.09);
+	.jadwal-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 	}
 
-	/* Blok utama (Jadwal) mendapat aksen warna lebih kuat */
-	.blok-utama {
-		border-left: 4px solid var(--brand-green);
-	}
-
-	.info-header {
+	/* Card Header */
+	.card-header {
 		display: flex;
 		align-items: center;
-		gap: calc(var(--space-unit) * 1.5);
+		gap: calc(var(--space-unit) * 2.5);
+		padding-bottom: calc(var(--space-unit) * 2.5);
+		border-bottom: 1px solid rgba(62, 116, 53, 0.1);
 	}
 
-	.ikon-wrap {
+	.card-ikon-wrap {
+		width: 58px;
+		height: 58px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 40px;
-		height: 40px;
-		background: var(--brand-green-light);
-		color: var(--brand-green);
-		border-radius: 50%;
+		background: var(--brand-green);
+		color: var(--white);
+		border-radius: var(--radius-sm);
+		box-shadow: 0 4px 14px rgba(62, 116, 53, 0.22);
 		flex-shrink: 0;
 	}
 
-	.info-label {
+	.header-text {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.card-kategori {
+		font-family: var(--font-mono), monospace;
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--accent-earth);
+	}
+
+	.card-judul {
 		margin: 0;
 		font-family: var(--font-hero), system-ui, sans-serif;
-		font-size: var(--text-isi);
-		font-weight: 700;
-		color: var(--neutral-900);
-	}
-
-	.frekuensi-teks {
-		margin: 0;
-		font-family: var(--font-display), Georgia, serif;
-		font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+		font-size: 1.25rem;
 		font-weight: 800;
 		color: var(--brand-green-dark);
-		line-height: 1.2;
+		line-height: 1.25;
 	}
 
-	.info-nilai {
+	/* Card Body */
+	.card-body {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--space-unit) * 2.5);
+		flex-grow: 1;
+	}
+
+	/* Frekuensi Badge */
+	.frekuensi-badge {
+		background: var(--brand-green-light);
+		padding: calc(var(--space-unit) * 2.5) calc(var(--space-unit) * 3);
+		border-radius: var(--radius-sm);
+		border: 1px solid rgba(62, 116, 53, 0.15);
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.frekuensi-label {
+		font-family: var(--font-mono), monospace;
+		font-size: 0.72rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--brand-green);
+	}
+
+	.frekuensi-nilai {
 		margin: 0;
-		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: var(--text-isi);
-		color: var(--neutral-700);
-		line-height: 1.55;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: 1.35rem;
+		font-weight: 800;
+		color: var(--brand-green-dark);
 	}
 
-	/* ─── HARI TAGS ────────────────────────────────────────────────── */
+	/* Section Label */
+	.section-label {
+		display: block;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: 0.9375rem;
+		font-weight: 700;
+		color: var(--neutral-800);
+		margin-bottom: calc(var(--space-unit) * 1.25);
+	}
+
+	/* Hari Tags */
 	.hari-tags {
 		display: flex;
 		flex-wrap: wrap;
@@ -175,39 +253,79 @@ const { jadwalPenimbangan, areaJemput } = profil;
 	}
 
 	.hari-tag {
-		padding: calc(var(--space-unit) * 0.75) calc(var(--space-unit) * 2);
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 14px;
 		background: var(--brand-green);
 		color: var(--white);
 		border-radius: 999px;
 		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: var(--text-kecil);
+		font-size: 0.875rem;
 		font-weight: 600;
 		box-shadow: 0 2px 8px rgba(62, 116, 53, 0.22);
 	}
 
-	/* ─── AREA TAGS ────────────────────────────────────────────────── */
+	.tag-bullet {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--accent-earth);
+	}
+
+	/* Catatan Teks */
+	.info-catatan {
+		background: rgba(0, 0, 0, 0.02);
+		border-radius: var(--radius-sm);
+		padding: calc(var(--space-unit) * 2);
+		border-left: 3px solid var(--accent-earth);
+	}
+
+	.catatan-teks {
+		margin: 0;
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 0.875rem;
+		color: var(--neutral-600);
+		line-height: 1.55;
+	}
+
+	/* Alamat Box */
+	.alamat-box {
+		padding: calc(var(--space-unit) * 2);
+		background: var(--neutral-50);
+		border-radius: var(--radius-sm);
+		border: 1px solid rgba(0, 0, 0, 0.06);
+	}
+
+	.alamat-teks {
+		margin: 0;
+		font-family: var(--font-isi), system-ui, sans-serif;
+		font-size: 0.9375rem;
+		color: var(--neutral-800);
+		line-height: 1.5;
+		font-weight: 500;
+	}
+
+	/* Area Tags */
 	.area-tags {
 		display: flex;
-		flex-direction: column;
-		gap: calc(var(--space-unit) * 0.75);
+		flex-wrap: wrap;
+		gap: calc(var(--space-unit) * 1);
 	}
 
 	.area-tag {
-		display: flex;
+		display: inline-flex;
 		align-items: center;
-		gap: calc(var(--space-unit) * 1.25);
-		padding: calc(var(--space-unit) * 1.25) calc(var(--space-unit) * 1.5);
+		gap: 6px;
+		padding: 6px 12px;
 		border-radius: var(--radius-sm);
 		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: var(--text-kecil);
-		font-weight: 500;
+		font-size: 0.8125rem;
+		font-weight: 600;
 		color: var(--neutral-700);
 		background: var(--neutral-50);
-		border: 1px solid var(--border);
-		transition:
-			background-color 0.2s ease,
-			border-color 0.2s ease,
-			color 0.2s ease;
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		transition: all 0.2s ease;
 	}
 
 	.area-tag:hover {
@@ -224,34 +342,77 @@ const { jadwalPenimbangan, areaJemput } = profil;
 		flex-shrink: 0;
 	}
 
-	/* ─── RESPONSIVE MOBILE ────────────────────────────────────────── */
-	@media (max-width: 767px) {
-		.info-blok {
-			padding: calc(var(--space-unit) * 3);
+	/* Peta Wrapper */
+	.peta-wrapper {
+		width: 100%;
+		border-radius: var(--radius-sm);
+		overflow: hidden;
+		border: 1px solid rgba(62, 116, 53, 0.18);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+	}
+
+	.peta-iframe {
+		display: block;
+		width: 100%;
+		border: 0;
+	}
+
+	/* Tombol Buka Maps */
+	.btn-maps {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		padding: 12px 20px;
+		background: var(--brand-green);
+		color: var(--white);
+		border-radius: var(--radius-sm);
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: 0.9375rem;
+		font-weight: 700;
+		text-decoration: none;
+		box-shadow: 0 4px 14px rgba(62, 116, 53, 0.25);
+		transition: all 0.25s cubic-bezier(0.2, 1, 0.3, 1);
+		margin-top: auto;
+	}
+
+	.btn-maps:hover {
+		background: var(--brand-green-dark);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 18px rgba(62, 116, 53, 0.35);
+	}
+
+	/* ─── RESPONSIVE ───────────────────────────────────────────────── */
+	@media (max-width: 768px) {
+		.jadwal-card {
+			padding: calc(var(--space-unit) * 3.5) calc(var(--space-unit) * 3);
 		}
 
-		.frekuensi-teks {
-			font-size: 1.5rem;
+		.card-ikon-wrap {
+			width: 50px;
+			height: 50px;
+			border-radius: 8px;
+		}
+
+		.card-judul {
+			font-size: 1.125rem;
+		}
+
+		.frekuensi-nilai {
+			font-size: 1.2rem;
 		}
 	}
 
 	/* ─── ACCESSIBILITY ────────────────────────────────────────────── */
 	@media (prefers-reduced-motion: reduce) {
-		.info-blok {
-			transition: none;
-		}
-		.info-blok:hover {
-			transform: none;
-		}
+		.jadwal-card,
+		.btn-maps,
 		.area-tag {
 			transition: none;
 		}
-	}
-
-	@media (prefers-reduced-transparency: reduce) {
-		.info-blok {
-			background: var(--white);
-			box-shadow: none;
+		.jadwal-card:hover,
+		.btn-maps:hover {
+			transform: none;
 		}
 	}
 </style>
