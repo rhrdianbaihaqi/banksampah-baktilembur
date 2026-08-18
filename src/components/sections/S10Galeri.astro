@@ -1,12 +1,12 @@
 ---
 /**
  * S10 — Galeri Kegiatan.
- * Redesign: Horizontal Slider layout dengan custom header sesuai referensi.
+ * Redesign: Horizontal Slider layout dengan custom header sesuai referensi,
+ * dilengkapi foto latar belakang P1139710.jpeg via astro:assets Picture.
  */
-import { Image } from "astro:assets";
-import Seksi from "../ui/Seksi.astro";
-import Ikon from "../ui/Ikon.astro";
-import { beranda, galeriTersaring, profil } from "../../data";
+import { Image, Picture } from "astro:assets";
+import { beranda, galeriTersaring } from "../../data";
+import bgGaleri from "../../assets/images/background/P1139710.jpeg";
 
 const { s10 } = beranda;
 const kategori = galeriTersaring();
@@ -17,13 +17,22 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 );
 ---
 
-<Seksi
-	id="galeri"
-	eyebrow={s10.eyebrow}
-	judul={s10.judul}
-	latar="netral"
-	tanpaKepala={true}
->
+<section id="galeri" class="seksi-galeri" aria-label="Galeri Kegiatan">
+	<!-- Background gambar dengan scrim sama seperti hero beranda -->
+	<div class="latar-belakang-gambar" aria-hidden="true">
+		<Picture
+			src={bgGaleri}
+			alt=""
+			formats={['avif', 'webp']}
+			widths={[640, 1024, 1600, 2000]}
+			sizes="100vw"
+			loading="lazy"
+			decoding="async"
+			class="bg-img"
+		/>
+		<div class="galeri-scrim"></div>
+	</div>
+
 	<div class="galeri-kontainer">
 		<!-- CUSTOM HEADER (Sesuai Referensi) -->
 		<div class="galeri-header-wrap">
@@ -69,13 +78,52 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 			}
 		</div>
 	</div>
-</Seksi>
+</section>
 
 <style>
+	.seksi-galeri {
+		position: relative;
+		overflow: hidden;
+		padding: calc(var(--space-unit) * 10) 0;
+		background: #0b0f0b;
+	}
+
+	/* LATAR BELAKANG GAMBAR */
+	.latar-belakang-gambar {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+	}
+
+	.bg-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	.galeri-scrim {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			180deg,
+			rgba(14, 20, 14, 0.62) 0%,
+			rgba(14, 20, 14, 0.68) 50%,
+			rgba(14, 20, 14, 0.78) 100%
+		);
+	}
+
 	.galeri-kontainer {
+		position: relative;
+		z-index: 1;
 		display: flex;
 		flex-direction: column;
 		width: 100%;
+		max-width: var(--lebar-kontainer, 1200px);
+		margin: 0 auto;
+		padding: 0 24px;
+		box-sizing: border-box;
 	}
 
 	/* HEADER */
@@ -94,8 +142,9 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 
 	.red-line {
 		width: 32px;
-		height: 2px;
-		background-color: #ef4444; /* Warna merah sesuai gambar */
+		height: 3px;
+		background-color: #ef4444;
+		border-radius: 2px;
 	}
 
 	.galeri-title {
@@ -104,8 +153,9 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		font-weight: 800;
 		font-style: italic;
 		letter-spacing: -0.02em;
-		color: var(--neutral-900);
+		color: var(--white);
 		margin: 0;
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 	}
 
 	/* Efek Stabilo Hijau Muda pada Judul */
@@ -122,6 +172,7 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		box-decoration-break: clone;
 		padding: 0.05em 0.18em;
 		border-radius: 4px;
+		color: var(--white);
 	}
 
 	/* SLIDER WRAPPER (Bleeding Layout) */
@@ -129,12 +180,12 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		position: relative;
 		width: 100vw;
 		margin-left: calc(50% - 50vw); /* Memecah batas max-width container */
-		margin-bottom: calc(var(--space-unit) * 8);
+		margin-bottom: calc(var(--space-unit) * 4);
 	}
 
 	.galeri-track {
 		display: flex;
-		gap: 30px; /* Gap yang lebar antar foto */
+		gap: 28px; /* Gap antar foto */
 		padding: 0;
 		margin: 0;
 		list-style: none;
@@ -142,7 +193,6 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		scroll-behavior: smooth;
 		scroll-snap-type: x mandatory;
 		scrollbar-width: none; /* Firefox */
-		/* Padding dinamis agar awal slider sejajar dengan batas container (1120px) */
 		padding-left: 24px;
 		padding-right: 24px;
 	}
@@ -153,12 +203,12 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 
 	@media (min-width: 768px) {
 		.galeri-track {
-			padding-left: max(64px, calc((100vw - 1120px) / 2));
-			padding-right: max(64px, calc((100vw - 1120px) / 2));
+			padding-left: max(32px, calc((100vw - 1200px) / 2 + 24px));
+			padding-right: max(32px, calc((100vw - 1200px) / 2 + 24px));
 		}
 	}
 
-	/* FOTO KOTAK TAJAM */
+	/* FOTO SLIDE */
 	.galeri-slide {
 		scroll-snap-align: start;
 		flex-shrink: 0;
@@ -171,7 +221,14 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		height: 320px;
 		object-fit: cover;
 		display: block;
-		border-radius: 0; /* Kotak siku-siku sesuai referensi gambar */
+		border-radius: var(--radius-sm);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+		transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.3s ease;
+	}
+
+	.galeri-slide:hover .slide-foto {
+		transform: scale(1.02);
+		box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
 	}
 
 	@media (min-width: 768px) {
@@ -181,9 +238,19 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 	}
 
 	.galeri-kosong {
-		padding-left: max(64px, calc((100vw - 1120px) / 2));
-		color: var(--neutral-600);
+		padding-left: max(32px, calc((100vw - 1200px) / 2 + 24px));
+		color: rgba(255, 255, 255, 0.8);
 		font-style: italic;
+	}
+
+	/* ─── ACCESSIBILITY ────────────────────────────────────────────── */
+	@media (prefers-reduced-motion: reduce) {
+		.slide-foto {
+			transition: none;
+		}
+		.galeri-slide:hover .slide-foto {
+			transform: none;
+		}
 	}
 </style>
 
@@ -198,7 +265,6 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		track.setAttribute("data-slider-init", "true");
 
 		// 1. Clone items untuk seamless infinite loop
-		// Kita menduplikasi 2 set item untuk buffer di awal dan akhir
 		const originalItems = Array.from(track.children);
 		originalItems.forEach((item) => {
 			const clone = item.cloneNode(true);
@@ -219,8 +285,8 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		// Menghitung lebar 1 set konten
 		const getSetWidth = () => {
 			const itemWidth = track.firstElementChild
-				? track.firstElementChild.clientWidth + 30
-				: 480; // 30 is gap
+				? track.firstElementChild.clientWidth + 28
+				: 478; // 28 is gap
 			return originalItems.length * itemWidth;
 		};
 
@@ -237,8 +303,8 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 			stopAutoPlay();
 			autoPlayTimer = setInterval(() => {
 				const itemWidth = track.firstElementChild
-					? track.firstElementChild.clientWidth + 30
-					: 480;
+					? track.firstElementChild.clientWidth + 28
+					: 478;
 				track.scrollBy({ left: itemWidth, behavior: "smooth" });
 			}, 3000);
 		};
@@ -270,7 +336,7 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 					void track.offsetWidth;
 					track.style.scrollBehavior = "smooth";
 				}
-			}, 150); // Menunggu momentum / smooth scroll berhenti
+			}, 150);
 		});
 
 		// Pause saat interaksi
