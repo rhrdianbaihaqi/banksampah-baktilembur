@@ -148,12 +148,28 @@
    ══════════════════════════════════════════════════════════════════ */
 
 @layer base {
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
 	html {
 		scroll-behavior: smooth;
+		width: 100%;
+		max-width: 100%;
+		overflow-x: hidden;
+		-webkit-text-size-adjust: 100%;
+		text-size-adjust: 100%;
 	}
 
 	body {
 		margin: 0;
+		padding: 0;
+		width: 100%;
+		max-width: 100%;
+		overflow-x: hidden;
+		position: relative;
 		background: var(--neutral-50);
 		color: var(--neutral-900);
 		font-family: var(--font-isi), system-ui, sans-serif;
