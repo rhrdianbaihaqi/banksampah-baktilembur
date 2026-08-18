@@ -246,18 +246,20 @@ const tautanMaps = koordinat?.tautanMaps || "https://share.google/baPqq1nswNfF5S
 		margin-bottom: calc(var(--space-unit) * 1);
 	}
 
-	/* Hari Tags */
+	/* Hari Tags (1 Baris Sejajar / 1-Line Grid) */
 	.hari-tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: calc(var(--space-unit) * 0.75);
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: calc(var(--space-unit) * 1);
+		width: 100%;
 	}
 
 	.hari-tag {
 		display: inline-flex;
 		align-items: center;
+		justify-content: center;
 		gap: 6px;
-		padding: 5px 12px;
+		padding: 6px 10px;
 		background: var(--brand-green);
 		color: var(--white);
 		border-radius: 999px;
@@ -265,13 +267,16 @@ const tautanMaps = koordinat?.tautanMaps || "https://share.google/baPqq1nswNfF5S
 		font-size: 0.8125rem;
 		font-weight: 600;
 		box-shadow: 0 2px 6px rgba(62, 116, 53, 0.2);
+		white-space: nowrap;
+		text-align: center;
 	}
 
 	.tag-bullet {
 		width: 5px;
 		height: 5px;
 		border-radius: 50%;
-		background: rgba(255, 255, 255, 0.75);
+		background: rgba(255, 255, 255, 0.85);
+		flex-shrink: 0;
 	}
 
 	/* Catatan Teks */
@@ -401,6 +406,28 @@ const tautanMaps = koordinat?.tautanMaps || "https://share.google/baPqq1nswNfF5S
 
 		.frekuensi-nilai {
 			font-size: 1.125rem;
+		}
+
+		.hari-tags {
+			gap: 6px;
+		}
+
+		.hari-tag {
+			padding: 5px 6px;
+			font-size: 0.75rem;
+			gap: 4px;
+		}
+
+		.tag-bullet {
+			width: 4px;
+			height: 4px;
+		}
+	}
+
+	@media (max-width: 380px) {
+		.hari-tag {
+			padding: 5px 3px;
+			font-size: 0.6875rem;
 		}
 	}
 
