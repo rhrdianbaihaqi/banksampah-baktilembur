@@ -1,13 +1,12 @@
 ---
 /**
  * S10 — Galeri Kegiatan.
- * Redesign: Horizontal Slider layout dengan custom header sesuai referensi.
+ * Redesign: Horizontal Slider layout dengan custom header sesuai referensi,
+ * dilengkapi foto latar belakang P1139710.jpeg via astro:assets Picture.
  */
-import { Image } from "astro:assets";
-import Seksi from "../ui/Seksi.astro";
-import Ikon from "../ui/Ikon.astro";
-import VideoFacade from "../ui/VideoFacade.astro";
-import { beranda, galeriTersaring, profil } from "../../data";
+import { Image, Picture } from "astro:assets";
+import { beranda, galeriTersaring } from "../../data";
+import bgGaleri from "../../assets/images/background/P1139710.jpeg";
 
 const { s10 } = beranda;
 const kategori = galeriTersaring();
@@ -18,28 +17,30 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 );
 ---
 
-<Seksi
-	id="galeri"
-	eyebrow={s10.eyebrow}
-	judul={s10.judul}
-	latar="netral"
-	tanpaKepala={true}
->
+<section id="galeri" class="seksi-galeri" aria-label="Galeri Kegiatan">
+	<!-- Background gambar dengan scrim sama seperti hero beranda -->
+	<div class="latar-belakang-gambar" aria-hidden="true">
+		<Picture
+			src={bgGaleri}
+			alt=""
+			formats={['avif', 'webp']}
+			widths={[640, 1024, 1600, 2000]}
+			sizes="100vw"
+			loading="lazy"
+			decoding="async"
+			class="bg-img"
+		/>
+		<div class="galeri-scrim"></div>
+	</div>
+
 	<div class="galeri-kontainer">
 		<!-- CUSTOM HEADER (Sesuai Referensi) -->
 		<div class="galeri-header-wrap">
 			<div class="galeri-title-box">
 				<span class="red-line"></span>
-				<h2 class="galeri-title"><span class="stabilo-hijau">{s10.judul}</span></h2>
-			</div>
-			
-			<div class="galeri-nav">
-				<button type="button" class="nav-btn prev-btn" aria-label="Sebelumnya" id="gal-prev">
-					<Ikon nama="arrow-left" ukuran={24} />
-				</button>
-				<button type="button" class="nav-btn next-btn" aria-label="Selanjutnya" id="gal-next">
-					<Ikon nama="arrow-right" ukuran={24} />
-				</button>
+				<h2 class="galeri-title">
+					<span class="stabilo-hijau">{s10.judul}</span>
+				</h2>
 			</div>
 		</div>
 
@@ -49,18 +50,24 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 				kategori.length > 0 ? (
 					<ul class="galeri-track" id="galeri-track">
 						{kategori.flatMap((k) =>
-							k.foto.map((f) => (
-								<li class="galeri-slide">
-									<Image
-										src={berkas[`../../assets/images/${f.file}`]!()}
-										alt={f.alt}
-										widths={[320, 640, 960]}
-										sizes="(min-width: 1000px) 500px, 85vw"
-										loading="lazy"
-										class="slide-foto"
-									/>
-								</li>
-							)),
+							k.foto.map((f) => {
+								const imgLoader =
+									berkas[`../../assets/images/${f.file}`];
+								if (!imgLoader) return null;
+
+								return (
+									<li class="galeri-slide">
+										<Image
+											src={imgLoader()}
+											alt={f.alt}
+											widths={[320, 640, 960]}
+											sizes="(min-width: 1000px) 500px, 85vw"
+											loading="lazy"
+											class="slide-foto"
+										/>
+									</li>
+								);
+							}),
 						)}
 					</ul>
 				) : (
@@ -70,32 +77,55 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 				)
 			}
 		</div>
-
-		<!-- ELEMEN TAMBAHAN (Video & Link) -->
-		<div class="galeri-footer">
-			<div class="video-wrap">
-				<VideoFacade
-					idYoutube={profil.video.idYoutube}
-					judul={profil.video.judul}
-					label={s10.labelVideo}
-				/>
-			</div>
-			
-			<div class="link-wrap">
-				<a href={s10.tautanSelengkapnya.href} class="btn-selengkapnya">
-					<span>{s10.tautanSelengkapnya.label}</span>
-					<Ikon nama="arrow-right" ukuran={18} />
-				</a>
-			</div>
-		</div>
 	</div>
-</Seksi>
+</section>
 
 <style>
+	.seksi-galeri {
+		position: relative;
+		width: 100%;
+		box-sizing: border-box;
+		overflow: hidden;
+		padding: calc(var(--space-unit) * 8) 0 calc(var(--space-unit) * 4) 0;
+		background: #0b0f0b;
+	}
+
+	/* LATAR BELAKANG GAMBAR */
+	.latar-belakang-gambar {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+	}
+
+	.bg-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	.galeri-scrim {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			180deg,
+			rgba(14, 20, 14, 0.62) 0%,
+			rgba(14, 20, 14, 0.68) 50%,
+			rgba(14, 20, 14, 0.78) 100%
+		);
+	}
+
 	.galeri-kontainer {
+		position: relative;
+		z-index: 1;
 		display: flex;
 		flex-direction: column;
 		width: 100%;
+		max-width: var(--lebar-kontainer, 1200px);
+		margin: 0 auto;
+		padding: 0 24px;
+		box-sizing: border-box;
 	}
 
 	/* HEADER */
@@ -114,8 +144,9 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 
 	.red-line {
 		width: 32px;
-		height: 2px;
-		background-color: #ef4444; /* Warna merah sesuai gambar */
+		height: 3px;
+		background-color: #ef4444;
+		border-radius: 2px;
 	}
 
 	.galeri-title {
@@ -124,58 +155,26 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		font-weight: 800;
 		font-style: italic;
 		letter-spacing: -0.02em;
-		color: var(--neutral-900);
+		color: var(--white);
 		margin: 0;
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 	}
 
 	/* Efek Stabilo Hijau Muda pada Judul */
 	.stabilo-hijau {
-		position: relative;
-		display: inline-block;
-		white-space: nowrap;
-		z-index: 1;
-	}
-
-	.stabilo-hijau::before {
-		content: '';
-		position: absolute;
-		left: -4px;
-		right: -4px;
-		bottom: 10%;
-		height: 36%;
-		background: rgba(144, 238, 144, 0.7); /* Light green / hijau muda stabilo */
-		z-index: -1;
+		display: inline;
+		background-image: linear-gradient(
+			to bottom,
+			transparent 52%,
+			rgba(144, 238, 144, 0.75) 52%,
+			rgba(144, 238, 144, 0.75) 94%,
+			transparent 94%
+		);
+		-webkit-box-decoration-break: clone;
+		box-decoration-break: clone;
+		padding: 0.05em 0.18em;
 		border-radius: 4px;
-		transform: rotate(-1.5deg);
-	}
-
-	/* NAVIGATION BUTTONS */
-	.galeri-nav {
-		display: flex;
-		gap: 12px;
-	}
-
-	.nav-btn {
-		width: 48px;
-		height: 48px;
-		border-radius: 8px; /* Tombol Kotak Sesuai Permintaan */
-		border: 1px solid var(--neutral-200);
-		background: #ffffff;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--neutral-700);
-		cursor: pointer;
-		box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-		transition: all 0.2s ease;
-	}
-
-	.nav-btn:hover {
-		background: var(--brand-green);
-		color: #ffffff;
-		border-color: var(--brand-green);
-		transform: translateY(-2px);
-		box-shadow: 0 6px 16px rgba(62, 116, 53, 0.2);
+		color: var(--white);
 	}
 
 	/* SLIDER WRAPPER (Bleeding Layout) */
@@ -183,12 +182,12 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		position: relative;
 		width: 100vw;
 		margin-left: calc(50% - 50vw); /* Memecah batas max-width container */
-		margin-bottom: calc(var(--space-unit) * 8);
+		margin-bottom: 0;
 	}
 
 	.galeri-track {
 		display: flex;
-		gap: 30px; /* Gap yang lebar antar foto */
+		gap: 28px; /* Gap antar foto */
 		padding: 0;
 		margin: 0;
 		list-style: none;
@@ -196,7 +195,6 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		scroll-behavior: smooth;
 		scroll-snap-type: x mandatory;
 		scrollbar-width: none; /* Firefox */
-		/* Padding dinamis agar awal slider sejajar dengan batas container (1120px) */
 		padding-left: 24px;
 		padding-right: 24px;
 	}
@@ -207,12 +205,12 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 
 	@media (min-width: 768px) {
 		.galeri-track {
-			padding-left: max(64px, calc((100vw - 1120px) / 2));
-			padding-right: max(64px, calc((100vw - 1120px) / 2));
+			padding-left: max(32px, calc((100vw - 1200px) / 2 + 24px));
+			padding-right: max(32px, calc((100vw - 1200px) / 2 + 24px));
 		}
 	}
 
-	/* FOTO KOTAK TAJAM */
+	/* FOTO SLIDE */
 	.galeri-slide {
 		scroll-snap-align: start;
 		flex-shrink: 0;
@@ -225,7 +223,14 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		height: 320px;
 		object-fit: cover;
 		display: block;
-		border-radius: 0; /* Kotak siku-siku sesuai referensi gambar */
+		border-radius: var(--radius-sm);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+		transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.3s ease;
+	}
+
+	.galeri-slide:hover .slide-foto {
+		transform: scale(1.02);
+		box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
 	}
 
 	@media (min-width: 768px) {
@@ -235,83 +240,74 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 	}
 
 	.galeri-kosong {
-		padding-left: max(64px, calc((100vw - 1120px) / 2));
-		color: var(--neutral-600);
+		padding-left: max(32px, calc((100vw - 1200px) / 2 + 24px));
+		color: rgba(255, 255, 255, 0.8);
 		font-style: italic;
 	}
 
-	/* FOOTER (Video & Link) */
-	.galeri-footer {
-		display: flex;
-		flex-direction: column;
-		gap: calc(var(--space-unit) * 4);
-	}
-
-	.video-wrap {
-		width: 100%;
-		max-width: 720px;
-	}
-
-	.link-wrap {
-		display: flex;
-	}
-
-	.btn-selengkapnya {
-		display: inline-flex;
-		align-items: center;
-		gap: 12px;
-		font-weight: 600;
-		font-family: var(--font-ui), system-ui, sans-serif;
-		color: var(--white);
-		background-color: var(--brand-green);
-		padding: 14px 28px;
-		border-radius: var(--radius-md);
-		text-decoration: none;
-		transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
-		box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
-	}
-
-	.btn-selengkapnya:hover {
-		background-color: var(--brand-green-dark);
-		transform: translateY(-2px);
-		box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
-		color: var(--white);
-	}
-
-	.btn-selengkapnya:active {
-		transform: translateY(0);
-		box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+	/* ─── ACCESSIBILITY ────────────────────────────────────────────── */
+	@media (prefers-reduced-motion: reduce) {
+		.slide-foto {
+			transition: none;
+		}
+		.galeri-slide:hover .slide-foto {
+			transform: none;
+		}
 	}
 </style>
 
 <script>
 	function setupGaleriSlider() {
-		const track = document.getElementById('galeri-track');
-		const btnPrev = document.getElementById('gal-prev');
-		const btnNext = document.getElementById('gal-next');
+		const track = document.getElementById("galeri-track");
 
-		if (!track || !btnPrev || !btnNext) return;
+		if (!track) return;
+
+		// Hindari penggandaan event listener jika dipanggil berkali-kali
+		if (track.hasAttribute("data-slider-init")) return;
+		track.setAttribute("data-slider-init", "true");
+
+		// 1. Clone items untuk seamless infinite loop
+		const originalItems = Array.from(track.children);
+		originalItems.forEach((item) => {
+			const clone = item.cloneNode(true);
+			clone.setAttribute("aria-hidden", "true");
+			track.appendChild(clone);
+		});
+		originalItems.forEach((item) => {
+			const clone = item.cloneNode(true);
+			clone.setAttribute("aria-hidden", "true");
+			track.appendChild(clone);
+		});
 
 		let isDown = false;
 		let startX;
 		let scrollLeft;
 		let autoPlayTimer;
 
-		// Hindari penggandaan event listener jika dipanggil berkali-kali
-		if (track.hasAttribute('data-slider-init')) return;
-		track.setAttribute('data-slider-init', 'true');
+		// Menghitung lebar 1 set konten
+		const getSetWidth = () => {
+			const itemWidth = track.firstElementChild
+				? track.firstElementChild.clientWidth + 28
+				: 478; // 28 is gap
+			return originalItems.length * itemWidth;
+		};
+
+		// Posisikan scroll di tengah (set ke-2) pada saat awal, agar bisa digeser ke kiri
+		setTimeout(() => {
+			track.style.scrollBehavior = "auto";
+			track.scrollLeft = getSetWidth();
+			void track.offsetWidth; // Force reflow
+			track.style.scrollBehavior = "smooth";
+		}, 50);
 
 		// --- Auto-play Logic ---
 		const startAutoPlay = () => {
 			stopAutoPlay();
 			autoPlayTimer = setInterval(() => {
-				const scrollAmount = track.firstElementChild ? track.firstElementChild.clientWidth + 30 : 480;
-				// Jika sudah mencapai ujung kanan, kembali ke awal
-				if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 5) {
-					track.scrollTo({ left: 0, behavior: 'smooth' });
-				} else {
-					track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-				}
+				const itemWidth = track.firstElementChild
+					? track.firstElementChild.clientWidth + 28
+					: 478;
+				track.scrollBy({ left: itemWidth, behavior: "smooth" });
 			}, 3000);
 		};
 
@@ -321,65 +317,65 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 
 		startAutoPlay();
 
-		track.addEventListener('mouseenter', stopAutoPlay);
-		track.addEventListener('mouseleave', startAutoPlay);
-		track.addEventListener('touchstart', stopAutoPlay, { passive: true });
-		track.addEventListener('touchend', startAutoPlay);
+		// Seamless Loop Check
+		let scrollTimeout;
+		track.addEventListener("scroll", () => {
+			clearTimeout(scrollTimeout);
+			scrollTimeout = setTimeout(() => {
+				const setWidth = getSetWidth();
 
-		// --- Manual Navigation Buttons ---
-		const getScrollAmount = () => track.firstElementChild ? track.firstElementChild.clientWidth + 30 : 480;
-
-		btnPrev.addEventListener('click', () => {
-			stopAutoPlay();
-			if (track.scrollLeft <= 5) {
-				// Loop ke paling kanan
-				track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
-			} else {
-				track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
-			}
-			startAutoPlay();
+				// Jika mencapai set ke-3 (ujung kanan), kembalikan ke set ke-2
+				if (track.scrollLeft >= setWidth * 2 - 10) {
+					track.style.scrollBehavior = "auto";
+					track.scrollLeft -= setWidth;
+					void track.offsetWidth;
+					track.style.scrollBehavior = "smooth";
+				}
+				// Jika mencapai set ke-1 (ujung kiri), kembalikan ke set ke-2
+				else if (track.scrollLeft <= 10) {
+					track.style.scrollBehavior = "auto";
+					track.scrollLeft += setWidth;
+					void track.offsetWidth;
+					track.style.scrollBehavior = "smooth";
+				}
+			}, 150);
 		});
 
-		btnNext.addEventListener('click', () => {
-			stopAutoPlay();
-			if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 5) {
-				// Loop kembali ke awal
-				track.scrollTo({ left: 0, behavior: 'smooth' });
-			} else {
-				track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-			}
-			startAutoPlay();
-		});
+		// Pause saat interaksi
+		track.addEventListener("mouseenter", stopAutoPlay);
+		track.addEventListener("mouseleave", startAutoPlay);
+		track.addEventListener("touchstart", stopAutoPlay, { passive: true });
+		track.addEventListener("touchend", startAutoPlay);
 
 		// --- Drag to Scroll (Mouse) ---
-		track.addEventListener('mousedown', (e) => {
+		track.addEventListener("mousedown", (e) => {
 			isDown = true;
-			track.style.scrollSnapType = 'none';
-			track.style.scrollBehavior = 'auto';
-			track.style.cursor = 'grabbing';
+			track.style.scrollSnapType = "none";
+			track.style.scrollBehavior = "auto";
+			track.style.cursor = "grabbing";
 			startX = e.pageX - track.offsetLeft;
 			scrollLeft = track.scrollLeft;
 			stopAutoPlay();
 		});
 
-		track.addEventListener('mouseleave', () => {
+		track.addEventListener("mouseleave", () => {
 			if (!isDown) return;
 			isDown = false;
-			track.style.scrollSnapType = 'x mandatory';
-			track.style.scrollBehavior = 'smooth';
-			track.style.cursor = 'grab';
+			track.style.scrollSnapType = "x mandatory";
+			track.style.scrollBehavior = "smooth";
+			track.style.cursor = "grab";
 			startAutoPlay();
 		});
 
-		track.addEventListener('mouseup', () => {
+		track.addEventListener("mouseup", () => {
 			isDown = false;
-			track.style.scrollSnapType = 'x mandatory';
-			track.style.scrollBehavior = 'smooth';
-			track.style.cursor = 'grab';
+			track.style.scrollSnapType = "x mandatory";
+			track.style.scrollBehavior = "smooth";
+			track.style.cursor = "grab";
 			startAutoPlay();
 		});
 
-		track.addEventListener('mousemove', (e) => {
+		track.addEventListener("mousemove", (e) => {
 			if (!isDown) return;
 			e.preventDefault();
 			const x = e.pageX - track.offsetLeft;
@@ -387,12 +383,12 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 			track.scrollLeft = scrollLeft - walk;
 		});
 
-		track.style.cursor = 'grab';
+		track.style.cursor = "grab";
 	}
 
 	// Eksekusi fungsi setup saat komponen dimuat
 	setupGaleriSlider();
-	
+
 	// Jika menggunakan View Transitions
-	document.addEventListener('astro:page-load', setupGaleriSlider);
+	document.addEventListener("astro:page-load", setupGaleriSlider);
 </script>

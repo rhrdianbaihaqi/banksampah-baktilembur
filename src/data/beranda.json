@@ -3,8 +3,8 @@
   "s1": {
     "eyebrow": "DESA SARIMUKTI PASIRWANGI GARUT",
     "judul": {
-      "awal": "Ubah sampah rumah tangga menjadi ",
-      "sorot": "tabungan dan nilai ekonomi."
+      "awal": "Ubah Sampah Rumah Tangga Menjadi ",
+      "sorot": "Tabungan dan Nilai Ekonomi"
     },
     "subjudul": {
       "awal": "Bersama kita wujudkan lingkungan yang lebih bersih sekaligus meningkatkan kesejahteraan warga ",
@@ -26,27 +26,31 @@
     "_catatan": "judul dipecah tiga bagian supaya frasa yang diberi warna ditentukan di data, bukan lewat markup di dalam JSON. Bagian 'tebal' tampil dengan warna hijau tua. || 'paragraf' TIDAK ditampilkan di beranda — naskah lengkap ini disimpan untuk halaman /tentang. || Tiap butir 'keunggulan' punya field 'sumber' berisi asal datanya; semuanya dari data terverifikasi, tidak ada klaim karangan. Bila sebuah butir diubah, perbarui juga sumbernya.",
     "eyebrow": "LATAR BELAKANG",
     "judul": {
-      "awal": "Kerja bakti yang tidak lagi cukup,",
-      "tebal": "kini jadi lembaga pengelolaan sampah",
+      "awal": "Kerja bakti saja tak lagi cukup,",
+      "tebal": "kini hadir lembaga pengelolaan sampah",
       "akhir": "milik warga."
     },
-    "pengantar": "Warga RW 04 bersepakat bersama Patriot Desa dan Pendamping PKH memulai Gerakan Pilah Sampah dari rumah tangga, yang resmi berdiri sebagai Bank Sampah Bakti Lembur pada 24 April 2024 dengan sistem kerja terpadu berikut:",
+    "pengantar": "Berawal dari Gerakan Pilah Sampah (GPS) di tingkat rumah tangga, warga RW 04 bersama Patriot Desa dan Pendamping PKH membangun sistem pengelolaan sampah terpadu. Bank Sampah Bakti Lembur kemudian resmi berdiri pada 24 April 2024.",
     "keunggulan": [
       {
-        "teks": "Sampah ditimbang langsung di hadapan warga dan hasilnya dicatat rapi di buku tabungan.",
-        "sumber": "alur.json langkah 3-4 · PRD §S4"
+        "judul": "Penimbangan & Pencatatan",
+        "teks": "Sampah ditimbang di hadapan nasabah, kemudian hasilnya dicatat dalam buku tabungan.",
+        "sumber": "alur.json langkah 3-4 · PPT Profil Bank Sampah Bakti Lembur"
       },
       {
-        "teks": "Melayani 4 RT setempat, ditambah armada jemput untuk UMKM, sekolah, dan pertokoan.",
-        "sumber": "statistik.json · profil.json areaJemput"
+        "judul": "Layanan Penjemputan",
+        "teks": "Melayani 4 RT setempat serta menyediakan layanan penjemputan untuk UMKM, sekolah, pertokoan, dan mitra lainnya.",
+        "sumber": "statistik.json · profil.json areaJemput · PPT Profil"
       },
       {
-        "teks": "Sampah organik diolah tuntas menjadi kompos berkualitas, eco enzyme, dan pakan maggot BSF.",
-        "sumber": "PRD Lampiran A, Jenis sampah yang dikelola"
+        "judul": "Pengolahan Sampah Organik",
+        "teks": "Sampah organik diolah melalui pembuatan eco enzyme, komposter, dan budidaya maggot BSF.",
+        "sumber": "PPT Profil Bank Sampah Bakti Lembur · program.json"
       },
       {
-        "teks": "Berdiri dengan SK Desa resmi dan bermitra aktif bersama DLH Garut serta Patriot Desa.",
-        "sumber": "profil.json sk · mitra.json mitraLembaga"
+        "judul": "Jejaring & Legalitas",
+        "teks": "Memiliki SK Desa resmi serta terhubung dengan Patriot Desa dan Garut Zero Waste sebagai mitra kerja.",
+        "sumber": "profil.json sk · mitra.json mitraLembaga · PPT Profil"
       }
     ],
     "paragraf": [
@@ -57,9 +61,9 @@
     "labelStrip": "Pilih foto kegiatan"
   },
   "s4": {
-    "eyebrow": "Enam Langkah",
+    "eyebrow": "",
     "judul": "Dari Sampah Rumah, Menjadi Manfaat",
-    "pengantar": "\"Kenali perjalanan sampah dari rumah hingga kembali bernilai.\"",
+    "pengantar": "Kenali perjalanan sampah dari rumah hingga kembali bernilai.",
     "labelLangkah": "Langkah"
   },
   "s5": {
@@ -105,35 +109,29 @@
     "kosong": "Dokumentasi foto sedang disiapkan tim KKN."
   },
   "s11": {
-    "eyebrow": "HUBUNGI KAMI",
-    "judul": "Dukung & Hubungi Kami",
-    "jalur": [
+    "eyebrow": "PROGRAM KERJA KKN",
+    "judul": {
+      "awal": "",
+      "sorot": "Bersama, Membawa Bank Sampah Lebih Digital"
+    },
+    "subjudul": "Kolaborasi KKN Kelompok 10 × Bank Sampah Bakti Lembur",
+    "deskripsi": "Website ini merupakan bagian dari program kerja KKN Kelompok 10 dalam membantu Bank Sampah menghadirkan informasi dan layanan secara digital, sehingga masyarakat dapat mengenal kegiatan, jadwal, lokasi, dan layanan Bank Sampah dengan lebih mudah.",
+    "impactPoints": [
       {
-        "eyebrow": "WARGA",
-        "judul": "Jadi nasabah",
-        "keterangan": "Pilah dari rumah, setor, dan menabung. Terbuka untuk warga, UMKM, dan instansi.",
-        "cta": "nasabah",
-        "tautan": null
+        "icon": "globe",
+        "judul": "Informasi Digital",
+        "deskripsi": "Informasi Bank Sampah tersedia dalam satu platform yang mudah diakses masyarakat."
       },
       {
-        "eyebrow": "CSR & DONATUR",
-        "judul": "Jadi mitra atau donatur",
-        "keterangan": "Kami terbuka untuk kerja sama perusahaan, dinas, dan lembaga.",
-        "cta": "mitra",
-        "tautan": {
-          "label": "Selengkapnya di halaman kemitraan",
-          "href": "/kemitraan"
-        }
+        "icon": "calendar",
+        "judul": "Informasi Layanan",
+        "deskripsi": "Masyarakat dapat mengetahui jadwal, lokasi, dan area layanan Bank Sampah dengan lebih mudah."
       },
       {
-        "eyebrow": "DESA LAIN",
-        "judul": "Replikasi di desa Anda",
-        "keterangan": "Kami mendampingi desa yang ingin mendirikan bank sampah serupa.",
-        "cta": "replikasi",
-        "tautan": null
+        "icon": "leaf",
+        "judul": "Jangkauan Lebih Luas",
+        "deskripsi": "Website membantu memperkenalkan kegiatan dan layanan Bank Sampah kepada masyarakat melalui media digital."
       }
-    ],
-    "labelKebutuhan": "Yang sedang kami butuhkan",
-    "labelKontak": "Kontak"
+    ]
   }
 }

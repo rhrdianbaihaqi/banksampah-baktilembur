@@ -6,7 +6,6 @@
  * Seluruh kotak dapat ditekan langsung menuju WhatsApp terkait.
  */
 import Seksi from '../ui/Seksi.astro';
-import GlassChip from '../glass/GlassChip.astro';
 import Ikon from '../ui/Ikon.astro';
 import { beranda, profil, ctaWhatsapp } from '../../data';
 
@@ -43,13 +42,6 @@ const { alamat, kontak, sosmed } = profil;
 		</ul>
 
 		<div class="bawah">
-			<div class="blok-bawah">
-				<h3 class="eyebrow">{s11.labelKebutuhan}</h3>
-				<div class="chip-baris">
-					{profil.kebutuhan.map((k) => <GlassChip>{k}</GlassChip>)}
-				</div>
-			</div>
-
 			<address class="blok-bawah kontak">
 				<h3 class="eyebrow">{s11.labelKontak}</h3>
 				<p class="alamat">{alamat.lengkap}</p>
@@ -86,7 +78,7 @@ const { alamat, kontak, sosmed } = profil;
 	.kontak-kontainer {
 		display: flex;
 		flex-direction: column;
-		gap: calc(var(--space-unit) * 8);
+		gap: calc(var(--space-unit) * 7);
 	}
 
 	.jalur-cards {
@@ -100,16 +92,17 @@ const { alamat, kontak, sosmed } = profil;
 	.kartu-jalur {
 		display: flex;
 		flex-direction: column;
-		padding: calc(var(--space-unit) * 4);
-		background: var(--white);
-		border-radius: var(--radius-lg);
-		border: 1px solid var(--neutral-200);
-		text-decoration: none;
-		color: inherit;
-		transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 		height: 100%;
 		position: relative;
 		overflow: hidden;
+		padding: calc(var(--space-unit) * 4);
+		border: 1px solid rgba(58, 65, 58, 0.12);
+		border-radius: var(--radius-lg);
+		background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(249,250,248,0.9));
+		box-shadow: 0 10px 26px rgba(26, 29, 26, 0.04);
+		text-decoration: none;
+		color: inherit;
+		transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.2, 1), box-shadow 0.28s ease, border-color 0.28s ease;
 	}
 
 	.kartu-jalur::before {
@@ -119,19 +112,22 @@ const { alamat, kontak, sosmed } = profil;
 		left: 0;
 		right: 0;
 		height: 4px;
-		background: var(--brand-green);
-		transform: scaleX(0);
+		background: linear-gradient(90deg, var(--brand-green) 0%, rgba(62,116,53,0.45) 100%);
+		transform: scaleX(0.18);
 		transform-origin: left;
+		opacity: 0.9;
 		transition: transform 0.3s ease;
 	}
 
-	.kartu-jalur:hover {
-		transform: translateY(-4px);
-		box-shadow: 0 12px 32px rgba(22, 163, 74, 0.1);
-		border-color: var(--brand-green-light);
+	.kartu-jalur:hover,
+	.kartu-jalur:focus-visible {
+		transform: translateY(-6px);
+		box-shadow: 0 18px 36px rgba(26, 29, 26, 0.09);
+		border-color: rgba(62, 116, 53, 0.25);
 	}
 
-	.kartu-jalur:hover::before {
+	.kartu-jalur:hover::before,
+	.kartu-jalur:focus-visible::before {
 		transform: scaleX(1);
 	}
 
@@ -139,65 +135,79 @@ const { alamat, kontak, sosmed } = profil;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: calc(var(--space-unit) * 2);
+		gap: var(--space-unit);
+		margin-bottom: calc(var(--space-unit) * 3);
 	}
 
 	.eyebrow-jalur {
 		font-family: var(--font-mono), monospace;
-		font-size: 0.85rem;
+		font-size: 0.72rem;
 		font-weight: 700;
-		color: var(--brand-green);
-		letter-spacing: 0.05em;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--brand-green-dark);
 	}
 
 	.ikon-panah-wrap {
-		color: var(--neutral-400);
-		transition: color 0.3s ease, transform 0.3s ease;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		background: rgba(62, 116, 53, 0.08);
+		color: var(--brand-green-dark);
+		transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease;
 	}
 
-	.kartu-jalur:hover .ikon-panah-wrap {
-		color: var(--brand-green);
+	.kartu-jalur:hover .ikon-panah-wrap,
+	.kartu-jalur:focus-visible .ikon-panah-wrap {
+		background: var(--brand-green-dark);
+		color: var(--white);
 		transform: translateX(4px);
 	}
 
 	.judul-jalur {
-		margin: 0 0 calc(var(--space-unit) * 1.5) 0;
-		font-family: var(--font-hero), system-ui, sans-serif;
-		font-size: 1.5rem;
-		font-weight: 600;
+		margin: 0 0 calc(var(--space-unit) * 2) 0;
+		font-family: var(--font-display), Georgia, serif;
+		font-size: clamp(2rem, 1.4vw + 1.3rem, 2.5rem);
+		font-weight: 700;
+		font-style: italic;
+		line-height: 1.08;
+		letter-spacing: -0.04em;
 		color: var(--neutral-900);
-		line-height: 1.2;
 	}
 
 	.ket {
 		margin: 0;
 		color: var(--neutral-600);
-		font-size: 1rem;
-		line-height: 1.6;
+		font-size: var(--text-isi);
+		line-height: 1.7;
 		flex-grow: 1;
+		max-width: 32ch;
 	}
 
 	.bawah {
 		display: grid;
-		gap: calc(var(--space-unit) * 6);
-		padding-top: calc(var(--space-unit) * 6);
-		border-top: 1px solid var(--neutral-200);
+		gap: calc(var(--space-unit) * 5);
+		padding-top: calc(var(--space-unit) * 5);
+		border-top: 1px solid rgba(58, 65, 58, 0.12);
 	}
 
 	.blok-bawah {
 		display: flex;
 		flex-direction: column;
-		gap: calc(var(--space-unit) * 2);
+		gap: calc(var(--space-unit) * 2.5);
 	}
 
 	.eyebrow {
 		margin: 0;
 		font-family: var(--font-mono), monospace;
-		font-size: 0.85rem;
+		font-size: 0.72rem;
 		font-weight: 700;
-		color: var(--neutral-500);
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		color: var(--neutral-600);
 	}
 
 	.chip-baris {
@@ -212,9 +222,10 @@ const { alamat, kontak, sosmed } = profil;
 
 	.alamat {
 		margin: 0;
-		max-width: 40ch;
+		max-width: 36ch;
 		color: var(--neutral-800);
-		line-height: 1.6;
+		font-size: var(--text-besar);
+		line-height: 1.7;
 	}
 
 	.tautan-kontak {
@@ -230,22 +241,27 @@ const { alamat, kontak, sosmed } = profil;
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
+		padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);
+		border-radius: var(--radius-sm);
+		background: rgba(62, 116, 53, 0.08);
 		color: var(--brand-green-dark);
-		text-decoration: underline;
-		text-underline-offset: 4px;
-		font-weight: 600;
-		transition: color 0.2s ease;
+		font-weight: 700;
+		text-decoration: none;
+		transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 	}
 
-	.tautan-kontak a:hover {
+	.tautan-kontak a:hover,
+	.tautan-kontak a:focus-visible {
+		background: rgba(62, 116, 53, 0.12);
 		color: var(--brand-green);
+		transform: translateY(-1px);
 	}
-	
+
 	.daftar-sosmed {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 12px;
-		margin: calc(var(--space-unit) * 2) 0 0;
+		margin: calc(var(--space-unit) * 1) 0 0;
 		padding: 0;
 		list-style: none;
 	}
@@ -257,25 +273,29 @@ const { alamat, kontak, sosmed } = profil;
 		width: 44px;
 		height: 44px;
 		border-radius: 50%;
-		background-color: var(--neutral-100);
+		background: rgba(255, 255, 255, 0.9);
+		border: 1px solid rgba(58, 65, 58, 0.1);
 		color: var(--brand-green-dark);
+		box-shadow: 0 8px 18px rgba(26, 29, 26, 0.04);
 		text-decoration: none;
-		transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+		transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 	}
 
-	.ikon-bulat:hover {
+	.ikon-bulat:hover,
+	.ikon-bulat:focus-visible {
 		background-color: var(--brand-green-dark);
 		color: var(--white);
 		transform: translateY(-2px);
+		box-shadow: 0 12px 22px rgba(26, 29, 26, 0.08);
 	}
 
 	@media (min-width: 768px) {
 		.jalur-cards {
-			grid-template-columns: repeat(3, 1fr);
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
 
 		.bawah {
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: 1.05fr 1fr;
 			gap: calc(var(--space-unit) * 8);
 		}
 	}

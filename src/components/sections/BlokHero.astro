@@ -1,31 +1,21 @@
 ---
 /**
- * BlokHero — Hero Section dengan Auto-Slide Berdurasi
+ * BlokHero — Hero Section dengan Foto Latar Berganti Otomatis
  *
- * Slide 1: Foto Latar Utama + Headline & 2 Tombol CTA.
- * Slide 2: Video Profil YouTube dengan Tombol Close Permanen.
- * Jika tombol Close diklik, hero kembali ke Slide 1 dan auto-slide dinonaktifkan
- * hingga halaman di-refresh.
+ * Menampilkan foto latar dengan transisi crossfade tanpa video autoplay.
+ * Hero hanya memiliki satu slide dengan konten teks dan CTA.
  */
 import { Image } from "astro:assets";
-import { beranda, ctaWhatsapp, profil } from "../../data";
-import Ikon from "../ui/Ikon.astro";
+import { beranda, ctaWhatsapp } from "../../data";
 
 import heroBg from "../../assets/images/background/imagebg.jpg";
 import heroBg2 from "../../assets/images/latarbelakang/IMG_8919.JPG";
 
 const { s1 } = beranda;
 const ctaNasabah = ctaWhatsapp("nasabah");
-const youtubeId = profil.video.idYoutube;
-const youtubeJudul = profil.video.judul;
 ---
 
-<div
-	class="hero-blok di-atas-foto"
-	id="hero-slider-blok"
-	data-videoid={youtubeId}
-	data-videojudul={youtubeJudul}
->
+<div class="hero-blok" id="hero-slider-blok">
 	<!-- ════ FOTO LATAR BERSAMA (UNTUK KEDUA SLIDE) DENGAN ANIMASI CROSSFADE ════ -->
 	<div class="hero-latar" aria-hidden="true">
 		<!-- Latar 1 (Utama) -->
@@ -86,148 +76,11 @@ const youtubeJudul = profil.video.judul;
 			</div>
 		</div>
 	</div>
-
-	<!-- ════ SLIDE 2: VIDEO PROFIL YOUTUBE DENGAN TOMBOL CLOSE ════ -->
-	<div class="hero-slide slide-2" id="hero-slide-2" aria-hidden="true">
-		<div class="video-slide-konten">
-			<div class="video-slide-header">
-				<div class="video-header-kiri">
-					<span class="video-kategori-tag">VIDEO PROFIL</span>
-					<h2 class="video-slide-judul">{youtubeJudul}</h2>
-				</div>
-				
-				<!-- Tombol Close: Kembali ke Slide 1 dan Kunci di Foto -->
-				<button
-					type="button"
-					class="btn-tutup-video-slide"
-					id="btn-close-video-slide"
-					aria-label="Tutup video dan tetap di foto"
-					title="Tutup dan kembali ke foto"
-				>
-					<Ikon nama="x" ukuran={18} />
-					<span>Tutup Video</span>
-				</button>
-			</div>
-
-			<!-- Kartu Wadah Player YouTube -->
-			<div class="video-card-frame glass-pekat">
-				<div class="video-embed-wadah" id="hero-video-embed">
-					<!-- Iframe YouTube dimuat dinamis saat slide 2 aktif -->
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- ════ PROGRESS BAR DURASI SLIDE ════ -->
-	<div class="slider-timer-bar" id="slider-timer-bar" aria-hidden="true">
-		<div class="timer-progress" id="slider-progress-fill"></div>
-	</div>
 </div>
 
 <script>
-	const slide1 = document.getElementById("hero-slide-1");
-	const slide2 = document.getElementById("hero-slide-2");
-	const videoEmbed = document.getElementById("hero-video-embed");
-	const progressFill = document.getElementById("slider-progress-fill");
-	const timerBar = document.getElementById("slider-timer-bar");
-	const sliderBlok = document.getElementById("hero-slider-blok");
-	const btnClose = document.getElementById("btn-close-video-slide");
-
-	if (slide1 && slide2 && videoEmbed && progressFill && sliderBlok) {
-		const videoId = sliderBlok.dataset.videoid || "RyqIu_17jFI";
-		const videoJudul = sliderBlok.dataset.videojudul || "Video Profil Bank Sampah Bakti Lembur";
-
-		let currentSlide = 1;
-		let slideTimer: any = null;
-		let isAutoSlideDisabled = false; // Flag jika user menekan close
-
-		// Durasi: Slide 1 (Foto) = 8 detik, Slide 2 (Video) = 30 detik
-		const DURATION_SLIDE_1 = 8000;
-		const DURATION_SLIDE_2 = 30000;
-
-		const switchSlide = (slideNum: number) => {
-			if (isAutoSlideDisabled && slideNum !== 1) return;
-			currentSlide = slideNum;
-
-			if (slideNum === 1) {
-				slide1.classList.add("is-active");
-				slide1.removeAttribute("aria-hidden");
-				slide2.classList.remove("is-active");
-				slide2.setAttribute("aria-hidden", "true");
-
-				// Hentikan video saat beralih ke slide 1
-				videoEmbed.innerHTML = "";
-			} else {
-				slide2.classList.add("is-active");
-				slide2.removeAttribute("aria-hidden");
-				slide1.classList.remove("is-active");
-				slide1.setAttribute("aria-hidden", "true");
-
-				// Muat dan otomatis putar video YouTube di Slide 2
-				videoEmbed.innerHTML = `
-					<iframe
-						src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1"
-						title="${videoJudul}"
-						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-						allowfullscreen
-						class="iframe-slide-video"
-					></iframe>
-				`;
-			}
-
-			if (!isAutoSlideDisabled) {
-				resetTimer();
-			}
-		};
-
-		const startTimer = () => {
-			if (isAutoSlideDisabled) return;
-			const duration = currentSlide === 1 ? DURATION_SLIDE_1 : DURATION_SLIDE_2;
-
-			progressFill.style.transition = "none";
-			progressFill.style.width = "0%";
-
-			void progressFill.offsetWidth;
-
-			progressFill.style.transition = `width ${duration}ms linear`;
-			progressFill.style.width = "100%";
-
-			slideTimer = setTimeout(() => {
-				if (!isAutoSlideDisabled) {
-					const next = currentSlide === 1 ? 2 : 1;
-					switchSlide(next);
-				}
-			}, duration);
-		};
-
-		const resetTimer = () => {
-			if (slideTimer) clearTimeout(slideTimer);
-			if (!isAutoSlideDisabled) {
-				startTimer();
-			}
-		};
-
-		// Mulai timer awal
-		startTimer();
-
-		// (Dihapus: Jeda timer saat user mengarahkan kursor, karena hero full-screen membuat timer terhenti terus-menerus)
-
-		// ─── AKSI TOMBOL CLOSE: KEMBALI KE FOTO & KUNCI (TIDAK OTOMATIS LAGI) ───
-		if (btnClose) {
-			btnClose.addEventListener("click", () => {
-				isAutoSlideDisabled = true;
-				if (slideTimer) clearTimeout(slideTimer);
-
-				// Sembunyikan progress bar
-				if (timerBar) {
-					timerBar.style.display = "none";
-				}
-
-				// Kembalikan ke Slide 1 (Foto) secara permanen
-				switchSlide(1);
-			});
-		}
-	}
+	// Slide 1 hanya menampilkan foto tanpa video autoplay
+	// Tidak ada auto-slide ke video
 </script>
 
 <style>
@@ -267,9 +120,17 @@ const youtubeJudul = profil.video.judul;
 	}
 
 	@keyframes crossfadeBg {
-		0%, 45% { opacity: 0; }     /* Foto 1 Tampil */
-		50%, 95% { opacity: 1; }    /* Foto 2 Tampil (IMG_8919) */
-		100% { opacity: 0; }
+		0%,
+		45% {
+			opacity: 0;
+		} /* Foto 1 Tampil */
+		50%,
+		95% {
+			opacity: 1;
+		} /* Foto 2 Tampil (IMG_8919) */
+		100% {
+			opacity: 0;
+		}
 	}
 
 	.hero-scrim {
@@ -292,7 +153,9 @@ const youtubeJudul = profil.video.judul;
 		opacity: 0;
 		visibility: hidden;
 		pointer-events: none;
-		transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.7s ease;
+		transition:
+			opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+			visibility 0.7s ease;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -322,40 +185,42 @@ const youtubeJudul = profil.video.judul;
 		gap: calc(var(--space-unit) * 3);
 	}
 
-	/* ─── Judul (Plus Jakarta Sans) ──────────────────────────────────── */
+	/* ─── Judul ──────────────────────────────────── */
 	.hero-judul {
 		margin: 0;
 		font-family: var(--font-hero), system-ui, sans-serif;
-		font-size: clamp(2.25rem, 6vw, 4rem);
+		font-size: clamp(1.75rem, 5.2vw, 3.75rem);
 		font-weight: 800;
 		font-style: italic;
-		line-height: 1.15;
+		line-height: 1.22;
 		letter-spacing: -0.02em;
 		color: var(--white);
 		text-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
 		text-wrap: balance;
+		max-width: 900px;
 	}
 
-	/* Efek Stabilo Hijau Muda pada Judul */
+	/* Efek Stabilo Hijau Muda pada Judul (Selalu 1 Baris Utuh di Tengah Sesuai Gambar Referensi) */
 	.stabilo-hijau {
+		display: block;
+		width: fit-content;
+		margin: 0.18em auto 0;
 		position: relative;
-		display: inline-block;
 		white-space: nowrap;
 		z-index: 1;
 	}
 
 	.stabilo-hijau::before {
-		content: '';
+		content: "";
 		position: absolute;
-		left: -4px;
-		right: -4px;
-		bottom: 10%;
-		height: 36%;
-		background: rgba(144, 238, 144, 0.7); /* Light green / hijau muda stabilo */
+		left: -6px;
+		right: -6px;
+		bottom: 8%;
+		height: 38%;
+		background: rgba(144, 238, 144, 0.72); /* Light green stabilo */
 		z-index: -1;
 		border-radius: 4px;
-		transform: rotate(-1.5deg);
-		/* Hapus shadow pada ::before agar stabilo terlihat seperti arsiran marker murni */
+		transform: rotate(-1.2deg);
 	}
 
 	/* Efek Stabilo Emas pada Subjudul */
@@ -367,25 +232,27 @@ const youtubeJudul = profil.video.judul;
 	}
 
 	.stabilo-emas::before {
-		content: '';
+		content: "";
 		position: absolute;
-		left: -2px;
-		right: -6px;
-		bottom: 12%;
+		left: -3px;
+		right: -5px;
+		bottom: 10%;
 		height: 40%;
-		background: rgba(245, 158, 11, 0.55); /* Amber / Emas stabilo */
+		background: rgba(245, 158, 11, 0.6); /* Amber / Emas stabilo */
 		z-index: -1;
-		border-radius: 4px;
-		transform: rotate(1deg);
+		border-radius: 3px;
+		transform: rotate(0.8deg);
 	}
 
-	@media (max-width: 640px) {
-		.stabilo-hijau, .stabilo-emas {
-			white-space: normal;
+	@media (max-width: 480px) {
+		.hero-judul {
+			font-size: clamp(1.35rem, 6.2vw, 1.85rem);
+			line-height: 1.25;
 		}
-		.stabilo-hijau::before, .stabilo-emas::before {
+
+		.stabilo-hijau::before {
 			height: 40%;
-			bottom: 5%;
+			bottom: 6%;
 		}
 	}
 
@@ -393,13 +260,13 @@ const youtubeJudul = profil.video.judul;
 	.hero-subjudul {
 		margin: 0;
 		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: clamp(1rem, 2vw, 1.2rem);
-		font-weight: 600;
+		font-size: clamp(0.9375rem, 2vw, 1.15rem);
+		font-weight: 500;
 		line-height: 1.6;
 		color: rgba(255, 255, 255, 0.95);
 		max-width: 680px;
 		text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
-		text-wrap: pretty;
+		text-wrap: balance;
 	}
 
 	/* ─── Tombol CTA (Hanya 2 Tombol: WA & Alur) ─────────────────────── */
@@ -469,138 +336,13 @@ const youtubeJudul = profil.video.judul;
 		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 	}
 
-	/* ─── Slide 2: Video Profil Pop-up Card ──────────────────────────── */
-	.video-slide-konten {
-		position: relative;
-		width: 100%;
-		max-width: 860px;
-		padding: calc(var(--space-unit) * 12) calc(var(--space-unit) * 3)
-			calc(var(--space-unit) * 6);
-		margin: 0 auto;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: calc(var(--space-unit) * 2);
-	}
-
-	.video-slide-header {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: calc(var(--space-unit) * 2);
-	}
-
-	.video-header-kiri {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: calc(var(--space-unit) * 0.5);
-	}
-
-	.video-kategori-tag {
-		font-family: var(--font-mono), monospace;
-		font-size: 0.75rem;
-		letter-spacing: 0.1em;
-		color: var(--brand-green-light);
-		background: rgba(46, 125, 50, 0.25);
-		border: 1px solid rgba(76, 175, 80, 0.3);
-		padding: 4px 12px;
-		border-radius: 999px;
-	}
-
-	.video-slide-judul {
-		margin: 0;
-		font-family: var(--font-hero), system-ui, sans-serif;
-		font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-		font-weight: 700;
-		color: var(--white);
-		text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
-	}
-
-	/* Tombol Close Video Slide */
-	.btn-tutup-video-slide {
-		display: inline-flex;
-		align-items: center;
-		gap: calc(var(--space-unit) * 0.8);
-		min-height: 40px;
-		padding: calc(var(--space-unit) * 1) calc(var(--space-unit) * 2.5);
-		border-radius: 999px;
-		border: 1px solid rgba(255, 255, 255, 0.3);
-		background: rgba(255, 255, 255, 0.2);
-		color: var(--white);
-		font-family: var(--font-isi), system-ui, sans-serif;
-		font-size: var(--text-kecil);
-		font-weight: 600;
-		cursor: pointer;
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		transition: background-color 0.2s ease, transform 0.15s ease;
-		flex-shrink: 0;
-	}
-
-	.btn-tutup-video-slide:hover {
-		background: rgba(255, 255, 255, 0.35);
-		border-color: rgba(255, 255, 255, 0.6);
-		transform: translateY(-1px);
-	}
-
-	.video-card-frame {
-		width: 100%;
-		border-radius: var(--radius-lg);
-		padding: calc(var(--space-unit) * 1.5);
-		background: rgba(18, 24, 18, 0.85);
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8);
-		backdrop-filter: blur(12px);
-		-webkit-backdrop-filter: blur(12px);
-	}
-
-	.video-embed-wadah {
-		position: relative;
-		width: 100%;
-		aspect-ratio: 16 / 9;
-		background: #000;
-		border-radius: var(--radius-md);
-		overflow: hidden;
-	}
-
-	:global(.iframe-slide-video) {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		border: 0;
-	}
-
-	/* ─── Timer Progress Bar di Bawah ────────────────────────────────── */
-	.slider-timer-bar {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		height: 3px;
-		background: rgba(255, 255, 255, 0.1);
-		z-index: 10;
-	}
-
-	.timer-progress {
-		height: 100%;
-		width: 0%;
-		background: var(--brand-green-light);
-		box-shadow: 0 0 8px var(--brand-green-light);
-	}
+	/* ─── Slide 2: Dihapus (Tidak ada video autoplay di hero) ──────────── */
 
 	/* ─── Desktop ──────────────────────────────────────────────────────── */
 	@media (min-width: 768px) {
 		.hero-konten {
 			padding: calc(var(--space-unit) * 18) calc(var(--space-unit) * 6)
 				calc(var(--space-unit) * 12);
-		}
-
-		.video-slide-konten {
-			padding: calc(var(--space-unit) * 16) calc(var(--space-unit) * 6)
-				calc(var(--space-unit) * 8);
 		}
 	}
 

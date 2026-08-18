@@ -33,7 +33,7 @@ export interface Profil {
 		whatsapp: { sementara: boolean; nomorTampil: string; nomorInternasional: string };
 		email: string;
 	};
-	sosmed: Array<{ nama: string; handle: string; url: string }>;
+	sosmed: Array<{ nama: string; kelompok: string; handle: string; url: string; ikon: string }>;
 	video: { judul: string; idYoutube: string; url: string };
 	visi: string;
 	misi: string[];
@@ -198,16 +198,17 @@ export interface Beranda {
 	};
 	s11: {
 		eyebrow: string;
-		judul: string;
-		jalur: Array<{
-			eyebrow: string;
+		judul: {
+			awal: string;
+			sorot: string;
+		};
+		subjudul: string;
+		deskripsi: string;
+		impactPoints: Array<{
+			icon: string;
 			judul: string;
-			keterangan: string;
-			cta: KunciCta;
-			tautan: Tautan | null;
+			deskripsi: string;
 		}>;
-		labelKebutuhan: string;
-		labelKontak: string;
 	};
 }
 

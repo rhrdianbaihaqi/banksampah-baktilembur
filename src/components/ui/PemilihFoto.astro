@@ -126,7 +126,7 @@ const foto = Object.values(berkas).map((m) => m.default);
 	.pemilih {
 		display: flex;
 		flex-direction: column;
-		gap: calc(var(--space-unit) * 1);
+		gap: 6px;
 		width: 100%;
 		max-width: 100%;
 	}
@@ -135,10 +135,26 @@ const foto = Object.values(berkas).map((m) => m.default);
 		position: relative;
 		width: 100%;
 		aspect-ratio: 1 / 1;
-		border-radius: 0;
+		border-radius: 0; /* Kotak siku-siku murni tanpa rounded */
 		overflow: hidden;
-		/* Warna dasar supaya tidak ada kedipan putih sebelum foto termuat. */
 		background: var(--brand-green-dark);
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 0 1px rgba(0, 0, 0, 0.08);
+	}
+
+	/* Gradient overlay halus pada .panggung untuk kesan premium */
+	.panggung::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			135deg,
+			rgba(62, 116, 53, 0.08) 0%,
+			rgba(62, 116, 53, 0.04) 50%,
+			rgba(201, 123, 33, 0.06) 100%
+		);
+		border-radius: 0;
+		pointer-events: none;
+		z-index: 3;
 	}
 
 	.utama {

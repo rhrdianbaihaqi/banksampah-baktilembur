@@ -1,0 +1,563 @@
+---
+/**
+ * Footer — Informasi kontak dan navigasi
+ * Layout 4 kolom responsive dengan background hijau dan react-icons.
+ */
+import { Image } from 'astro:assets';
+import { FaInstagram, FaTiktok } from 'react-icons/fa';
+import { IoCallOutline, IoMailOutline, IoLocationSharp } from 'react-icons/io5';
+import Ikon from './ui/Ikon.astro';
+import { profil, nav } from '../data';
+import logoBankSampah from '../assets/images/logo/logobanksampah.png';
+
+const { kontak, sosmed, nama } = profil;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer" role="contentinfo">
+	<div class="footer-container">
+		
+		<!-- KOLOM 1: Logo & Social Media -->
+		<div class="footer-col col-brand">
+			<div class="footer-logo-wrap">
+				<Image
+					src={logoBankSampah}
+					alt={`Logo ${nama}`}
+					width={160}
+					height={85}
+					class="footer-logo"
+					loading="lazy"
+					decoding="async"
+				/>
+			</div>
+			
+			<div class="social-wrapper">
+				<!-- Bank Sampah -->
+				<div class="social-block">
+					<p class="social-block-title">Bank Sampah:</p>
+					<div class="social-items-list">
+						{sosmed.filter(s => s.kelompok === 'banksampah').map(s => (
+							<a
+								href={s.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="social-row-link"
+								title={`${s.nama} — ${s.handle}`}
+							>
+								<span class="social-icon">
+									{s.ikon === 'instagram' ? <FaInstagram size={15} /> : <FaTiktok size={14} />}
+								</span>
+								<span class="social-handle">{s.handle}</span>
+							</a>
+						))}
+					</div>
+				</div>
+
+				<!-- KKN Kelompok 10 -->
+				<div class="social-block">
+					<p class="social-block-title">KKN Kelompok 10:</p>
+					<div class="social-items-list">
+						{sosmed.filter(s => s.kelompok === 'kkn').map(s => (
+							<a
+								href={s.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="social-row-link"
+								title={`${s.nama} — ${s.handle}`}
+							>
+								<span class="social-icon">
+									{s.ikon === 'instagram' ? <FaInstagram size={15} /> : <FaTiktok size={14} />}
+								</span>
+								<span class="social-handle">{s.handle}</span>
+							</a>
+						))}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- KOLOM 2: Contact -->
+		<div class="footer-col">
+			<h3 class="col-title">Kontak</h3>
+			<ul class="contact-list">
+				<li>
+					<span class="icon-circle">
+						<IoCallOutline size={15} />
+					</span>
+					<div class="contact-text-wrap">
+						<span class="contact-text">Pendaftaran: {kontak.whatsapp.nomorTampil}</span>
+					</div>
+				</li>
+				<li>
+					<span class="icon-circle">
+						<IoMailOutline size={15} />
+					</span>
+					<div class="contact-text-wrap">
+						<span class="contact-text contact-email">{kontak.email}</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<!-- KOLOM 3: Address -->
+		<div class="footer-col">
+			<h3 class="col-title">Alamat</h3>
+			<div class="address-box">
+				<span class="icon-circle flex-shrink-0">
+					<IoLocationSharp size={15} />
+				</span>
+				<p class="address-text">{profil.alamat.lengkap}</p>
+			</div>
+			
+			<!-- Peta Lokasi Interaktif Widget -->
+			<div class="map-container mt-3">
+				<iframe
+					src="https://maps.google.com/maps?q=Bank+Sampah+Bakti+Lembur+Sarimukti+Pasirwangi+Garut&t=&z=15&ie=UTF8&iwloc=&output=embed"
+					title="Peta Lokasi Bank Sampah Bakti Lembur"
+					class="map-iframe"
+					loading="lazy"
+					referrerpolicy="no-referrer-when-downgrade"
+				></iframe>
+				<a
+					href={profil.koordinat.tautanMaps}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="map-overlay-badge"
+					aria-label="Buka lokasi di Google Maps"
+				>
+					<span>Google Maps</span>
+					<Ikon nama="external-link" ukuran={11} />
+				</a>
+			</div>
+		</div>
+
+		<!-- KOLOM 4: Tautan Cepat -->
+		<div class="footer-col">
+			<h3 class="col-title">Tautan Cepat</h3>
+			<ul class="quick-links">
+				{nav.tautan.map((item) => (
+					<li>
+						<a href={item.href} class="quick-link-item">
+							<span class="link-bullet"></span>
+							<span class="link-text">{item.label}</span>
+						</a>
+					</li>
+				))}
+				<li>
+					<a href="#alur" class="quick-link-item">
+						<span class="link-bullet"></span>
+						<span class="link-text">Informasi Bank Sampah</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+
+	<!-- FOOTER BOTTOM -->
+	<div class="footer-bottom">
+		<p class="copyright-text">
+			© {currentYear} {nama}. All Rights Reserved. Published by KKN Kelompok 10.
+		</p>
+	</div>
+</footer>
+
+<style>
+	/* ─── FOOTER UMUM ─────────────────────────────────────────────────── */
+	.footer {
+		width: 100%;
+		box-sizing: border-box;
+		overflow: hidden;
+		background: var(--brand-green);
+		color: var(--white);
+		padding: calc(var(--space-unit) * 6) calc(var(--space-unit) * 3) calc(var(--space-unit) * 3);
+		font-family: var(--font-isi), system-ui, sans-serif;
+	}
+
+	@media (min-width: 768px) {
+		.footer {
+			padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 5) calc(var(--space-unit) * 4);
+		}
+	}
+
+	.footer-container {
+		width: 100%;
+		box-sizing: border-box;
+		max-width: 1240px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: calc(var(--space-unit) * 4.5);
+	}
+
+	/* Tablet: 2 Kolom Seimbang */
+	@media (min-width: 640px) {
+		.footer-container {
+			grid-template-columns: repeat(2, 1fr);
+			gap: calc(var(--space-unit) * 5) calc(var(--space-unit) * 4);
+		}
+	}
+
+	/* Desktop: 4 Kolom Proporsional */
+	@media (min-width: 1024px) {
+		.footer-container {
+			grid-template-columns: 1.4fr 1.55fr 1.3fr 0.95fr;
+			gap: calc(var(--space-unit) * 4.5);
+		}
+	}
+
+	.footer-col {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		text-align: left;
+		width: 100%;
+	}
+
+	/* ─── KOLOM 1: BRAND & SOSMED ─────────────────────────────────────── */
+	.col-brand {
+		align-items: flex-start;
+		text-align: left;
+	}
+
+	.footer-logo-wrap {
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-start;
+		width: 100%;
+		margin-bottom: 14px;
+	}
+
+	.footer-logo {
+		height: 46px;
+		width: auto;
+		max-width: 160px;
+		object-fit: contain;
+		object-position: left center;
+		display: block;
+		filter: brightness(0) invert(1);
+	}
+
+	.social-wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 12px;
+		width: 100%;
+	}
+
+	.social-block {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		width: 100%;
+	}
+
+	.social-block-title {
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--white);
+		opacity: 0.95;
+		margin: 0;
+		letter-spacing: 0.01em;
+	}
+
+	.social-items-list {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		width: 100%;
+	}
+
+	.social-row-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 9px;
+		text-decoration: none;
+		color: var(--white);
+		opacity: 0.9;
+		transition: opacity 0.2s ease, transform 0.2s ease;
+	}
+
+	.social-row-link:hover {
+		opacity: 1;
+		transform: translateX(3px);
+	}
+
+	.social-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 30px;
+		height: 30px;
+		background: rgba(255, 255, 255, 0.18);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 50%;
+		flex-shrink: 0;
+		color: var(--white);
+		transition: background 0.2s ease, border-color 0.2s ease;
+	}
+
+	.social-row-link:hover .social-icon {
+		background: rgba(255, 255, 255, 0.32);
+		border-color: rgba(255, 255, 255, 0.4);
+	}
+
+	.social-handle {
+		font-size: 0.84rem;
+		font-weight: 400;
+		color: var(--white);
+		opacity: 0.95;
+		word-break: break-all;
+	}
+
+	/* ─── HEADING KOLOM & GARIS BAWAH PUTIH ───────────────────────────── */
+	.col-title {
+		margin: 0 0 20px 0;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: var(--white);
+		position: relative;
+		padding-bottom: 8px;
+		width: 100%;
+	}
+
+	.col-title::after {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 1px;
+		background: rgba(255, 255, 255, 0.25);
+	}
+
+	.col-title::before {
+		content: "";
+		position: absolute;
+		bottom: -0.5px;
+		left: 0;
+		width: 44px;
+		height: 3.5px;
+		background: var(--white);
+		z-index: 1;
+		border-radius: 1px;
+	}
+
+	/* ─── DAFTAR KONTAK ─────────────────────────────────────────────── */
+	.contact-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		width: 100%;
+	}
+
+	.contact-list li {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.contact-text-wrap {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+	}
+
+	.contact-text {
+		font-size: 0.9375rem;
+		line-height: 1.5;
+		color: var(--white);
+		opacity: 0.95;
+	}
+
+	.contact-email {
+		word-break: normal;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 480px) {
+		.contact-email {
+			white-space: normal;
+			word-break: break-all;
+		}
+	}
+
+	/* Lingkaran Ikon (Kontak, Email, Lokasi) */
+	.icon-circle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		background: rgba(255, 255, 255, 0.18);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 50%;
+		flex-shrink: 0;
+		color: var(--white);
+		transition: background 0.2s ease;
+	}
+
+	/* ─── ALAMAT & PETA ─────────────────────────────────────────────── */
+	.address-box {
+		display: flex;
+		align-items: flex-start;
+		gap: 12px;
+		line-height: 1.55;
+	}
+	
+	.address-text {
+		margin: 0;
+		font-size: 0.9375rem;
+		color: var(--white);
+		opacity: 0.95;
+	}
+
+	.flex-shrink-0 {
+		flex-shrink: 0;
+	}
+
+	.map-container {
+		position: relative;
+		width: 100%;
+		height: 135px;
+		border-radius: 8px;
+		overflow: hidden;
+		border: 1px solid rgba(255, 255, 255, 0.25);
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+		background: rgba(0, 0, 0, 0.1);
+	}
+
+	.map-iframe {
+		width: 100%;
+		height: 100%;
+		border: none;
+		display: block;
+	}
+
+	.map-overlay-badge {
+		position: absolute;
+		bottom: 8px;
+		right: 8px;
+		background: rgba(18, 24, 18, 0.82);
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+		color: var(--white);
+		font-size: 0.75rem;
+		font-weight: 600;
+		padding: 4px 9px;
+		border-radius: 4px;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		border: 1px solid rgba(255, 255, 255, 0.25);
+		transition: background 0.2s ease, transform 0.15s ease;
+	}
+
+	.map-overlay-badge:hover {
+		background: rgba(18, 24, 18, 0.95);
+		transform: scale(1.03);
+	}
+
+	/* ─── TAUTAN CEPAT ─────────────────────────────────────────────── */
+	.quick-links {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		width: 100%;
+	}
+
+	.quick-link-item {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		text-decoration: none;
+		color: var(--white);
+		opacity: 0.9;
+		font-size: 0.9375rem;
+		padding: 3px 0;
+		transition: opacity 0.2s ease, transform 0.2s ease;
+	}
+
+	.quick-link-item:hover {
+		opacity: 1;
+		transform: translateX(4px);
+	}
+
+	.link-bullet {
+		width: 6px;
+		height: 6px;
+		background: var(--white);
+		border-radius: 1px;
+		flex-shrink: 0;
+	}
+
+	/* ─── FOOTER BOTTOM ─────────────────────────────────────────────── */
+	.footer-bottom {
+		margin-top: calc(var(--space-unit) * 5);
+		padding-top: calc(var(--space-unit) * 2.5);
+		border-top: 1px solid rgba(255, 255, 255, 0.18);
+		text-align: center;
+	}
+
+	.copyright-text {
+		margin: 0;
+		font-size: 0.85rem;
+		opacity: 0.75;
+		line-height: 1.5;
+	}
+	
+	/* Utility */
+	.mt-2 { margin-top: 8px; }
+	.mt-3 { margin-top: 12px; }
+	.mt-4 { margin-top: 16px; }
+
+	/* ─── RESPONSIVE MOBILE OPTIMIZATIONS (< 640px) ─────────────────── */
+	@media (max-width: 640px) {
+		.icon-circle {
+			width: 28px;
+			height: 28px;
+		}
+
+		.social-icon {
+			width: 28px;
+			height: 28px;
+		}
+
+		.contact-list {
+			gap: 12px;
+		}
+
+		.contact-list li {
+			gap: 10px;
+		}
+
+		.address-box {
+			gap: 10px;
+		}
+
+		.contact-text,
+		.address-text,
+		.social-handle,
+		.quick-link-item {
+			font-size: 0.875rem;
+		}
+
+		.col-title {
+			font-size: 1.15rem;
+			margin-bottom: 14px;
+		}
+
+		.map-container {
+			height: 140px;
+		}
+	}
+</style>

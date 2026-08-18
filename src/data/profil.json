@@ -24,7 +24,7 @@
     "terisi": false,
     "lat": null,
     "long": null,
-    "tautanMaps": "https://share.google/PHDzMDgsWJA71mkXP"
+    "tautanMaps": "https://share.google/baPqq1nswNfF5SEc1"
   },
   "kontak": {
     "whatsapp": {
@@ -37,14 +37,32 @@
   },
   "sosmed": [
     {
-      "nama": "Instagram",
+      "nama": "Instagram Bank Sampah",
+      "kelompok": "banksampah",
       "handle": "@bank_sampah_bakti_lembur",
-      "url": "https://www.instagram.com/bank_sampah_bakti_lembur"
+      "url": "https://www.instagram.com/bank_sampah_bakti_lembur",
+      "ikon": "instagram"
+    },
+    {
+      "nama": "Instagram KKN Kelompok 10",
+      "kelompok": "kkn",
+      "handle": "@potretsarimukti_10",
+      "url": "https://www.instagram.com/potretsarimukti_10",
+      "ikon": "instagram"
+    },
+    {
+      "nama": "TikTok KKN Kelompok 10",
+      "kelompok": "kkn",
+      "handle": "@potretsarimukti_10",
+      "url": "https://www.tiktok.com/@potretsarimukti_10",
+      "ikon": "tiktok"
     },
     {
       "nama": "TikTok",
+      "kelompok": "banksampah",
       "handle": "@banksampahbaktilembur",
-      "url": "https://tiktok.com/@banksampahbaktilembur"
+      "url": "https://tiktok.com/@banksampahbaktilembur",
+      "ikon": "tiktok"
     }
   ],
   "video": {
@@ -68,8 +86,8 @@
   "jadwalPenimbangan": {
     "_catatan": "Lembaga tidak punya jam layanan tetap. Jangan tampilkan jam buka, dan jangan tulis openingHours di structured data (PRD §11.5).",
     "frekuensi": "Dua minggu sekali",
-    "hari": ["Rabu", "Kamis", "Jumat"],
-    "lokasiUtama": "RT 01/04 Kp. Nagrog, rumah Bu RW"
+    "hari": ["Senin", "Rabu", "Jumat"],
+    "lokasiUtama": "RT 01/04 Kp. Nagrog"
   },
   "areaJemput": [
     "RT 02/04 Kp. Legok",
