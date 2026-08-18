@@ -166,8 +166,10 @@
 	h1,
 	h2,
 	h3 {
-		font-family: var(--font-display), Georgia, serif;
-		font-weight: 700;
+		font-family: var(--font-hero), system-ui, sans-serif;
+		font-weight: 800;
+		font-style: italic;
+		letter-spacing: -0.02em;
 		line-height: 1.15;
 		text-wrap: balance;
 	}
