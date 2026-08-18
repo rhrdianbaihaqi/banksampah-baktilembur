@@ -84,7 +84,7 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 	.seksi-galeri {
 		position: relative;
 		overflow: hidden;
-		padding: calc(var(--space-unit) * 10) 0;
+		padding: calc(var(--space-unit) * 8) 0 calc(var(--space-unit) * 4) 0;
 		background: #0b0f0b;
 	}
 
@@ -180,7 +180,7 @@ const berkas = import.meta.glob<{ default: ImageMetadata }>(
 		position: relative;
 		width: 100vw;
 		margin-left: calc(50% - 50vw); /* Memecah batas max-width container */
-		margin-bottom: calc(var(--space-unit) * 4);
+		margin-bottom: 0;
 	}
 
 	.galeri-track {

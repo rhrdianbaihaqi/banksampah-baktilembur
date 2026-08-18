@@ -26,12 +26,10 @@ const impactIcons = [
 ];
 ---
 
-<Seksi
+<section
 	id="kolaborasi"
-	eyebrow={s11.eyebrow}
-	judul={`${s11.judul.awal}${s11.judul.sorot}`}
-	latar="netral"
-	tanpaKepala={true}
+	class="seksi-kolaborasi"
+	aria-label="Kolaborasi KKN Kelompok 10"
 >
 	<div class="kolaborasi-container">
 		<!-- DECORATIVE BACKGROUND -->
@@ -128,16 +126,23 @@ const impactIcons = [
 			</div>
 		</div>
 	</div>
-</Seksi>
+</section>
 
 <style>
 	/* ─── CONTAINER UTAMA ─────────────────────────────────────────────── */
+	.seksi-kolaborasi {
+		position: relative;
+		padding: calc(var(--space-unit) * 3) calc(var(--space-unit) * 3) calc(var(--space-unit) * 10);
+		background: var(--neutral-50);
+		overflow: hidden;
+	}
+
 	.kolaborasi-container {
 		position: relative;
 		width: 100%;
 		max-width: 1140px;
 		margin: 0 auto;
-		padding: calc(var(--space-unit) * 6) 0;
+		padding: 0;
 	}
 
 	/* ─── DECORATIVE BACKGROUND ──────────────────────────────────────── */
@@ -542,8 +547,12 @@ const impactIcons = [
 
 	/* ─── RESPONSIVE ─────────────────────────────────────────────────── */
 	@media (max-width: 768px) {
+		.seksi-kolaborasi {
+			padding: calc(var(--space-unit) * 3) calc(var(--space-unit) * 2) calc(var(--space-unit) * 8);
+		}
+
 		.kolaborasi-container {
-			padding: calc(var(--space-unit) * 3) 0;
+			padding: 0;
 		}
 
 		.kolaborasi-visual {
