@@ -179,6 +179,19 @@
 		-moz-osx-font-smoothing: grayscale;
 	}
 
+	main {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		overflow-x: hidden;
+		box-sizing: border-box;
+	}
+
+	section {
+		width: 100%;
+		box-sizing: border-box;
+	}
+
 	h1,
 	h2,
 	h3 {

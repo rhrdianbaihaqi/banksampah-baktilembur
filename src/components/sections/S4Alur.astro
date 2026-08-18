@@ -85,7 +85,7 @@ const ikonLangkah = [
 							<!-- Ikon dalam Soft Square Box -->
 							<div class="card-ikon-wrap">
 								<div class="card-ikon">
-									<IkonComp size={28} />
+									<IkonComp size={24} />
 								</div>
 							</div>
 							
@@ -162,19 +162,19 @@ const ikonLangkah = [
 		width: 100%;
 		position: relative;
 		overflow: hidden;
-		padding: calc(var(--space-unit) * 12) calc(var(--space-unit) * 3) calc(var(--space-unit) * 7);
+		padding: calc(var(--space-unit) * 16) calc(var(--space-unit) * 3) calc(var(--space-unit) * 7);
 		box-sizing: border-box;
 	}
 
 	@media (min-width: 640px) {
 		.seksi-alur {
-			padding: calc(var(--space-unit) * 16) calc(var(--space-unit) * 4) calc(var(--space-unit) * 9);
+			padding: calc(var(--space-unit) * 22) calc(var(--space-unit) * 4) calc(var(--space-unit) * 9);
 		}
 	}
 
 	@media (min-width: 1024px) {
 		.seksi-alur {
-			padding: calc(var(--space-unit) * 22) calc(var(--space-unit) * 4) calc(var(--space-unit) * 12);
+			padding: calc(var(--space-unit) * 28) calc(var(--space-unit) * 4) calc(var(--space-unit) * 12);
 		}
 	}
 
@@ -271,10 +271,10 @@ const ikonLangkah = [
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		padding: calc(var(--space-unit) * 4.5) calc(var(--space-unit) * 3) calc(var(--space-unit) * 4);
-		border-radius: var(--radius-md);
+		padding: calc(var(--space-unit) * 3) calc(var(--space-unit) * 2.25) calc(var(--space-unit) * 2.5);
+		border-radius: var(--radius-sm);
 		background: var(--white);
-		box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
 		border: 1px solid rgba(0, 0, 0, 0.04);
 		position: relative;
 		transition: transform 0.25s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.25s ease;
@@ -294,54 +294,54 @@ const ikonLangkah = [
 	}
 
 	.alur-card:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+		transform: translateY(-4px);
+		box-shadow: 0 10px 24px rgba(0, 0, 0, 0.07);
 	}
 	
 	.alur-grid-desktop.is-visible .alur-card:hover,
 	.alur-grid-tablet.is-visible .alur-card:hover {
-		transform: translateY(-5px);
+		transform: translateY(-4px);
 	}
 
 	.card-nomor {
 		position: absolute;
-		top: -12px;
-		left: -12px;
-		width: 38px;
-		height: 38px;
+		top: -10px;
+		left: -10px;
+		width: 32px;
+		height: 32px;
 		border-radius: 50%;
 		background: var(--accent-earth);
 		color: var(--white);
 		font-family: var(--font-hero), sans-serif;
 		font-weight: 800;
-		font-size: 0.875rem;
+		font-size: 0.775rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border: 3px solid var(--white);
-		box-shadow: 0 4px 10px rgba(201, 123, 33, 0.25);
+		border: 2.5px solid var(--white);
+		box-shadow: 0 3px 8px rgba(201, 123, 33, 0.25);
 		z-index: 2;
 	}
 
 	.card-ikon-wrap {
-		margin-bottom: calc(var(--space-unit) * 2.5);
+		margin-bottom: calc(var(--space-unit) * 1.75);
 	}
 
 	.card-ikon {
-		width: 58px;
-		height: 58px;
-		border-radius: var(--radius-sm); /* Sudut rounded halus (10px) */
+		width: 48px;
+		height: 48px;
+		border-radius: 10px;
 		background: var(--brand-green);
 		color: var(--white); /* Ikon warna putih murni */
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 4px 14px rgba(62, 116, 53, 0.22);
+		box-shadow: 0 3px 10px rgba(62, 116, 53, 0.2);
 	}
 
 	.card-judul {
-		margin: 0 0 calc(var(--space-unit) * 1.25) 0;
-		font-size: 1.1875rem;
+		margin: 0 0 calc(var(--space-unit) * 0.75) 0;
+		font-size: 1.0625rem;
 		font-weight: 700;
 		font-family: var(--font-hero), system-ui, sans-serif;
 		color: var(--brand-green-dark);
@@ -350,9 +350,9 @@ const ikonLangkah = [
 
 	.card-deskripsi {
 		margin: 0;
-		font-size: 0.9375rem;
+		font-size: 0.84375rem;
 		color: var(--neutral-600);
-		line-height: 1.6;
+		line-height: 1.5;
 	}
 
 	/* ═══════════════════════════════════════════
@@ -366,13 +366,15 @@ const ikonLangkah = [
 		.alur-grid-desktop {
 			display: block;
 			position: relative;
-			padding: 0 36px;
+			padding: 0 28px;
+			max-width: 1040px;
+			margin: 0 auto;
 		}
 		
 		.grid-cards {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
-			gap: calc(var(--space-unit) * 5) calc(var(--space-unit) * 5.5);
+			gap: calc(var(--space-unit) * 4) calc(var(--space-unit) * 4);
 			position: relative;
 			z-index: 2;
 		}
@@ -386,26 +388,26 @@ const ikonLangkah = [
 
 		.side-loop {
 			position: absolute;
-			width: 52px;
-			height: calc(100% - 80px);
+			width: 44px;
+			height: calc(100% - 60px);
 			top: 15%;
 		}
 		
-		.loop-left { left: 0; }
-		.loop-right { right: 0; }
+		.loop-left { left: -6px; }
+		.loop-right { right: -6px; }
 
 		/* Arrow bulat antar card */
 		.arrow-connector {
 			position: absolute;
-			width: 32px;
-			height: 32px;
+			width: 28px;
+			height: 28px;
 			border-radius: 50%;
 			background: var(--brand-green);
 			color: var(--white);
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			box-shadow: 0 4px 10px rgba(62, 116, 53, 0.2);
+			box-shadow: 0 3px 8px rgba(62, 116, 53, 0.2);
 			transform: translate(-50%, -50%);
 			z-index: 3;
 			
